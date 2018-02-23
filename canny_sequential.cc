@@ -24,17 +24,20 @@ struct imgInfo{
     int depth;
 };
 
-void png_read(string &filename){
+void png_read(string filename){
     imgInfo fingerprint;
     Image img;
     img.read(filename);
     fingerprint.height = img.rows();
     fingerprint.width = img.columns();
     fingerprint.depth = img.depth();
-    double *pixels = new double[width*height];
-    image.write(0,0,width,height,"R",DoublePixel, pixels);
-    for(int i =0; i<width, i++){
-        for(j=0;j<height,j++){
+    double **pixels = new double*[fingerprint.width];
+    for(int i=0;i<fingerprint.height;i++){
+        pixels[i] = new double[fingerprint.height];
+    }
+    img.write(0,0,fingerprint.width,fingerprint.height,"R",DoublePixel, pixels);
+    for(int i =0; i<fingerprint.width; i++){
+        for(int j=0;j<fingerprint.height;j++){
             cout << pixels[i][j];
         }
         cout << endl;
@@ -42,8 +45,8 @@ void png_read(string &filename){
     
 }
 
-void main(){
-    string *filename="001.png";
+int main(){
+    string filename="001.png";
     png_read(filename);
 
 }
