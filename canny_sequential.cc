@@ -31,11 +31,16 @@ void png_read(string filename){
     fingerprint.height = img.rows();
     fingerprint.width = img.columns();
     fingerprint.depth = img.depth();
-    double **pixels = new double*[fingerprint.width];
-    for(int i=0;i<fingerprint.height;i++){
-        pixels[i] = new double[fingerprint.height];
+    
+    /*    Geometry geo(fingerprint.width,fingerprint.height);
+    img.scale(geo);
+    */
+   unsigned char **pixels = new unsigned char *[fingerprint.width];
+    for(int i=0;i<fingerprint.width;i++){
+        pixels[i] = new unsigned char [fingerprint.height];
     }
-    img.write(0,0,fingerprint.width,fingerprint.height,"R",DoublePixel, pixels);
+    
+    img.write(0,0,fingerprint.width,fingerprint.height,"R",CharPixel, pixels);
     for(int i =0; i<fingerprint.width; i++){
         for(int j=0;j<fingerprint.height;j++){
             cout << pixels[i][j];
