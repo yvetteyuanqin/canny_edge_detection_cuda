@@ -32,7 +32,7 @@ void png_read(string &filename){
     fingerprint.width = img.columns();
     fingerprint.depth = img.depth();
     double *pixels = new double[width*height];
-    image.write(0,0,width,height,"",DoublePixel, pixels);
+    image.write(0,0,width,height,"R",DoublePixel, pixels);
     for(int i =0; i<width, i++){
         for(j=0;j<height,j++){
             cout << pixels[i][j];
