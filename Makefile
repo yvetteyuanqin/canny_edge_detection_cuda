@@ -1,4 +1,3 @@
-.DEFAULT_GOAL := all
 
 CC = gcc
 CFLAGS = -std=c++11
