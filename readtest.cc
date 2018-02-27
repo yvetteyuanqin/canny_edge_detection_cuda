@@ -5,9 +5,11 @@
  */
 //Yuan Qin
 //Lai Man Tang
+#include <boost/gil/gil_all.hpp>
+#include <boost/gil/extension/io/png_dynamic_io.hpp>
 
-#include <boost/mpl/vector.hpp>
-
+namespace gil = boost::gil;
+using namespace gil;
 
 typedef mpl::vector<gray8_image_t, gray16_image_t, rgb8_image_t, rgb16_image_t> my_img_types;
 any_image<my_img_types> runtime_image;
