@@ -5,34 +5,33 @@
  */
 //Yuan Qin
 //Lai Man Tang
-#include <boost/mpl/vector.hpp>
+
 #include <boost/gil/gil_all.hpp>
 #include <boost/gil/extension/io/png_io.hpp>
+
+#include <boost/gil/rgb.hpp>
 #include <boost/gil/extension/io/png_dynamic_io.hpp>
-//#include <boost/gil/extension/dynamic_image/dynamic_image_all.hpp>
-namespace gil = boost::gil;
-namespace mpl= boost::mpl;
-using namespace gil;
-using namespace mpl;
+#include <stdint.h>
+#include <vector>
 
-//typedef mpl::vector<gray8_image_t, gray16_image_t, rgb8_image_t, rgb16_image_t> my_img_types;
-
-
-void x_luminosity_gradient(const rgb32fc_view_t& src, const gray8s_view_t& dst) {
-	gray8_image_t ccv_image(src.dimensions());
-	copy_pixels(color_converted_view<gray8_pixel_t>(src), view(ccv_image));
-
-	x_gradient(const_view(ccv_image), dst);
-}
-
+struct PixelInserter{
+    std::vector<uint8_t>* storage;
+    PixelInserter(std::vector<uint8_t>* s) : storage(s) {}
+    void operator()(boost::gil::gray8_pixel_t p) const {
+        storage->push_back(boost::gil::at_c<0>(p));
+//        storage->push_back(boost::gil::at_c<1>(p));
+//        storage->push_back(boost::gil::at_c<2>(p));
+    }
+};
 
 int main() {
-	any_image<gray8_image_t> runtime_image;
-	png_read_image("001.png", runtime_image);
-
-	gray8s_image_t gradient(runtime_image.dimensions());
-	//x_luminosity_gradient(const_view(runtime_image), view(gradient));
-	png_write_view("testoutput.png", color_converted_view<gray8_pixel_t>(const_view(gradient)));
-
-	return 0;
+    std::vector<uint8_t> storage;
+    {
+        using namespace boost::gil;
+        rgb8_image_t img;
+        png_read_image("001.png", img);
+        storage.reserve(img.width() * img.height() * num_channels<rgb8_image_t>());
+        for_each_pixel(const_view(img), PixelInserter(&storage));
+    }
+    
 }
