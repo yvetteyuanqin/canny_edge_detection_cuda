@@ -29,9 +29,9 @@ int main() {
 	any_image<gray8_image_t> runtime_image;
 	png_read_image("001.png", runtime_image);
 
-	gray8s_image_t gradient(runtime_image.dimensions());
+	//gray8s_image_t gradient(runtime_image.dimensions());
 	//x_luminosity_gradient(const_view(runtime_image), view(gradient));
-	png_write_view("testoutput.png", color_converted_view<gray8_pixel_t>(const_view(gradient)));
+	png_write_view("testoutput.png", runtime_image);
 
 	return 0;
 }
