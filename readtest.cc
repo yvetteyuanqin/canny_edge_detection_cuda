@@ -14,25 +14,16 @@ namespace mpl= boost::mpl;
 using namespace gil;
 using namespace mpl;
 
+typedef mpl::vector<gray8_image_t, gray16_image_t, rgb8_image_t, rgb16_image_t> my_img_types;
 
 
-template <typename DstView>
-struct x_gradient_obj {
-    typedef void result_type;        // required typedef
-    
-    const DstView& _dst;
-    x_gradient_obj(const DstView& dst) : _dst(dst) {}
-    
-    template <typename SrcView>
-    void operator()(const SrcView& src) const { x_luminosity_gradient(src, _dst); }
-};
+void x_luminosity_gradient(const rgb32fc_view_t& src, const gray8s_view_t& dst) {
+	gray8_image_t ccv_image(src.dimensions());
+	copy_pixels(color_converted_view<gray8_pixel_t>(src), view(ccv_image));
 
-template <typename SrcViews, typename DstView>
-void x_luminosity_gradient(const any_image_view<SrcViews>& src, const DstView& dst) {
-    apply_operation(src, x_gradient_obj<DstView>(dst));
+	x_gradient(const_view(ccv_image), dst);
 }
 
-typedef mpl::vector<gray8_image_t, gray16_image_t, rgb8_image_t, rgb16_image_t> my_img_types;
 
 int main() {
 	any_image<my_img_types> runtime_image;
