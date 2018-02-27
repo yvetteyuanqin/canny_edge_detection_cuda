@@ -14,7 +14,7 @@ namespace mpl= boost::mpl;
 using namespace gil;
 using namespace mpl;
 
-typedef mpl::vector<gray8_image_t, gray16_image_t, rgb8_image_t, rgb16_image_t> my_img_types;
+//typedef mpl::vector<gray8_image_t, gray16_image_t, rgb8_image_t, rgb16_image_t> my_img_types;
 
 
 void x_luminosity_gradient(const rgb32fc_view_t& src, const gray8s_view_t& dst) {
@@ -26,7 +26,7 @@ void x_luminosity_gradient(const rgb32fc_view_t& src, const gray8s_view_t& dst) 
 
 
 int main() {
-	any_image<my_img_types> runtime_image;
+	any_image<gray8_image_t> runtime_image;
 	png_read_image("001.png", runtime_image);
 
 	gray8s_image_t gradient(runtime_image.dimensions());
