@@ -22,3 +22,4 @@ int main() {
 	png_write_view("testoutput.png", color_converted_view<gray8_pixel_t>(const_view(gradient)));
 
 	return 0;
+}
