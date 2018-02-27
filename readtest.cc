@@ -33,6 +33,6 @@ int main() {
         storage.reserve(img.width() * img.height() * num_channels<rgb8_image_t>());
         for_each_pixel(const_view(img), PixelInserter(&storage));
     }
-    ...
+   
 }
 
