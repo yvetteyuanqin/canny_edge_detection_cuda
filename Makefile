@@ -7,8 +7,8 @@ LDFLAGS =
 
 
 
-readtest: readtest.cc $(CC) $(CFLAGS) $(COPTFLAGS) -I/data/apps/boost/1.57/include \
-	    -o readtest readtest.cc
+readtest: readtest.cc
+        gcc  $(CC) $(CFLAGS) $(COPTFLAGS) -I/data/apps/boost/1.57/include -o readtest readtest.cc
 
 
 clean:
