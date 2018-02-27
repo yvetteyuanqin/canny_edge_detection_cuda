@@ -10,7 +10,7 @@
 #include <boost/gil/extension/io/png_io.hpp>
 
 #include <boost/gil/rgb.hpp>
-#include <boost/gil/extension/io/png_dynamic_io.hpp>
+//#include <boost/gil/extension/io/png_dynamic_io.hpp>
 #include <stdint.h>
 #include <vector>
 
