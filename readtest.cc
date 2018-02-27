@@ -10,7 +10,9 @@
 #include <boost/gil/extension/io/png_dynamic_io.hpp>
 
 namespace gil = boost::gil;
+namespace mpl= boost::mpl;
 using namespace gil;
+using namespace mpl;
 
 typedef mpl::vector<gray8_image_t, gray16_image_t, rgb8_image_t, rgb16_image_t> my_img_types;
 
