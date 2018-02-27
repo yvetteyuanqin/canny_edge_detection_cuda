@@ -5,6 +5,7 @@
  */
 //Yuan Qin
 //Lai Man Tang
+#include <boost/mpl/vector.hpp>
 #include <boost/gil/gil_all.hpp>
 #include <boost/gil/extension/io/png_dynamic_io.hpp>
 
