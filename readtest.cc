@@ -8,7 +8,7 @@
 #include <boost/mpl/vector.hpp>
 #include <boost/gil/gil_all.hpp>
 #include <boost/gil/extension/io/png_dynamic_io.hpp>
-#include <boost/gil/extension/dynamic_image/dynamic_image_all.hpp>
+//#include <boost/gil/extension/dynamic_image/dynamic_image_all.hpp>
 namespace gil = boost::gil;
 namespace mpl= boost::mpl;
 using namespace gil;
