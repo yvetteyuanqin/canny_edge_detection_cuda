@@ -5,15 +5,15 @@ CFLAGS = -std=c++11
 COPTFLAGS = -O3 -g -lpng
 LDFLAGS =
 
-TARGETS = readtest$(EXEEXT)
+TARGETS = readtest
 
-all: $(TARGETS)
 
-readtest$(EXEEXT): readtest.cc $(CC) $(CFLAGS) $(COPTFLAGS) -I/data/apps/boost/1.57/include \
-	    -o $@ readtest.cc
+
+readtest$(EXEEXT): readtest.o $(CC) $(CFLAGS) $(COPTFLAGS) -I/data/apps/boost/1.57/include \
+	    -o readtest readtest.cc
 
 
 clean:
-	rm -f $(TARGETS) 
+	rm -f
 
 # eof
