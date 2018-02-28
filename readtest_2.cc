@@ -30,8 +30,8 @@ int main() {
    // image_view<gray8_image_t> img_view(img);
 
     
-    for (int i = 0; i < img_view.height(); i++) {
-        for (int j = 0; j < img_view.width(); j++) {
+    for (int i = 0; i < img.height(); i++) {
+        for (int j = 0; j < img.width(); j++) {
             cout << view(img).xy_at(j,i);
         }
         cout << endl;
