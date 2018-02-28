@@ -27,12 +27,12 @@ int main() {
     
     unsigned char * buf = &view(img)[0][0];//new unsigned char[w * h];
 
-    gray8_view_t srcview = interleaved_view(img.width();, img.height(), (gray8_pixel_t*)buf, view(img).pixels().row_size());
+    gray8_view_t srcview = interleaved_view(img.width(), img.height(), (gray8_pixel_t*)buf, view(img).pixels().row_size());
     
-    for (size_t i = 0; i < ...; ++i)
+    for (size_t i = 0; i < img.height(); ++i)
     {
         boost::gil::gray8_view_t::x_iterator it = srcview.row_begin(i);
-        for size_t j = 0; j<...; ++j){
+        for (size_t j = 0; j<img.width(); ++j){
             boost::gil::gray8_view_t::y_iterator jt = srcview.col_begin(j);
             cout<< it[j] ;
         }
