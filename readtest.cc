@@ -40,7 +40,8 @@ int main() {
         // use it[j] to access pixel[i][j]
     }
     cout<<endl;
-    cout<<cnt;
+    cout<<cnt<<endl;
+    cout<<img.width()<<' '<<img.height()<<endl;
     //    for (int i = 0; i < img_view.height(); i++) {
     //        for (int j = 0; j < img_view.width(); j++) {
     //            cout << img_view;
