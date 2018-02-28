@@ -28,18 +28,19 @@ int main() {
     unsigned char * buf = &view(img)[0][0];//new unsigned char[w * h];
 
     gray8_view_t srcview = interleaved_view(img.width(), img.height(), (gray8_pixel_t*)buf, view(img).pixels().row_size());
-    
+    int cnt = 0;
     for (size_t i = 0; i < img.height(); ++i)
     {
         boost::gil::gray8_view_t::x_iterator it = srcview.row_begin(i);
         for (size_t j = 0; j<img.width(); ++j){
             boost::gil::gray8_view_t::y_iterator jt = srcview.col_begin(j);
             cout << hex << int(it[j]) ;
+            cnt++;
         }
         // use it[j] to access pixel[i][j]
     }
-    
-    
+    cout<<endl;
+    cout<<cnt;
     //    for (int i = 0; i < img_view.height(); i++) {
     //        for (int j = 0; j < img_view.width(); j++) {
     //            cout << img_view;
