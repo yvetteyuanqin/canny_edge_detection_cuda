@@ -22,24 +22,16 @@ int main() {
     png_write_view("testimg.png",const_view(img));
     
 
-	//image view
-//	image_view img_view(img);
-    gil::gray8_image_t::const_view_t view = const_view(img);
+    image view
+    image_view img_view(img);
+
     
-    assert(view.is_1d_traversable());
-    
-    int width = view.width();
-    int height = view.height();
-    const char* buffer = view.begin().x();
-    
-    cout<< *buff;
-    
-//    for (int i = 0; i < img_view.height(); i++) {
-//        for (int j = 0; j < img_view.width(); j++) {
-//            cout << img_view;
-//        }
-//        cout << endl;
-//    }
+    for (int i = 0; i < img_view.height(); i++) {
+        for (int j = 0; j < img_view.width(); j++) {
+            cout << img_view;
+        }
+        cout << endl;
+    }
 
     //
 
