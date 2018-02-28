@@ -14,6 +14,10 @@
 #include <iostream>
 using namespace std;
 
+
+//void printPixel()
+
+
 int main() {
 	
     using namespace boost::gil;
@@ -23,16 +27,16 @@ int main() {
     
 
    // image view
-    image_view<gray8_image_t> img_view(img);
+   // image_view<gray8_image_t> img_view(img);
 
     
-    for (int i = 0; i < img_view.height(); i++) {
-        for (int j = 0; j < img_view.width(); j++) {
-            cout << img_view;
-        }
+    for (int i = 0; i < img.height(); i++) {
+		gray8_view_t::x_iterator it = image.row_begin(i);
+		for (int j = 0; j < sizeof(it); j++) cout << it[j];
+        
         cout << endl;
     }
 
     //
-
+	return 0;
 }
