@@ -28,8 +28,8 @@ int main() {
 		using namespace boost::gil;
 		rgb8_image_t img;
 		png_read_image("001.png", img);
-		storage.reserve(img.width() * img.height() * num_channels<rgb8_image_t>());
-		for_each_pixel(const_view(img), PixelInserter(&storage));
+		//storage.reserve(img.width() * img.height() * num_channels<rgb8_image_t>());
+		//for_each_pixel(const_view(img), PixelInserter(&storage));
 	}
 
 }
