@@ -12,7 +12,7 @@
 #include <stdint.h>
 #include <vector>
 #include <iostream>
-//#include "interleaved_ptr.hpp"
+
 using namespace std;
 
 int main() {
@@ -24,7 +24,7 @@ int main() {
     
     
     
-    
+    // Get a raw pointer to the grey buffer
     unsigned char * buf = &view(img)[0][0];//new unsigned char[w * h];
 
     gray8_view_t srcview = interleaved_view(img.width(), img.height(), (gray8_pixel_t*)buf, view(img).pixels().row_size());
@@ -34,7 +34,7 @@ int main() {
         boost::gil::gray8_view_t::x_iterator it = srcview.row_begin(i);
         for (size_t j = 0; j<img.width(); ++j){
             boost::gil::gray8_view_t::y_iterator jt = srcview.col_begin(j);
-            cout<< it[j] ;
+            cout<< (double)it[j] ;
         }
         // use it[j] to access pixel[i][j]
     }
