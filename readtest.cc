@@ -34,7 +34,7 @@ int main() {
         boost::gil::gray8_view_t::x_iterator it = srcview.row_begin(i);
         for (size_t j = 0; j<img.width(); ++j){
             boost::gil::gray8_view_t::y_iterator jt = srcview.col_begin(j);
-            cout<< (double)it[j] ;
+            cout << hex << int(it[j]) ;
         }
         // use it[j] to access pixel[i][j]
     }
