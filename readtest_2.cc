@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <vector>
 #include <iostream>
+#include <stdio.h>
 using namespace std;
 
 
@@ -38,7 +39,7 @@ int main() {
     }
 
 
-	cout<<
+	
     //
 	return 0;
 }
