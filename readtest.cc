@@ -33,7 +33,7 @@ int main() {
     {
         boost::gil::gray8_view_t::x_iterator it = srcview.row_begin(i);
         for (size_t j = 0; j<img.width(); ++j){
-            boost::gil::gray8_view_t::y_iterator jt = srcview.col_begin(j);
+            //boost::gil::gray8_view_t::y_iterator jt = srcview.col_begin(j);
             cout << hex << int(it[j]) ;
             cnt++;
         }
@@ -42,12 +42,15 @@ int main() {
     cout<<endl;
     cout<<cnt<<endl;
     cout<<img.width()<<' '<<img.height()<<endl;
-    //    for (int i = 0; i < img_view.height(); i++) {
-    //        for (int j = 0; j < img_view.width(); j++) {
-    //            cout << img_view;
-    //        }
-    //        cout << endl;
-    //    }
+    //test buff
+    for (size_t j = 0; i < 20; ++i)
+    {
+       
+        for (size_t i = 0; j<20; ++j){
+            cout<<buf[j][i];
+        }
+    }
+
     
     return 0;
     
