@@ -1,4 +1,4 @@
-void CannyEdgeDetector::apply_gaussian_filter(pixel_t *out_pixels, pixel_t *in_pixels, double kernel[KERNEL_SIZE][KERNEL_SIZE])
+void gaussian_filter(const gray8_view_t& src, double kernel[KERNEL_SIZE][KERNEL_SIZE])
 {
 	int rows = m_image_mgr->getImgHeight();
 	int cols = m_image_mgr->getImgWidth();
