@@ -20,11 +20,17 @@ int main() {
     gray8_image_t img;
     png_read_image("001.png", img);
     png_write_view("testimg.png",const_view(img));
-    for(int i=0;i<img.height();i++){
-        for(int j =0;j<img.width();j++)
-            cout<<img[i][j];
-        cout<<endl;
-    }
-    
+
+
+
+	Image_view img_view(img);
+	for (int i = 0; i < img_view.height(); i++) {
+		for (int j = 0; j < img_view.width(); j++) {
+			cout << img_view.xy_at(j, i);
+		}
+		cout << endl;
+	}
+
+
 
 }
