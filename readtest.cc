@@ -22,8 +22,8 @@ int main() {
     png_write_view("testimg.png",const_view(img));
 
 
-
-	Image_view img_view(img);
+	//image view
+	image_view img_view(img);
 	for (int i = 0; i < img_view.height(); i++) {
 		for (int j = 0; j < img_view.width(); j++) {
 			cout << img_view.xy_at(j, i);
