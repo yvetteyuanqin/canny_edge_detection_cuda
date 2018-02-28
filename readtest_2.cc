@@ -31,7 +31,7 @@ int main() {
 
     
     for (int i = 0; i < img.height(); i++) {
-		gray8_view_t::x_iterator it = image.row_begin(i);
+		gray8_view_t::x_iterator it = img.row_begin(i);
 		for (int j = 0; j < sizeof(it); j++) cout << it[j];
         
         cout << endl;
