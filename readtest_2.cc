@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <vector>
 #include <iostream>
+#include <stdio.h>
 using namespace std;
 
 
@@ -32,11 +33,13 @@ int main() {
     
     for (int i = 0; i < img_view.height(); i++) {
 		gray8_view_t::x_iterator it = img_view.row_begin(i);
-		for (int j = 0; j < sizeof(it); j++) cout << it[j];
+		for (int j = 0; j < sizeof(it); j++) printf("%04x",it[j]);
         
         cout << endl;
     }
 
+
+	
     //
 	return 0;
 }
