@@ -26,7 +26,7 @@ int main() {
 	std::vector<uint8_t> storage;
 	{
 		using namespace boost::gil;
-		rgb8_image_t img;
+		gray8_image_t img;
 		png_read_image("001.png", img);
         //gil::rgb8_image_t img(height, width);
         png_write_view("testimg.png",const_view(img));
