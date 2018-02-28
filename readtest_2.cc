@@ -22,8 +22,8 @@ int main() {
     png_write_view("testimg.png",const_view(img));
     
 
-    image view
-    image_view img_view(img);
+   // image view
+    image_view<gray8_image_t> img_view(img);
 
     
     for (int i = 0; i < img_view.height(); i++) {
