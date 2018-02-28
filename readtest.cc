@@ -24,13 +24,13 @@ int main() {
 
 	//image view
 //	image_view img_view(img);
-    gil::gray8_image_t::const_view_t img_view = const_view(img);
+    gil::gray8_image_t::const_view_t view = const_view(img);
     
-    assert(img_view.is_1d_traversable());
+    assert(view.is_1d_traversable());
     
-    int width = img_view.width();
-    int height = img_view.height();
-    const char* buffer = img_view.begin().x();
+    int width = view.width();
+    int height = view.height();
+    const char* buffer = view.begin().x();
     
     cout<< *buff;
     
