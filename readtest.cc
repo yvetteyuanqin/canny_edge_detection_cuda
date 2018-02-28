@@ -42,15 +42,7 @@ int main() {
     cout<<endl;
     cout<<cnt<<endl;
     cout<<img.width()<<' '<<img.height()<<endl;
-    //test buff
-    for (int j = 0; j < 20; ++j)
-    {
-       
-        for (int i = 0; i<20; ++i){
-            cout<<buf[j][i];
-        }
-    }
-
+   
     
     return 0;
     
