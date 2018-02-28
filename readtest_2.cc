@@ -27,8 +27,8 @@ int main() {
     
 
    // image view
-    image_view<gray8_view_t> img_view(img);
-
+   // image_view<gray8_view_t> img_view(img);
+	gray8_image_t::view_t img_view  = view(img);
     
     for (int i = 0; i < img_view.height(); i++) {
 		gray8_view_t::x_iterator it = img_view.row_begin(i);
