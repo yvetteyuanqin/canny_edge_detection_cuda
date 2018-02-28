@@ -30,8 +30,8 @@ int main() {
     image_view<gray8_view_t> img_view(img);
 
     
-    for (int i = 0; i < image.height(); i++) {
-		gray8_view_t::x_iterator it = image.row_begin(i);
+    for (int i = 0; i < img_view.height(); i++) {
+		gray8_view_t::x_iterator it = img_view.row_begin(i);
 		for (int j = 0; j < sizeof(it); j++) cout << it[j];
         
         cout << endl;
