@@ -31,12 +31,12 @@ int main() {
 
     gray8_view_t srcview = interleaved_view(img.width(), img.height(), (gray8_pixel_t*)buf, view(img).pixels().row_size());
     int cnt = 0;
-    for (int i = 0; i < HEIGHT; ++i) {
-        for (int j = 0; j < WIDTH; ++j) {
-            buf[i][j]=char(srcview(j, i));
-            cout<<hex<<int(buf[i][j]);
-        }
-    }
+//    for (int i = 0; i < HEIGHT; ++i) {
+//        for (int j = 0; j < WIDTH; ++j) {
+//            buf[i][j]=srcview(j, i);
+//            cout<<hex<<int(buf[i][j])
+//        }
+//    }
 //    for (size_t i = 0; i < img.height(); ++i)
 //    {
 //        boost::gil::gray8_view_t::x_iterator it = srcview.row_begin(i);
