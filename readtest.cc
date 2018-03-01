@@ -28,10 +28,10 @@ int main() {
     
     // Get a raw pointer to the grey buffer
     unsigned char * buf = &view(img)[0][0];//new unsigned char[w * h];
-    gray8_pixel_t **imgbuff = (int**)malloc(sizeof(int*)*WIDTH);
+    gray8_pixel_t **imgbuff = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*WIDTH);
     for(int i = 0; i < WIDTH; i++)
     {
-        *(imgbuff+i) = (int*)malloc(sizeof(int)*HEIGHT);
+        *(imgbuff+i) = (gray8_pixel_t*)malloc(sizeof(int)*HEIGHT);
     }
     
     gray8_view_t srcview = interleaved_view(img.width(), img.height(), (gray8_pixel_t*)buf, view(img).pixels().row_size());
