@@ -37,16 +37,16 @@ int main() {
 //            cout<<hex<<int(buf[i][j])
 //        }
 //    }
-//    for (size_t i = 0; i < img.height(); ++i)
-//    {
-//        boost::gil::gray8_view_t::x_iterator it = srcview.row_begin(i);
-//        for (size_t j = 0; j<img.width(); ++j){
-//            //boost::gil::gray8_view_t::y_iterator jt = srcview.col_begin(j);
-//            cout << hex << int(it[j]) ;
-//            cnt++;
-//        }
-//        // use it[j] to access pixel[i][j]
-//    }
+    for (size_t i = 0; i < img.height(); ++i)
+    {
+        boost::gil::gray8_view_t::x_iterator it = srcview.row_begin(i);
+        for (size_t j = 0; j<img.width(); ++j){
+            //boost::gil::gray8_view_t::y_iterator jt = srcview.col_begin(j);
+            cout << hex << int(it[j]) ;
+            cnt++;
+        }
+        // use it[j] to access pixel[i][j]
+    }
     cout<<endl;
     cout<<cnt<<endl;
     cout<<img.width()<<' '<<img.height()<<endl;
