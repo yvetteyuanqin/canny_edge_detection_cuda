@@ -49,7 +49,7 @@ int main() {
 //    }
     cout<<endl;
     cout<<cnt<<endl;
-    cout<<img.width()<<' '<<img.height()<<endl;
+    cout<<srcview.width()<<' '<<img.height()<<endl;
    
     
     return 0;
