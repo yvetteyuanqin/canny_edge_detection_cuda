@@ -12,13 +12,15 @@
 #include <stdint.h>
 #include <vector>
 #include <iostream>
+#define HEIGHT 512
+#define WIDTH 512
 
 using namespace std;
 
 int main() {
     
     using namespace boost::gil;
-    gray8_image_t img;
+    gray8_image_t img(HEIGHT,WIDTH);
     png_read_image("001.png", img);
     png_write_view("testimg.png",const_view(img));
     
@@ -29,16 +31,21 @@ int main() {
 
     gray8_view_t srcview = interleaved_view(img.width(), img.height(), (gray8_pixel_t*)buf, view(img).pixels().row_size());
     int cnt = 0;
-    for (size_t i = 0; i < img.height(); ++i)
-    {
-        boost::gil::gray8_view_t::x_iterator it = srcview.row_begin(i);
-        for (size_t j = 0; j<img.width(); ++j){
-            //boost::gil::gray8_view_t::y_iterator jt = srcview.col_begin(j);
-            cout << hex << int(it[j]) ;
-            cnt++;
+    for (int i = 0; i < height; ++i) {
+        for (int j = 0; j < width; ++j) {
+            buff[i][j]=img_view(j, i);
         }
-        // use it[j] to access pixel[i][j]
     }
+//    for (size_t i = 0; i < img.height(); ++i)
+//    {
+//        boost::gil::gray8_view_t::x_iterator it = srcview.row_begin(i);
+//        for (size_t j = 0; j<img.width(); ++j){
+//            //boost::gil::gray8_view_t::y_iterator jt = srcview.col_begin(j);
+//            cout << hex << int(it[j]) ;
+//            cnt++;
+//        }
+//        // use it[j] to access pixel[i][j]
+//    }
     cout<<endl;
     cout<<cnt<<endl;
     cout<<img.width()<<' '<<img.height()<<endl;
