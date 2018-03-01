@@ -53,19 +53,19 @@ int main() {
 //        // use it[j] to access pixel[i][j]
 //    }
     /*revert image to check*/
-    gil::gray8_image_t img2(HEIGHT,WIDTH);
-    auto img_view = gil::view(img2);
+    gray8_image_t img2(HEIGHT,WIDTH);
+    auto img_view = view(img2);
     
     
-    for (int i = 0; i < height; ++i) {
-        for (int j = 0; j < width; ++j) {
+    for (int i = 0; i < HEIGHT; ++i) {
+        for (int j = 0; j < WIDTH; ++j) {
             img_view(j, i) = imgbuff[i][j];
         }
     }
     
     
     
-    gil::png_write_view("testimg.png", const_view(img2));
+    png_write_view("testimg.png", const_view(img2));
     
     cout<<endl;
     cout<<cnt<<endl;
