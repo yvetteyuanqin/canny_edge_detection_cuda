@@ -40,6 +40,7 @@ int main() {
         for (int j = 0; j < WIDTH; ++j) {
             imgbuff[i][j]=srcview(j, i);
             cout<<hex<<int(imgbuff[i][j]);
+            cnt += 1;
         }
     }
 //    for (size_t i = 0; i < img.height(); ++i)
