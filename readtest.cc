@@ -70,7 +70,7 @@ int main() {
     
     cout<<endl;
     cout<<cnt<<endl;
-    cout<<sizeof(imgbuff[0])<<' '<<sizeof(imgbuff)<<endl;
+    cout<<sizeof(imgbuff)<<' '<<sizeof(imgbuff)<<endl;
    
     
     return 0;
