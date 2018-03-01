@@ -22,7 +22,7 @@ int main() {
     using namespace boost::gil;
     gray8_image_t img(HEIGHT,WIDTH);
     png_read_image("001.png", img);
-    png_write_view("testimg.png",const_view(img));
+    //png_write_view("testimg.png",const_view(img));
     
     
     
@@ -52,9 +52,24 @@ int main() {
 //        }
 //        // use it[j] to access pixel[i][j]
 //    }
+    /*revert image to check*/
+    gil::gray8_image_t img2(HEIGHT,WIDTH);
+    auto img_view = gil::view(img2);
+    
+    
+    for (int i = 0; i < height; ++i) {
+        for (int j = 0; j < width; ++j) {
+            img_view(j, i) = imgbuff[i][j];
+        }
+    }
+    
+    
+    
+    gil::png_write_view("testimg.png", const_view(img2));
+    
     cout<<endl;
     cout<<cnt<<endl;
-    cout<<img.width()<<' '<<img.height()<<endl;
+    cout<<sizeof(imgbuff[0])<<' '<<sizeof(imgbuff)<<endl;
    
     
     return 0;
