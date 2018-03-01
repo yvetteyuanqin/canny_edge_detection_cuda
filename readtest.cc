@@ -28,15 +28,20 @@ int main() {
     
     // Get a raw pointer to the grey buffer
     unsigned char * buf = &view(img)[0][0];//new unsigned char[w * h];
-
+    grey8_pixel_t **imgbuff = (int**)malloc(sizeof(int*)*WIDTH);
+    for(i = 0; i < WIDTH; i++)
+    {
+        *(p+i) = (int*)malloc(sizeof(int)*HEIGHT);
+    }
+    
     gray8_view_t srcview = interleaved_view(img.width(), img.height(), (gray8_pixel_t*)buf, view(img).pixels().row_size());
     int cnt = 0;
-//    for (int i = 0; i < HEIGHT; ++i) {
-//        for (int j = 0; j < WIDTH; ++j) {
-//            buf[i][j]=srcview(j, i);
-//            cout<<hex<<int(buf[i][j])
-//        }
-//    }
+    for (int i = 0; i < HEIGHT; ++i) {
+        for (int j = 0; j < WIDTH; ++j) {
+            imgbuff[i][j]=srcview(j, i);
+            cout<<hex<<int(imgbuff[i][j])
+        }
+    }
 //    for (size_t i = 0; i < img.height(); ++i)
 //    {
 //        boost::gil::gray8_view_t::x_iterator it = srcview.row_begin(i);
@@ -49,7 +54,7 @@ int main() {
 //    }
     cout<<endl;
     cout<<cnt<<endl;
-    cout<<srcview.width()<<' '<<img.height()<<endl;
+    cout<<img.width()<<' '<<img.height()<<endl;
    
     
     return 0;
