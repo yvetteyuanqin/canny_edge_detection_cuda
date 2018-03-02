@@ -45,6 +45,11 @@ void gaussian_filter(gray8_pixel_t **newImage,gray8_pixel_t **in_pixels,int widt
     int filterWidth = filter[0].size();
     int newImageHeight = height-filterHeight+1;
     int newImageWidth = width-filterWidth+1;
+
+	cout << "newImageHeight " << newImageHeight << " newImageWidth " << newImageWidth << endl;
+	cout << "filterHeight " << filterHeight  << " filterWidth " << filterWidth << endl;
+	cout << "width " << width << " height " << height << endl;
+
     int i,j,h,w;
     /*allocate newimage*/
     
