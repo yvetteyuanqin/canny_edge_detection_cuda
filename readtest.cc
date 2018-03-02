@@ -43,16 +43,7 @@ int main() {
            
         } cnt += 1;
     }
-//    for (size_t i = 0; i < img.height(); ++i)
-//    {
-//        boost::gil::gray8_view_t::x_iterator it = srcview.row_begin(i);
-//        for (size_t j = 0; j<img.width(); ++j){
-//            //boost::gil::gray8_view_t::y_iterator jt = srcview.col_begin(j);
-//            cout << hex << int(it[j]) ;
-//            cnt++;
-//        }
-//        // use it[j] to access pixel[i][j]
-//    }
+
     /*revert image to check*/
     gray8_image_t img2(HEIGHT,WIDTH);
     auto img_view = view(img2);
@@ -64,15 +55,12 @@ int main() {
         }
     }
     
-    
-    
     png_write_view("testimg.png", const_view(img2));
     
     cout<<endl;
     cout<<cnt<<endl;
     cout<<sizeof(imgbuff)<<' '<<sizeof(imgbuff)<<endl;
-    cout<<i<<j<<endl;
-   
+
     
     return 0;
     
