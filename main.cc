@@ -12,7 +12,7 @@
 #include <stdint.h>
 #include <vector>
 #include <iostream>
-#include "canny_sequential.cc"
+#include "canny_sequential.h"
 #define HEIGHT 512
 #define WIDTH 512
 
