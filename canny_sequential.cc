@@ -9,7 +9,8 @@
 
 using namespace boost::gil;
 using namespace std;
-//yuan
+typedef vector<double> Array;
+typedef vector<Array> Matrix;
 
 /*create a gaussian filter*/
 Matrix createKernel(int height, int width, double sigma)
