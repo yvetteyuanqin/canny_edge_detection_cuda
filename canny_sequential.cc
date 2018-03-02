@@ -55,7 +55,7 @@ void gaussian_filter(gray8_pixel_t **newImage,gray8_pixel_t **in_pixels,int widt
     
 	cout << "start convolution" << endl;
         for (i=0 ; i<newImageHeight ; i++) {
-			cout << i << " " << end;
+			cout << i << " " << endl;
             for (j=0 ; j<newImageWidth ; j++) {
                 for (h=i ; h<i+filterHeight ; h++) {
                     for (w=j ; w<j+filterWidth ; w++) {
