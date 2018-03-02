@@ -37,7 +37,7 @@ Matrix createKernel(int height, int width, double sigma)
 }
 
 /*Step 1 blur the image to reduce noice*/
-void gaussian_filter(gray8_pixel_t **in_pixels,int weight, int height)
+void gaussian_filter(gray8_pixel_t **in_pixels,int width, int height)
 {
     Matrix filter = createKernel(5, 5, 10.0);
     

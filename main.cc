@@ -52,7 +52,7 @@ int main() {
         *(imgbuff+i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*HEIGHT);
     }
     /*apply gaussian filter*/
-    gaussian_filter(newImage,imgbuff,WEIGHT, HEIGHT);
+    gaussian_filter(newImage,imgbuff,WIDTH, HEIGHT);
     
     
     /*revert image to check*/
