@@ -14,4 +14,4 @@ s = image.shape
 b = np.fromstring(normalize(image,s[0],s[1]),dtype=int).reshape(512, 512)
 
 out = open('001_py.txt', 'w')
-out.write(b)
+b.tofile('001_py.txt',sep="",format="%s")
