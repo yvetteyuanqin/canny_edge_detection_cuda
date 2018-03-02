@@ -3,8 +3,9 @@
 #include <stdint.h>
 #include <math.h>
 #include <iostream>
+#include <vector>
 #define KERNEL_SIZE 7
-#define M_PI 3.1415926
+
 typedef vector<double> Array;
 typedef vector<Array> Matrix;
 
