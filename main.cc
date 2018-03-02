@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <vector>
 #include <iostream>
+#include "canny_sequential.cc"
 #define HEIGHT 512
 #define WIDTH 512
 
@@ -44,6 +45,16 @@ int main() {
         } cnt += 1;
     }
 
+    /*canny_sequential*/
+    gray8_pixel_t **newImage = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*WIDTH);
+    for(int i = 0; i < WIDTH; i++)
+    {
+        *(imgbuff+i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*HEIGHT);
+    }
+    /*apply gaussian filter*/
+    gaussian_filter(newImage,imgbuff,WEIGHT, HEIGHT);
+    
+    
     /*revert image to check*/
     gray8_image_t img2(HEIGHT,WIDTH);
     auto img_view = view(img2);

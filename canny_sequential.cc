@@ -1,37 +1,60 @@
-void gaussian_filter(const gray8_view_t& src, double kernel[KERNEL_SIZE][KERNEL_SIZE])
+#include <boost/gil/rgb.hpp>
+
+#include <stdint.h>
+#include <math.h>
+#include <iostream>
+#define KERNEL_SIZE 7
+#define M_PI 3.1415926
+typedef vector<double> Array;
+typedef vector<Array> Matrix;
+
+
+/*create a gaussian filter*/
+Matrix createKernel(int height, int width, double sigma)
 {
-	int rows = m_image_mgr->getImgHeight();
-	int cols = m_image_mgr->getImgWidth();
-	double kernelSum;
-	double redPixelVal;
-	double greenPixelVal;
-	double bluePixelVal;
-
-	//Apply Kernel to image
-	for (int pixNum = 0; pixNum < rows * cols; ++pixNum) {
-
-		for (int i = 0; i < KERNEL_SIZE; ++i) {
-			for (int j = 0; j < KERNEL_SIZE; ++j) {
-
-				//check edge cases, if within bounds, apply filter
-				if (((pixNum + ((i - ((KERNEL_SIZE - 1) / 2))*cols) + j - ((KERNEL_SIZE - 1) / 2)) >= 0)
-					&& ((pixNum + ((i - ((KERNEL_SIZE - 1) / 2))*cols) + j - ((KERNEL_SIZE - 1) / 2)) <= rows*cols - 1)
-					&& (((pixNum % cols) + j - ((KERNEL_SIZE - 1) / 2)) >= 0)
-					&& (((pixNum % cols) + j - ((KERNEL_SIZE - 1) / 2)) <= (cols - 1))) {
-
-					redPixelVal += kernel[i][j] * in_pixels[pixNum + ((i - ((KERNEL_SIZE - 1) / 2))*cols) + j - ((KERNEL_SIZE - 1) / 2)].red;
-					greenPixelVal += kernel[i][j] * in_pixels[pixNum + ((i - ((KERNEL_SIZE - 1) / 2))*cols) + j - ((KERNEL_SIZE - 1) / 2)].green;
-					bluePixelVal += kernel[i][j] * in_pixels[pixNum + ((i - ((KERNEL_SIZE - 1) / 2))*cols) + j - ((KERNEL_SIZE - 1) / 2)].blue;
-					kernelSum += kernel[i][j];
-				}
-			}
-		}
-		out_pixels[pixNum].red = redPixelVal / kernelSum;
-		out_pixels[pixNum].green = greenPixelVal / kernelSum;
-		out_pixels[pixNum].blue = bluePixelVal / kernelSum;
-		redPixelVal = 0;
-		greenPixelVal = 0;
-		bluePixelVal = 0;
-		kernelSum = 0;
-	}
+    Matrix kernel(height, Array(width));
+    double sum=0.0;
+    int i,j;
+    
+    for (i=0 ; i<height ; i++) {
+        for (j=0 ; j<width ; j++) {
+            kernel[i][j] = exp(-(i*i+j*j)/(2*sigma*sigma))/(2*M_PI*sigma*sigma);
+            sum += kernel[i][j];
+        }
+    }
+    
+    for (i=0 ; i<height ; i++) {
+        for (j=0 ; j<width ; j++) {
+            kernel[i][j] /= sum;
+        }
+    }
+    
+    return kernel;
 }
+
+/*Step 1 blur the image to reduce noice*/
+void gaussian_filter(gray8_pixel_t **in_pixels,int weight, int height)
+{
+    Matrix filter = createKernel(5, 5, 10.0);
+    
+    int filterHeight = filter.size();
+    int filterWidth = filter[0].size();
+    int newImageHeight = height-filterHeight+1;
+    int newImageWidth = width-filterWidth+1;
+    int i,j,h,w;
+    /*allocate newimage*/
+    
+    
+        for (i=0 ; i<newImageHeight ; i++) {
+            for (j=0 ; j<newImageWidth ; j++) {
+                for (h=i ; h<i+filterHeight ; h++) {
+                    for (w=j ; w<j+filterWidth ; w++) {
+                        newImage[i][j] += filter[h-i][w-j]*in_pixels[h][w];
+                    }
+                }
+            }
+        }
+
+}
+
+
