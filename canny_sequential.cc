@@ -37,8 +37,10 @@ Matrix createKernel(int height, int width, double sigma)
 /*Step 1 blur the image to reduce noice*/
 void gaussian_filter(gray8_pixel_t **newImage,gray8_pixel_t **in_pixels,int width, int height)
 {
+
+	cout << "create kernel" << endl;
     Matrix filter = createKernel(5, 5, 10.0);
-    
+	cout << "finish create kernel" << endl;
     int filterHeight = filter.size();
     int filterWidth = filter[0].size();
     int newImageHeight = height-filterHeight+1;
@@ -46,7 +48,7 @@ void gaussian_filter(gray8_pixel_t **newImage,gray8_pixel_t **in_pixels,int widt
     int i,j,h,w;
     /*allocate newimage*/
     
-    
+	cout << "start convolution" << endl;
         for (i=0 ; i<newImageHeight ; i++) {
             for (j=0 ; j<newImageWidth ; j++) {
                 for (h=i ; h<i+filterHeight ; h++) {

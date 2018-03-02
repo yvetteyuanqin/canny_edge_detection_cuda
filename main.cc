@@ -40,7 +40,7 @@ int main() {
     for (int i = 0; i < HEIGHT; ++i) {
         for (int j = 0; j < WIDTH; ++j) {
             imgbuff[i][j]=srcview(j, i);
-            cout<<hex<<int(imgbuff[i][j]);
+           // cout<<hex<<int(imgbuff[i][j]);
            
         } cnt += 1;
     }
@@ -52,26 +52,28 @@ int main() {
         *(imgbuff+i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*HEIGHT);
     }
     /*apply gaussian filter*/
+	cout << "enter gaussian filter" << endl;
     gaussian_filter(newImage,imgbuff,WIDTH, HEIGHT);
-    
+	cout << "finished." << endl;
     
     /*revert image to check*/
     gray8_image_t img2(HEIGHT,WIDTH);
     auto img_view = view(img2);
     
-    
-    for (int i = 0; i < HEIGHT; ++i) {
+	cout << "create image view" << endl;
+	for (int i = 0; i < HEIGHT; ++i) {
         for (int j = 0; j < WIDTH; ++j) {
             img_view(j, i) = imgbuff[i][j];
         }
     }
+	cout << "finished." << endl;
     
     png_write_view("testimg.png", const_view(img2));
-    
+   /* 
     cout<<endl;
     cout<<cnt<<endl;
     cout<<sizeof(imgbuff)<<' '<<sizeof(imgbuff)<<endl;
-
+*/
     
     return 0;
     
