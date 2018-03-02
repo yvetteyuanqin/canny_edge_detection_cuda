@@ -9,7 +9,7 @@
 typedef vector<double> Array;
 typedef vector<Array> Matrix;
 
-
+using namespace std;
 /*create a gaussian filter*/
 Matrix createKernel(int height, int width, double sigma)
 {
