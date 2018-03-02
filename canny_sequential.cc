@@ -1,5 +1,5 @@
 #include <boost/gil/rgb.hpp>
-
+#include <boost/gil/extension/io/png_dynamic_io.hpp>
 #include <stdint.h>
 #include <math.h>
 #include <iostream>
