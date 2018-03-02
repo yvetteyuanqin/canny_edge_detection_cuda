@@ -8,8 +8,8 @@
 #include <vector>
 #define KERNEL_SIZE 7
 
-typedef vector<double> Array;
-typedef vector<Array> Matrix;
+typedef std::vector<double> Array;
+typedef std::vector<Array> Matrix;
 
 /*create a gaussian filter*/
 Matrix createKernel(int height, int width, double sigma);
