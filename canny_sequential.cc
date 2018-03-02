@@ -4,14 +4,12 @@
 #include <math.h>
 #include <iostream>
 #include <vector>
-#define KERNEL_SIZE 7
+#include "canny_sequential.h"
 
 
 using namespace boost::gil;
 using namespace std;
 
-typedef vector<double> Array;
-typedef vector<Array> Matrix;
 
 /*create a gaussian filter*/
 Matrix createKernel(int height, int width, double sigma)
