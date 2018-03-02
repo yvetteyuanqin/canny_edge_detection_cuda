@@ -13,5 +13,5 @@ s = image.shape
 #a = np.array(img)
 b = np.fromstring(normalize(image,s[0],s[1]),dtype=int).reshape(512, 512)
 
-out = open('python_try/001_py.txt', 'w')
-b.tofile('001_py.txt',sep="",format="%d")
+out = open('001_py.txt', 'w')
+b.tofile('001_py.txt',sep="",format="%s")
