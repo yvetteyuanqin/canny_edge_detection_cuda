@@ -50,6 +50,7 @@ int main() {
     for(int i = 0; i < WIDTH; i++)
     {
         *(imgbuff+i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*HEIGHT);
+        for(int j = 0;j<HEIGHT;j++) imgbuff[i][j]=0;
     }
     /*apply gaussian filter*/
 	cout << "enter gaussian filter" << endl;
