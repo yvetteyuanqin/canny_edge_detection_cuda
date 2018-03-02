@@ -71,6 +71,7 @@ int main() {
     cout<<endl;
     cout<<cnt<<endl;
     cout<<sizeof(imgbuff)<<' '<<sizeof(imgbuff)<<endl;
+    cout<<i<<j<<endl;
    
     
     return 0;
