@@ -8,11 +8,12 @@
 #include <vector>
 #define KERNEL_SIZE 7
 
-
+typedef vector<double> Array;
+typedef vector<Array> Matrix;
 
 /*create a gaussian filter*/
 Matrix createKernel(int height, int width, double sigma);
 /*Step 1 blur the image to reduce noice*/
-void gaussian_filter(gray8_pixel_t **newImage,gray8_pixel_t **in_pixels,int width, int height);
+void gaussian_filter(boost::gil::gray8_pixel_t **newImage,boost::gil::gray8_pixel_t **in_pixels,int width, int height);
 
 #endif
