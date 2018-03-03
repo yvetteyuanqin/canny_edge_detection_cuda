@@ -18,11 +18,12 @@
 
 using namespace std;
 
-int main() {
+int main(int argc, char *argv[]) {
     
+	//string filename = argv[1]
     using namespace boost::gil;
     gray8_image_t img(HEIGHT,WIDTH);
-    png_read_image("001.png", img);
+    png_read_image("test.png", img);
     //png_write_view("testimg.png",const_view(img));
     
     
