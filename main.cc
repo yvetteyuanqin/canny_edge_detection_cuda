@@ -47,12 +47,14 @@ int main() {
     }
 
     /*canny_sequential*/
-    gray8_pixel_t **newImage = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*508);
+    gray8_pixel_t **newImage = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*512);
     for(int i = 0; i < WIDTH; i++)
     {
-        *(imgbuff+i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*508);
+        *(imgbuff+i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*512);
         for(int j = 0;j<HEIGHT;j++) imgbuff[i][j]=0;
     }
+    //1D buffer
+    
     
      cout<<endl;
      cout<<cnt<<endl;

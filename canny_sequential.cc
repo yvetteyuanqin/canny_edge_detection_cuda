@@ -34,22 +34,56 @@ Matrix createKernel(int height, int width, double sigma)
     return kernel;
 }
 
+////1D
+//void gaussian_filter(gray8_pixel_t *out_pixels,gray8_pixel_t *in_pixels,int width, int height){
+//    int rows = height;
+//    int cols = width;
+//    double kernelSum;
+//    double PixelVal;
+//
+//    
+//    //Apply Kernel to image
+//    for (int pixNum = 0; pixNum < rows * cols; ++pixNum) {
+//        
+//        for (int i = 0; i < KERNEL_SIZE; ++i) {
+//            for (int j = 0; j < KERNEL_SIZE; ++j) {
+//                
+//                //check edge cases, if within bounds, apply filter
+//                if (((pixNum + ((i - ((KERNEL_SIZE - 1) / 2))*cols) + j - ((KERNEL_SIZE - 1) / 2)) >= 0)
+//                    && ((pixNum + ((i - ((KERNEL_SIZE - 1) / 2))*cols) + j - ((KERNEL_SIZE - 1) / 2)) <= rows*cols-1)
+//                    && (((pixNum % cols) + j - ((KERNEL_SIZE-1)/2)) >= 0)
+//                    && (((pixNum % cols) + j - ((KERNEL_SIZE-1)/2)) <= (cols-1))) {
+//                    
+//                    PixelVal += kernel[i][j] * in_pixels[pixNum + ((i - ((KERNEL_SIZE - 1) / 2))*cols) + j - ((KERNEL_SIZE - 1) / 2)];
+//                    
+//                    kernelSum += kernel[i][j];
+//                }
+//            }
+//        }
+//        out_pixels[pixNum] = PixelVal / kernelSum;
+//
+//        PixelVal = 0;
+//
+//        kernelSum = 0;
+//    }
+//}
 
 /*Step 1 blur the image to reduce noice*/
+//2D
 void gaussian_filter(gray8_pixel_t **newImage,gray8_pixel_t **in_pixels,int width, int height)
 {
 
-	cout << "create kernel" << endl;
+    cout << "create kernel" << endl;
     Matrix filter = createKernel(5, 5, 10.0);
-	cout << "finish create kernel" << endl;
+    cout << "finish create kernel" << endl;
     int filterHeight = filter.size();
     int filterWidth = filter[0].size();
     int newImageHeight = height-filterHeight+1;
     int newImageWidth = width-filterWidth+1;
 
-	cout << "newImageHeight " << newImageHeight << " newImageWidth " << newImageWidth << endl;
-	cout << "filterHeight " << filterHeight  << " filterWidth " << filterWidth << endl;
-	cout << "width " << width << " height " << height << endl;
+    cout << "newImageHeight " << newImageHeight << " newImageWidth " << newImageWidth << endl;
+    cout << "filterHeight " << filterHeight  << " filterWidth " << filterWidth << endl;
+    cout << "width " << width << " height " << height << endl;
 
     int i,j,h,w;
     /*allocate newimage*/
@@ -60,11 +94,11 @@ void gaussian_filter(gray8_pixel_t **newImage,gray8_pixel_t **in_pixels,int widt
 //    filter[4][0]=1, filter[4][1]=4, filter[4][2]=7, filter[4][3]=4, filter[4][4]=1;
     char convolute=0;
     int x,y;
-	cout << "start convolution" << endl;
+    cout << "start convolution" << endl;
         for (i=0 ; i<newImageHeight ; ++i) {
-			
+
             for (j=0 ; j<newImageWidth ; ++j) {
-				//cout << j << " ";
+                //cout << j << " ";
                 x =i;
                 y =j;
                 for (h=0 ; h<filterHeight ; ++h) {
@@ -81,5 +115,6 @@ void gaussian_filter(gray8_pixel_t **newImage,gray8_pixel_t **in_pixels,int widt
         }
 
 }
+
 
 
