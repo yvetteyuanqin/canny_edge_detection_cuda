@@ -47,10 +47,10 @@ int main(int argc, char *argv[]) {
     }
 
     /*canny_sequential*/
-    gray8_pixel_t **newImage = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*WIDTH);
+    gray8_pixel_t **newImage = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*508);
     for(int i = 0; i < WIDTH; i++)
     {
-        *(imgbuff+i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*HEIGHT);
+        *(imgbuff+i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*508);
         for(int j = 0;j<HEIGHT;j++) imgbuff[i][j]=0;
     }
     /*apply gaussian filter*/
