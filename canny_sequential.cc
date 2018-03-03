@@ -75,7 +75,7 @@ void gaussian_filter(gray8_pixel_t **newImage,gray8_pixel_t **in_pixels,int widt
                     x++;
                     y=j;
                 }
-                newimage[i][j]=convolute;
+                newImage[i][j]=convolute;
                 convolute = 0;
             }
         }
