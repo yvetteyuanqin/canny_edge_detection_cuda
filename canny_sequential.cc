@@ -60,13 +60,13 @@ void gaussian_filter(gray8_pixel_t **newImage,gray8_pixel_t **in_pixels,int widt
 //    filter[4][0]=1, filter[4][1]=4, filter[4][2]=7, filter[4][3]=4, filter[4][4]=1;
 
 	cout << "start convolution" << endl;
-        for (i=0 ; i<newImageHeight ; i++) {
+        for (i=0 ; i<newImageHeight ; ++i) {
 			
-            for (j=0 ; j<newImageWidth ; j++) {
-				cout << j << " ";
-                for (h=i ; h<i+filterHeight ; h++) {
-                    for (w=j ; w<j+filterWidth ; w++) {
-                        *（*（newImage+i）+j） = *（*（newImage+i）+j） +gray8_pixel_t(filter[h-i][w-j]*char(*(*(in_pixels+h)+w)));
+            for (j=0 ; j<newImageWidth ; ++j) {
+				//cout << j << " ";
+                for (h=0 ; h<filterHeight ; ++h) {
+                    for (w=0 ; w<filterWidth ; ++w) {
+                        newImage[i][j] = newImage[i][j] +gray8_pixel_t(filter[h-i][w-j]*char(in_pixels[h][w]));
                     }
                 }
             }
