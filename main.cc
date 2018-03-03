@@ -13,17 +13,17 @@
 #include <vector>
 #include <iostream>
 #include "canny_sequential.h"
-#define HEIGHT 128
-#define WIDTH 128
+#define HEIGHT 512
+#define WIDTH 512
 
 using namespace std;
 
-int main(int argc, char *argv[]) {
+int main() {
     
 	//string filename = argv[1]
     using namespace boost::gil;
     gray8_image_t img(HEIGHT,WIDTH);
-    png_read_image("test.png", img);
+    png_read_image("001.png", img);
     //png_write_view("testimg.png",const_view(img));
     
     
