@@ -66,7 +66,7 @@ void gaussian_filter(gray8_pixel_t **newImage,gray8_pixel_t **in_pixels,int widt
 				//cout << j << " ";
                 for (h=0 ; h<filterHeight ; ++h) {
                     for (w=0 ; w<filterWidth ; ++w) {
-                        newImage[i][j] = newImage[i][j] +gray8_pixel_t(filter[h-i][w-j]*char(in_pixels[h][w]));
+                        newImage[i][j] = newImage[i][j] +gray8_pixel_t(filter[h-i][w-j]*char(in_pixels[i][j]));
                     }
                 }
             }
