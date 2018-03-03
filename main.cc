@@ -13,8 +13,8 @@
 #include <vector>
 #include <iostream>
 #include "canny_sequential.h"
-#define HEIGHT 512
-#define WIDTH 512
+#define HEIGHT 128
+#define WIDTH 128
 
 using namespace std;
 
