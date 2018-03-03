@@ -52,12 +52,6 @@ int main() {
         *(imgbuff+i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*HEIGHT);
         for(int j = 0;j<HEIGHT;j++) imgbuff[i][j]=0;
     }
-    
-     cout<<endl;
-     cout<<cnt<<endl;
-     cout<<sizeof(imgbuff)<<' '<<sizeof(imgbuff)<<endl;
-     
-    
     /*apply gaussian filter*/
 	cout << "enter gaussian filter" << endl;
     gaussian_filter(newImage,imgbuff,WIDTH, HEIGHT);
@@ -76,7 +70,7 @@ int main() {
 	cout << "finished." << endl;
     
     png_write_view("testimg.png", const_view(img2));
-   /*
+   /* 
     cout<<endl;
     cout<<cnt<<endl;
     cout<<sizeof(imgbuff)<<' '<<sizeof(imgbuff)<<endl;
