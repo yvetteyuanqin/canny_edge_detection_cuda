@@ -13,16 +13,17 @@
 #include <vector>
 #include <iostream>
 #include "canny_sequential.h"
-#define HEIGHT 512
-#define WIDTH 512
+#define HEIGHT 128
+#define WIDTH 128
 
 using namespace std;
 
-int main() {
+int main(int argc, char *argv[]) {
     
+	//string filename = argv[1]
     using namespace boost::gil;
     gray8_image_t img(HEIGHT,WIDTH);
-    png_read_image("001.png", img);
+    png_read_image("test.png", img);
     //png_write_view("testimg.png",const_view(img));
     
     
@@ -46,10 +47,10 @@ int main() {
     }
 
     /*canny_sequential*/
-    gray8_pixel_t **newImage = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*WIDTH);
+    gray8_pixel_t **newImage = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*508);
     for(int i = 0; i < WIDTH; i++)
     {
-        *(imgbuff+i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*HEIGHT);
+        *(imgbuff+i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*508);
         for(int j = 0;j<HEIGHT;j++) imgbuff[i][j]=0;
     }
     /*apply gaussian filter*/
