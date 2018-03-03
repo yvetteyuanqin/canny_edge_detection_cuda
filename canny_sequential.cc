@@ -58,17 +58,25 @@ void gaussian_filter(gray8_pixel_t **newImage,gray8_pixel_t **in_pixels,int widt
 //    filter[2][0]=7, filter[2][1]=26, filter[2][2]=41, filter[2][3]=26, filter[2][4]=7,
 //    filter[3][0]=4, filter[3][1]=16, filter[3][2]=26, filter[3][3]=16, filter[3][4]=4,
 //    filter[4][0]=1, filter[4][1]=4, filter[4][2]=7, filter[4][3]=4, filter[4][4]=1;
-
+    int convolute=0;
+    int x,y;
 	cout << "start convolution" << endl;
         for (i=0 ; i<newImageHeight ; ++i) {
 			
             for (j=0 ; j<newImageWidth ; ++j) {
 				//cout << j << " ";
+                x =i;
+                y =j;
                 for (h=0 ; h<filterHeight ; ++h) {
                     for (w=0 ; w<filterWidth ; ++w) {
-                        newImage[i][j] = newImage[i][j] +gray8_pixel_t(filter[h-i][w-j]*char(in_pixels[i][j]));
+                        convolute=convolute+filter[h][w]*in_pixels[x][y];
+                        y++;
                     }
+                    x++;
+                    y=j;
                 }
+                newimage[i][j]=convolute;
+                convolute = 0;
             }
         }
 
