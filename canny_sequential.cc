@@ -65,5 +65,64 @@ void gaussian_filter(gray8_pixel_t **newImage,gray8_pixel_t **in_pixels,int widt
         }
 
 }
+void gradient(gray8_pixel_t **newImage,gray8_pixel_t **in_pixels,int width, int height)
+{
+    
+    
+    
+    
+        pixel_t_signed *deltaX = new pixel_t_signed[max_pixel_cnt];
+        pixel_t_signed *deltaY = new pixel_t_signed[max_pixel_cnt];
 
+        // compute delta X ***************************
+        // deltaX = f(x+1) - f(x-1)
+        for(unsigned i = 0; i < parser_length; ++i)
+        {
+            idx = offset * i; // current position X per line
+            
+            // gradient at the first pixel of each line
+            // note: the edge,pix[idx-1] is NOT exsit
+            deltaX[idx].red = (int16_t)(in_pixels[idx+1].red - in_pixels[idx].red);
+            
+            
+            // gradients where NOT edge
+            for(unsigned j = 1; j < offset-1; ++j)
+            {
+                idx++;
+                deltaX[idx].red = (int16_t)(in_pixels[idx+1].red - in_pixels[idx-1].red);
+                
+            }
+            
+            // gradient at the last pixel of each line
+            idx++;
+            deltaX[idx].red = (int16_t)(in_pixels[idx].red - in_pixels[idx-1].red);
+
+        }
+        
+        // compute delta Y ***************************
+        // deltaY = f(y+1) - f(y-1)
+        for(unsigned j = 0; j < offset; ++j)
+        {
+            idx = j;    // current Y position per column
+            // gradient at the first pixel
+            deltaY[idx].red = (int16_t)(in_pixels[idx+offset].red - in_pixels[idx].red);
+
+            
+            // gradients for NOT edge pixels
+            for(unsigned i = 1; i < parser_length-1; ++i)
+            {
+                idx += offset;
+                deltaY[idx].red = (int16_t)(in_pixels[idx+offset].red - in_pixels[idx-offset].red);
+    
+            }
+            
+            // gradient at the last pixel of each column
+            idx += offset;
+            deltaY[idx].red = (int16_t)(in_pixels[idx].red - in_pixels[idx-offset].red);
+
+        }
+        
+    
+
+}
 
