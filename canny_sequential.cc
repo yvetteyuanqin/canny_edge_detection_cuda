@@ -112,22 +112,14 @@ void suppress(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, in
     
     // put zero all boundaries of image
     // TOP edge line of the image
-    for(unsigned j = 0; j < width; ++j)
-		newImage[0][j] = 0;
-    
-    // BOTTOM edge line of image
-    t = (parser_length-1)*offset;
-    for(unsigned j = 0; j < offset; ++j, ++t)
-		newImage[t] = 0;
-    
-    // LEFT & RIGHT edge line
-    t = offset;
-    for(unsigned i = 1; i < parser_length; ++i, t+=offset)
-    {
-		newImage[t] = 0;
-		newImage[t+offset-1] = 0;
-    }
-    
+	for (int k = 0; k < height; ++k) {
+		newImage[height - 1][k] = 0;
+		newImage[0][k] = 0;
+		newImage[k][0] = 0;
+		newImage[k][width - 1]= 0;
+	}
+   
+
     t = offset + 1;  // skip boundaries of image
     // start and stop 1 pixel inner pixels from boundaries
     for(unsigned i = 1; i < parser_length-1; i++, t+=2)
