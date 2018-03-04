@@ -40,7 +40,7 @@ void gaussian_filter(gray8_pixel_t *out_pixels,gray8_pixel_t *in_pixels,int widt
     int cols = width;
     double kernelSum;
     double PixelVal;
-
+    int KERNEL_SIZE = 5;
     
     //Apply Kernel to image
     for (int pixNum = 0; pixNum < rows * cols; ++pixNum) {
