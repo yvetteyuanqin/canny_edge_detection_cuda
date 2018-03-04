@@ -107,8 +107,6 @@ void suppress(gray8_pixel_t **newImage, gray8_pixel_t **mag, int width, int heig
     
     float alpha;
     float mag1, mag2;
-    const pixel_channel_t SUPPRESSED = 0;
-    
     // put zero all boundaries of image
     // TOP edge line of the image
 	for (int k = 0; k < height; ++k) {
@@ -134,13 +132,13 @@ void suppress(gray8_pixel_t **newImage, gray8_pixel_t **mag, int width, int heig
                     {
                         if((deltaX[i][j] - deltaY[i][j]) >= 0)       // direction 1 (SEE, South-East-East)
                         {
-                            alpha = (float)deltaY[i][j] / deltaX[i][j]
+							alpha = (float)deltaY[i][j] / deltaX[i][j];
                             mag1 = (1-alpha)*mag[i][j+1] + alpha*mag[i+1][j+1];
                             mag2 = (1-alpha)*mag[i][j-1] + alpha*mag[i-1][j-1];
                         }
                         else                                // direction 2 (SSE)
                         {
-                            alpha = (float)deltaX[i][j] / deltaY[i][j]
+							alpha = (float)deltaX[i][j] / deltaY[i][j];
                             mag1 = (1-alpha)*mag[i+1][j] + alpha*mag[i+1][j+1];
                             mag2 = (1-alpha)*mag[i-1][j] + alpha*mag[i-1][j-1];
                             
@@ -151,7 +149,7 @@ void suppress(gray8_pixel_t **newImage, gray8_pixel_t **mag, int width, int heig
                     {
                         if((deltaX[i][j] + deltaY[i][j]) >= 0)    // direction 8 (NEE)
                         {
-                            alpha = (float)-deltaY[i][j] / deltaX[i][j]
+							alpha = (float)-deltaY[i][j] / deltaX[i][j];
                             mag1 = (1-alpha)*mag[i][j+1] + alpha*mag[i-1][j+1];
                             mag2 = (1-alpha)*mag[i][j-1] + alpha*mag[i+1][j-1];
                             
@@ -159,7 +157,7 @@ void suppress(gray8_pixel_t **newImage, gray8_pixel_t **mag, int width, int heig
                         else                                // direction 7 (NNE)
                         {
                             
-                            alpha = (float)deltaX[i][j] / -deltaY[i][j]
+							alpha = (float)deltaX[i][j] / -deltaY[i][j];
                             mag1 = (1-alpha)*mag[i+1][j] + alpha*mag[i+1][j-1];
                             mag2 = (1-alpha)*mag[i-1][j] + alpha*mag[i-1][j+1];
                             
@@ -173,13 +171,13 @@ void suppress(gray8_pixel_t **newImage, gray8_pixel_t **mag, int width, int heig
                     {
                         if((deltaX[i][j] - deltaY[i][j]) >= 0)    // direction 3 (SSW)
                         {
-                            alpha = (float)-deltaX[i][j] / deltaY[i][j]
+							alpha = (float)-deltaX[i][j] / deltaY[i][j];
                             mag1 = (1-alpha)*mag[i+1][j] + alpha*mag[i+1][j-1];
                             mag2 = (1-alpha)*mag[i-1][j] + alpha*mag[i-1][j+1];
                         }
                         else                                // direction 4 (SWW)
                         {
-                            alpha = (float)deltaY[i][j] / -deltaX[i][j]
+							alpha = (float)deltaY[i][j] / -deltaX[i][j];
                             mag1 = (1-alpha)*mag[i][j-1] + alpha*mag[i+1][j-1];
                             mag2 = (1-alpha)*mag[i][j+1] + alpha*mag[i-1][j+1];
                         }
@@ -189,13 +187,13 @@ void suppress(gray8_pixel_t **newImage, gray8_pixel_t **mag, int width, int heig
                     {
                         if((-deltaX[i][j] + deltaY[i][j]) >= 0)   // direction 5 (NWW)
                         {
-                            alpha = (float)deltaY[i][j] / deltaX[i][j]
+							alpha = (float)deltaY[i][j] / deltaX[i][j];
                             mag1 = (1-alpha)*mag[i][j-1] + alpha*mag[i-1][j-1];
                             mag2 = (1-alpha)*mag[i][j+1] + alpha*mag[i+1][j+1];
                         }
                         else                                // direction 6 (NNW)
                         {
-                            alpha = (float)deltaX[i][j] / deltaY[i][j]
+							alpha = (float)deltaX[i][j] / deltaY[i][j];
                             mag1 = (1-alpha)*mag[i-1][j] + alpha*mag[i-1][j-1];
                             mag2 = (1-alpha)*mag[i+1][j] + alpha*mag[i+1][j+1];
                         }
