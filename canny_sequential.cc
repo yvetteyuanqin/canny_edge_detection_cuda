@@ -65,21 +65,10 @@ void gaussian_filter(gray8_pixel_t **newImage,gray8_pixel_t **in_pixels,int widt
         }
 
 }
-void gradient(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, int height)
+void gradient(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, int height,
+	gray8_pixel_t **deltaX, gray8_pixel_t **deltaY)
 {
 
-	gray8_pixel_t **deltaX = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*height);
-	gray8_pixel_t **deltaY = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*height);
-
-	for (int i = 0; i < width; i++)
-	{
-		*(deltaX + i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*width);
-		*(deltaY + i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*width);
-	}
-
-
-	//   gray8_pixel_t **deltaX = (gray8_pixel_t)new pixel_t_signed[max_pixel_cnt];
-	  // pixel_t_signed *deltaY = new pixel_t_signed[max_pixel_cnt];
 
 	   // compute delta X ***************************
 	   // deltaX = f(x+1) - f(x-1)
@@ -112,31 +101,31 @@ void gradient(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, in
 
 }
 
-void CannyEdgeDetector::suppress_non_max(pixel_channel_t *mag, pixel_channel_t_signed *deltaX, pixel_channel_t_signed *deltaY, pixel_channel_t *nms)
+void suppress(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, int height,
+	gray8_pixel_t **deltaX, gray8_pixel_t **deltaY)
 {
     unsigned t = 0;
-    unsigned offset = m_image_mgr->getImgWidth();
-    unsigned parser_length = m_image_mgr->getImgHeight();
+    
     float alpha;
     float mag1, mag2;
     const pixel_channel_t SUPPRESSED = 0;
     
     // put zero all boundaries of image
     // TOP edge line of the image
-    for(unsigned j = 0; j < offset; ++j)
-        nms[j] = 0;
+    for(unsigned j = 0; j < width; ++j)
+		newImage[j] = 0;
     
     // BOTTOM edge line of image
     t = (parser_length-1)*offset;
     for(unsigned j = 0; j < offset; ++j, ++t)
-        nms[t] = 0;
+		newImage[t] = 0;
     
     // LEFT & RIGHT edge line
     t = offset;
     for(unsigned i = 1; i < parser_length; ++i, t+=offset)
     {
-        nms[t] = 0;
-        nms[t+offset-1] = 0;
+		newImage[t] = 0;
+		newImage[t+offset-1] = 0;
     }
     
     t = offset + 1;  // skip boundaries of image
@@ -146,7 +135,7 @@ void CannyEdgeDetector::suppress_non_max(pixel_channel_t *mag, pixel_channel_t_s
         for(unsigned j = 1; j < offset-1; j++, t++)
         {
             // if magnitude = 0, no edge
-            if(mag[t] == 0) nms[t] = SUPPRESSED;
+            if(mag[t] == 0) newImage[t] = SUPPRESSED;
             else{
                 if(deltaX[t] >= 0)
                 {
@@ -222,10 +211,10 @@ void CannyEdgeDetector::suppress_non_max(pixel_channel_t *mag, pixel_channel_t_s
                 // compare mag1, mag2 and mag[t]
                 // if mag[t] is smaller than one of the neighbours then suppress it
                 if((mag[t] < mag1) || (mag[t] < mag2))
-                    nms[t] = SUPPRESSED;
+					newImage[t] = SUPPRESSED;
                 else
                 {
-                    nms[t] = mag[t];
+					newImage[t] = mag[t];
                 }
                 
             }
