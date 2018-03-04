@@ -77,8 +77,8 @@ int main() {
     
     for (int i = 0; i < WIDTH; i++)
     {
-        *(deltaX + i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*width);
-        *(deltaY + i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*width);
+        *(deltaX + i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*WIDTH);
+        *(deltaY + i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*WIDTH);
     }
     
 	/*Gradient*/
