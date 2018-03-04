@@ -81,7 +81,7 @@ int main() {
     //1D
     /*apply gaussian filter*/
     cout << "enter gaussian filter" << endl;
-    gaussian_filter(newImage1d,imgbuff1d,WIDTH, HEIGHT);
+    gaussian_filter1d(newImage1d,imgbuff1d,WIDTH, HEIGHT);
     cout << "finished." << endl;
     
     

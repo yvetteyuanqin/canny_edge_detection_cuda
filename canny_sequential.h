@@ -6,7 +6,7 @@
 #include <math.h>
 #include <iostream>
 #include <vector>
-#define KERNEL_SIZE 7
+#define KERNEL_SIZE 5
 
 typedef std::vector<double> Array;
 typedef std::vector<Array> Matrix;

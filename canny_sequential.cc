@@ -20,7 +20,7 @@ Matrix createKernel(int height, int width, double sigma)
     
     for (i=0 ; i<height ; i++) {
         for (j=0 ; j<width ; j++) {
-            kernel[i][j] = exp(-(i*i+j*j)/(2*sigma*sigma))/(2*M_PI*sigma*sigma);
+            filter[i][j] = exp(-(i*i+j*j)/(2*sigma*sigma))/(2*M_PI*sigma*sigma);
             sum += kernel[i][j];
         }
     }
@@ -35,14 +35,16 @@ Matrix createKernel(int height, int width, double sigma)
 }
 
 //1D
-void gaussian_filter(gray8_pixel_t *out_pixels,gray8_pixel_t *in_pixels,int width, int height){
+void gaussian_filter1d(gray8_pixel_t *out_pixels,gray8_pixel_t *in_pixels,int width, int height){
     int rows = height;
     int cols = width;
     double kernelSum;
     double PixelVal;
-    int KERNEL_SIZE = 5;
     
-    //Apply Kernel to image
+        cout << "create kernel" << endl;
+        Matrix filter = createKernel(5, 5, 10.0);
+        cout << "finish create kernel" << endl;
+    //Apply Kernel to image1d
     for (int pixNum = 0; pixNum < rows * cols; ++pixNum) {
         
         for (int i = 0; i < KERNEL_SIZE; ++i) {
