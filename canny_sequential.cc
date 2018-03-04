@@ -101,7 +101,7 @@ void gradient(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, in
 
 }
 
-void suppress(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, int height,
+void suppress(gray8_pixel_t **newImage, gray8_pixel_t **mag, int width, int height,
 	gray8_pixel_t **deltaX, gray8_pixel_t **deltaY)
 {
     unsigned t = 0;
@@ -122,28 +122,29 @@ void suppress(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, in
 
     t = offset + 1;  // skip boundaries of image
     // start and stop 1 pixel inner pixels from boundaries
-    for(unsigned i = 1; i < parser_length-1; i++, t+=2)
+    for(unsigned i = 1; i < height-1; i++, t+=2)
     {
-        for(unsigned j = 1; j < offset-1; j++, t++)
+        for(unsigned j = 1; j < width-1; j++, t++)
         {
             // if magnitude = 0, no edge
-            if(mag[t] == 0) newImage[t] = SUPPRESSED;
+            if(mag[i][j] == 0) newImage[i][j] = 0;//suppressed
             else{
-                if(deltaX[t] >= 0)
+                if(deltaX[i][j] >= 0)
                 {
-                    if(deltaY[t] >= 0)  // dx >= 0, dy >= 0
+                    if(deltaY[i][j] >= 0)  // dx >= 0, dy >= 0
                     {
-                        if((deltaX[t] - deltaY[t]) >= 0)       // direction 1 (SEE, South-East-East)
+                        if((deltaX[i][j] - deltaY[i][j]) >= 0)       // direction 1 (SEE, South-East-East)
                         {
-                            alpha = (float)deltaY[t] / deltaX[t];
-                            mag1 = (1-alpha)*mag[t+1] + alpha*mag[t+offset+1];
-                            mag2 = (1-alpha)*mag[t-1] + alpha*mag[t-offset-1];
+                            alpha = (float)deltaY[i][j] / deltaX[i][j]
+                            mag1 = (1-alpha)*mag[i][j+1] + alpha*mag[i+1][j+1];
+                            mag2 = (1-alpha)*mag[i][j-1] + alpha*mag[i-1][j-1];
                         }
                         else                                // direction 2 (SSE)
                         {
-                            alpha = (float)deltaX[t] / deltaY[t];
-                            mag1 = (1-alpha)*mag[t+offset] + alpha*mag[t+offset+1];
-                            mag2 = (1-alpha)*mag[t-offset] + alpha*mag[t-offset-1];
+                            alpha = (float)deltaX[i][j] / deltaY[i][j]
+                            mag1 = (1-alpha)*mag[i+1][j] + alpha*mag[i+1][j+1];
+                            mag2 = (1-alpha)*mag[i-1][j] + alpha*mag[i-1][j-1];
+                            
                         }
                     }
                     
@@ -151,15 +152,18 @@ void suppress(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, in
                     {
                         if((deltaX[t] + deltaY[t]) >= 0)    // direction 8 (NEE)
                         {
-                            alpha = (float)-deltaY[t] / deltaX[t];
-                            mag1 = (1-alpha)*mag[t+1] + alpha*mag[t-offset+1];
-                            mag2 = (1-alpha)*mag[t-1] + alpha*mag[t+offset-1];
+                            alpha = (float)-deltaY[i][j] / deltaX[i][j]
+                            mag1 = (1-alpha)*mag[i][j+1] + alpha*mag[i-1][j+1];
+                            mag2 = (1-alpha)*mag[i][j-1] + alpha*mag[i+1][j-1];
+                            
                         }
                         else                                // direction 7 (NNE)
                         {
-                            alpha = (float)deltaX[t] / -deltaY[t];
-                            mag1 = (1-alpha)*mag[t+offset] + alpha*mag[t+offset-1];
-                            mag2 = (1-alpha)*mag[t-offset] + alpha*mag[t-offset+1];
+                            
+                            alpha = (float)deltaX[i][j] / -deltaY[i][j]
+                            mag1 = (1-alpha)*mag[i+1][j] + alpha*mag[i+1][j-1];
+                            mag2 = (1-alpha)*mag[i-1][j] + alpha*mag[i-1][j+1];
+                            
                         }
                     }
                 }
@@ -168,17 +172,17 @@ void suppress(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, in
                 {
                     if(deltaY[t] >= 0) // dx < 0, dy >= 0
                     {
-                        if((deltaX[t] + deltaY[t]) >= 0)    // direction 3 (SSW)
+                        if((deltaX[t] - deltaY[t]) >= 0)    // direction 3 (SSW)
                         {
-                            alpha = (float)-deltaX[t] / deltaY[t];
-                            mag1 = (1-alpha)*mag[t+offset] + alpha*mag[t+offset-1];
-                            mag2 = (1-alpha)*mag[t-offset] + alpha*mag[t-offset+1];
+                            alpha = (float)-deltaX[i][j] / deltaY[i][j]
+                            mag1 = (1-alpha)*mag[i+1][j] + alpha*mag[i+1][j-1];
+                            mag2 = (1-alpha)*mag[i-1][j] + alpha*mag[i-1][j+1];
                         }
                         else                                // direction 4 (SWW)
                         {
-                            alpha = (float)deltaY[t] / -deltaX[t];
-                            mag1 = (1-alpha)*mag[t-1] + alpha*mag[t+offset-1];
-                            mag2 = (1-alpha)*mag[t+1] + alpha*mag[t-offset+1];
+                            alpha = (float)deltaY[i][j] / -deltaX[i][j]
+                            mag1 = (1-alpha)*mag[i][j-1] + alpha*mag[i+1][j-1];
+                            mag2 = (1-alpha)*mag[i][j+1] + alpha*mag[i-1][j+1];
                         }
                     }
                     
@@ -186,15 +190,15 @@ void suppress(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, in
                     {
                         if((-deltaX[t] + deltaY[t]) >= 0)   // direction 5 (NWW)
                         {
-                            alpha = (float)deltaY[t] / deltaX[t];
-                            mag1 = (1-alpha)*mag[t-1] + alpha*mag[t-offset-1];
-                            mag2 = (1-alpha)*mag[t+1] + alpha*mag[t+offset+1];
+                            alpha = (float)deltaY[i][j] / deltaX[i][j]
+                            mag1 = (1-alpha)*mag[i][j-1] + alpha*mag[i-1][j-1];
+                            mag2 = (1-alpha)*mag[i][j+1] + alpha*mag[i+1][j+1];
                         }
                         else                                // direction 6 (NNW)
                         {
-                            alpha = (float)deltaX[t] / deltaY[t];
-                            mag1 = (1-alpha)*mag[t-offset] + alpha*mag[t-offset-1];
-                            mag2 = (1-alpha)*mag[t+offset] + alpha*mag[t+offset+1];
+                            alpha = (float)deltaX[i][j] / deltaY[i][j]
+                            mag1 = (1-alpha)*mag[i-1][j] + alpha*mag[i-1][j-1];
+                            mag2 = (1-alpha)*mag[i+1][j] + alpha*mag[i+1][j+1];
                         }
                     }
                 }
@@ -202,11 +206,11 @@ void suppress(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, in
                 // non-maximal suppression
                 // compare mag1, mag2 and mag[t]
                 // if mag[t] is smaller than one of the neighbours then suppress it
-                if((mag[t] < mag1) || (mag[t] < mag2))
-					newImage[t] = SUPPRESSED;
+                if((mag[i][j] < mag1) || (mag[i][j] < mag2))
+					newImage[i][j] = 0;//SUPRRESSED
                 else
                 {
-					newImage[t] = mag[t];
+					newImage[i][j] = mag[i][j];
                 }
                 
             }
