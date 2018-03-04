@@ -96,9 +96,11 @@ int main() {
     
     /*non maximum suppression*/
     cout << "enter suppression filter" << endl;
-    suppress(NMSImg,gradientImg,WIDTH, HEIGHT,deltaX,deltaY)
+    suppress(NMSImg,gradientImg,WIDTH, HEIGHT,deltaX,deltaY);
     cout << "finished." << endl;
 
+    
+    
     /*revert image to check*/
     gray8_image_t img2(HEIGHT,WIDTH);
     auto img_view = view(img2);
@@ -106,7 +108,7 @@ int main() {
 	cout << "create image view" << endl;
 	for (int i = 0; i < HEIGHT; ++i) {
         for (int j = 0; j < WIDTH; ++j) {
-            img_view(j, i) = gradientImg[i][j];
+            img_view(j, i) = NMSImg[i][j];
         }
     }
 	cout << "finished." << endl;
