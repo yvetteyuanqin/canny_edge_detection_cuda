@@ -68,8 +68,8 @@ void gaussian_filter(gray8_pixel_t **newImage,gray8_pixel_t **in_pixels,int widt
 void gradient(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, int height)
 {
 
-	gray8_pixel_t **deltaX = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*height);
-	gray8_pixel_t **deltaY = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*height);
+	gray8_pixel_t_signed **deltaX = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*height);
+	gray8_pixel_t_signed **deltaY = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*height);
 
 	for (int i = 0; i < width; i++)
 	{
@@ -110,7 +110,8 @@ void gradient(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, in
 	}
 	cout << "finish " << endl;
 
-
-
 }
+
+
+
 
