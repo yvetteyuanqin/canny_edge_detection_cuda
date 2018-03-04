@@ -113,7 +113,7 @@ void suppress(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, in
     // put zero all boundaries of image
     // TOP edge line of the image
     for(unsigned j = 0; j < width; ++j)
-		newImage[j] = 0;
+		newImage[0][j] = 0;
     
     // BOTTOM edge line of image
     t = (parser_length-1)*offset;
