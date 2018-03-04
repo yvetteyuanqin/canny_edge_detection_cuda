@@ -95,8 +95,8 @@ void gradient(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, in
 	cout << "do deltaY" << endl;
 	for (int i = 0; i < width; i++) {
 		for (int j = 0; j < height; j++) {
-			if (j == 0) deltaY[i][j] = in_pixels[i+1][j] - in_pixels[i][j];
-			else if (j == width - 1)deltaY[i][j] = in_pixels[i][j] - in_pixels[i-1][j];
+			if (i == 0) deltaY[i][j] = in_pixels[i+1][j] - in_pixels[i][j];
+			else if (i == height - 1)deltaY[i][j] = in_pixels[i][j] - in_pixels[i-1][j];
 			else deltaY[i][j] = in_pixels[i+1][j] - in_pixels[i-1][j];
 		}
 	}
