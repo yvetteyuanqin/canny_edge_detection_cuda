@@ -104,7 +104,6 @@ void gradient(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, in
 void suppress(gray8_pixel_t **newImage, gray8_pixel_t **mag, int width, int height,
 	gray8_pixel_t **deltaX, gray8_pixel_t **deltaY)
 {
-    unsigned t = 0;
     
     float alpha;
     float mag1, mag2;
@@ -120,11 +119,11 @@ void suppress(gray8_pixel_t **newImage, gray8_pixel_t **mag, int width, int heig
 	}
    
 
-    t = offset + 1;  // skip boundaries of image
+    // skip boundaries of image
     // start and stop 1 pixel inner pixels from boundaries
-    for(unsigned i = 1; i < height-1; i++, t+=2)
+    for(unsigned i = 1; i < height-1; i++)
     {
-        for(unsigned j = 1; j < width-1; j++, t++)
+        for(unsigned j = 1; j < width-1; j++)
         {
             // if magnitude = 0, no edge
             if(mag[i][j] == 0) newImage[i][j] = 0;//suppressed
@@ -150,7 +149,7 @@ void suppress(gray8_pixel_t **newImage, gray8_pixel_t **mag, int width, int heig
                     
                     else  // dx >= 0, dy < 0
                     {
-                        if((deltaX[t] + deltaY[t]) >= 0)    // direction 8 (NEE)
+                        if((deltaX[i][j] + deltaY[i][j]) >= 0)    // direction 8 (NEE)
                         {
                             alpha = (float)-deltaY[i][j] / deltaX[i][j]
                             mag1 = (1-alpha)*mag[i][j+1] + alpha*mag[i-1][j+1];
@@ -170,9 +169,9 @@ void suppress(gray8_pixel_t **newImage, gray8_pixel_t **mag, int width, int heig
                 
                 else
                 {
-                    if(deltaY[t] >= 0) // dx < 0, dy >= 0
+                    if(deltaY[i][j] >= 0) // dx < 0, dy >= 0
                     {
-                        if((deltaX[t] - deltaY[t]) >= 0)    // direction 3 (SSW)
+                        if((deltaX[i][j] - deltaY[i][j]) >= 0)    // direction 3 (SSW)
                         {
                             alpha = (float)-deltaX[i][j] / deltaY[i][j]
                             mag1 = (1-alpha)*mag[i+1][j] + alpha*mag[i+1][j-1];
@@ -188,7 +187,7 @@ void suppress(gray8_pixel_t **newImage, gray8_pixel_t **mag, int width, int heig
                     
                     else // dx < 0, dy < 0
                     {
-                        if((-deltaX[t] + deltaY[t]) >= 0)   // direction 5 (NWW)
+                        if((-deltaX[i][j] + deltaY[i][j]) >= 0)   // direction 5 (NWW)
                         {
                             alpha = (float)deltaY[i][j] / deltaX[i][j]
                             mag1 = (1-alpha)*mag[i][j-1] + alpha*mag[i-1][j-1];
