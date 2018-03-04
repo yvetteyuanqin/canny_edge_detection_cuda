@@ -71,7 +71,7 @@ int main() {
 	cout << "create image view" << endl;
 	for (int i = 0; i < HEIGHT; ++i) {
         for (int j = 0; j < WIDTH; ++j) {
-            img_view(j, i) = imgbuff[i][j];
+            img_view(j, i) = newImage[i][j];
         }
     }
 	cout << "finished." << endl;
