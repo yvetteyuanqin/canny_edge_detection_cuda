@@ -72,12 +72,32 @@ int main() {
 		for (int j = 0; j<HEIGHT; j++) gradientImg[i][j] = 0;
 	}
 
-
+    gray8_pixel_t **deltaX = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*height);
+    gray8_pixel_t **deltaY = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*height);
+    
+    for (int i = 0; i < width; i++)
+    {
+        *(deltaX + i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*width);
+        *(deltaY + i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*width);
+    }
+    
 	/*Gradient*/
 	cout << "enter gradient filter" << endl;
-	gradient(gradientImg, newImage, WIDTH, HEIGHT);
+	gradient(gradientImg, newImage, WIDTH, HEIGHT,deltaX,deltaY);
 	cout << "finished." << endl;
-
+    
+    
+    gray8_pixel_t **NMSImg = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*HEIGHT);
+    for (int i = 0; i < WIDTH; i++)
+    {
+        *(NMSImg + i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*WIDTH);
+        for (int j = 0; j<HEIGHT; j++) NMSImg[i][j] = 0;
+    }
+    
+    /*non maximum suppression*/
+    cout << "enter suppression filter" << endl;
+    suppress(NMSImg,gradientImg,WIDTH, HEIGHT,deltaX,deltaY)
+    cout << "finished." << endl;
 
     /*revert image to check*/
     gray8_image_t img2(HEIGHT,WIDTH);
