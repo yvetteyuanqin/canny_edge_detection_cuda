@@ -47,10 +47,10 @@ int main() {
     }
 
     /*canny_sequential*/
-    gray8_pixel_t **newImage = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*508);
+    gray8_pixel_t **newImage = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*HEIGHT);
     for(int i = 0; i < WIDTH; i++)
     {
-        *(newImage+i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*508);
+        *(newImage+i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*WIDTH);
         for(int j = 0;j<HEIGHT;j++) newImage[i][j]=0;
     }
     
