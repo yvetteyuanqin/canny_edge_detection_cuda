@@ -50,8 +50,8 @@ int main() {
     gray8_pixel_t **newImage = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*508);
     for(int i = 0; i < WIDTH; i++)
     {
-        *(imgbuff+i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*508);
-        for(int j = 0;j<HEIGHT;j++) imgbuff[i][j]=0;
+        *(newImage+i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*508);
+        for(int j = 0;j<HEIGHT;j++) newImage[i][j]=0;
     }
     
      cout<<endl;
