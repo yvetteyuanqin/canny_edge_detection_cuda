@@ -64,6 +64,21 @@ int main() {
     gaussian_filter(newImage,imgbuff,WIDTH, HEIGHT);
 	cout << "finished." << endl;
     
+
+	gray8_pixel_t **graidentImg = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*HEIGHT);
+	for (int i = 0; i < WIDTH; i++)
+	{
+		*(graidentImg + i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*WIDTH);
+		for (int j = 0; j<HEIGHT; j++) graidentImg[i][j] = 0;
+	}
+
+
+	/*Gradient*/
+	cout << "enter gradient filter" << endl;
+	gradient(graidentImg, newImage, WIDTH, HEIGHT);
+	cout << "finished." << endl;
+
+
     /*revert image to check*/
     gray8_image_t img2(HEIGHT,WIDTH);
     auto img_view = view(img2);

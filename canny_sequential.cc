@@ -65,64 +65,48 @@ void gaussian_filter(gray8_pixel_t **newImage,gray8_pixel_t **in_pixels,int widt
         }
 
 }
-void gradient(gray8_pixel_t **newImage,gray8_pixel_t **in_pixels,int width, int height)
+void gradient(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, int height)
 {
-    
-    
-    
-    
-        pixel_t_signed *deltaX = new pixel_t_signed[max_pixel_cnt];
-        pixel_t_signed *deltaY = new pixel_t_signed[max_pixel_cnt];
 
-        // compute delta X ***************************
-        // deltaX = f(x+1) - f(x-1)
-        for(unsigned i = 0; i < parser_length; ++i)
-        {
-            idx = offset * i; // current position X per line
-            
-            // gradient at the first pixel of each line
-            // note: the edge,pix[idx-1] is NOT exsit
-            deltaX[idx].red = (int16_t)(in_pixels[idx+1].red - in_pixels[idx].red);
-            
-            
-            // gradients where NOT edge
-            for(unsigned j = 1; j < offset-1; ++j)
-            {
-                idx++;
-                deltaX[idx].red = (int16_t)(in_pixels[idx+1].red - in_pixels[idx-1].red);
-                
-            }
-            
-            // gradient at the last pixel of each line
-            idx++;
-            deltaX[idx].red = (int16_t)(in_pixels[idx].red - in_pixels[idx-1].red);
+	gray8_pixel_t **deltaX = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*height);
+	gray8_pixel_t **deltaY = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*height);
 
-        }
-        
-        // compute delta Y ***************************
-        // deltaY = f(y+1) - f(y-1)
-        for(unsigned j = 0; j < offset; ++j)
-        {
-            idx = j;    // current Y position per column
-            // gradient at the first pixel
-            deltaY[idx].red = (int16_t)(in_pixels[idx+offset].red - in_pixels[idx].red);
+	for (int i = 0; i < width; i++)
+	{
+		*(deltaX + i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*width);
+		*(deltaY + i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*width);
+	}
 
-            
-            // gradients for NOT edge pixels
-            for(unsigned i = 1; i < parser_length-1; ++i)
-            {
-                idx += offset;
-                deltaY[idx].red = (int16_t)(in_pixels[idx+offset].red - in_pixels[idx-offset].red);
-    
-            }
-            
-            // gradient at the last pixel of each column
-            idx += offset;
-            deltaY[idx].red = (int16_t)(in_pixels[idx].red - in_pixels[idx-offset].red);
 
-        }
-        
-    
+	//   gray8_pixel_t **deltaX = (gray8_pixel_t)new pixel_t_signed[max_pixel_cnt];
+	  // pixel_t_signed *deltaY = new pixel_t_signed[max_pixel_cnt];
+
+	   // compute delta X ***************************
+	   // deltaX = f(x+1) - f(x-1)
+	for (int i = 0; i < height; i++) {
+		for (int j = 0; j < width; j++){
+			if (j == 0) deltaX[i][j] = in_pixels[i][j + 1] - in_pixels[i][j]);
+			else if (j == width - 1)deltaX[i][j] = in_pixels[i][j] - in_pixels[i][j - 1]);
+			else deltaX[i][j] = in_pixels[i][j + 1] - in_pixels[i][j - 1]);
+		}
+	}
+
+	for (int i = 0; i < width; i++) {
+		for (int j = 0; j < height; j++) {
+			if (j == 0) deltaY[i][j] = in_pixels[i+1][j] - in_pixels[i][j]);
+			else if (j == width - 1)deltaY[i][j] = in_pixels[i][j] - in_pixels[i-1][j]);
+			else deltaY[i][j] = in_pixels[i+1][j] - in_pixels[i-1][j]);
+		}
+	}
+
+	for (int i = 0; i < width; i++) {
+		for (int j = 0; j < height; j++) {
+				newImage[i][j] = (gray8_pixel_t)(sqrt((double)deltaX[i][j] * deltaX[i][j] +
+					(double)deltaY[i][j] * deltaY[i][j]) + 0.5);
+		}
+	}
+
+
 
 }
 
