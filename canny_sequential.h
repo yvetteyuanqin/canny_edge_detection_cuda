@@ -15,5 +15,5 @@ typedef std::vector<Array> Matrix;
 Matrix createKernel(int height, int width, double sigma);
 /*Step 1 blur the image to reduce noice*/
 void gaussian_filter(boost::gil::gray8_pixel_t **newImage,boost::gil::gray8_pixel_t **in_pixels,int width, int height);
-
+void gaussian_filter1d(gray8_pixel_t *out_pixels,gray8_pixel_t *in_pixels,int width, int height);
 #endif
