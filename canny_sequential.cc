@@ -68,8 +68,8 @@ void gaussian_filter(gray8_pixel_t **newImage,gray8_pixel_t **in_pixels,int widt
 void gradient(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, int height)
 {
 
-	gray8_pixel_t_signed **deltaX = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*height);
-	gray8_pixel_t_signed **deltaY = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*height);
+	gray8_pixel_t **deltaX = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*height);
+	gray8_pixel_t **deltaY = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*height);
 
 	for (int i = 0; i < width; i++)
 	{
@@ -110,6 +110,127 @@ void gradient(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, in
 	}
 	cout << "finish " << endl;
 
+}
+
+void CannyEdgeDetector::suppress_non_max(pixel_channel_t *mag, pixel_channel_t_signed *deltaX, pixel_channel_t_signed *deltaY, pixel_channel_t *nms)
+{
+    unsigned t = 0;
+    unsigned offset = m_image_mgr->getImgWidth();
+    unsigned parser_length = m_image_mgr->getImgHeight();
+    float alpha;
+    float mag1, mag2;
+    const pixel_channel_t SUPPRESSED = 0;
+    
+    // put zero all boundaries of image
+    // TOP edge line of the image
+    for(unsigned j = 0; j < offset; ++j)
+        nms[j] = 0;
+    
+    // BOTTOM edge line of image
+    t = (parser_length-1)*offset;
+    for(unsigned j = 0; j < offset; ++j, ++t)
+        nms[t] = 0;
+    
+    // LEFT & RIGHT edge line
+    t = offset;
+    for(unsigned i = 1; i < parser_length; ++i, t+=offset)
+    {
+        nms[t] = 0;
+        nms[t+offset-1] = 0;
+    }
+    
+    t = offset + 1;  // skip boundaries of image
+    // start and stop 1 pixel inner pixels from boundaries
+    for(unsigned i = 1; i < parser_length-1; i++, t+=2)
+    {
+        for(unsigned j = 1; j < offset-1; j++, t++)
+        {
+            // if magnitude = 0, no edge
+            if(mag[t] == 0) nms[t] = SUPPRESSED;
+            else{
+                if(deltaX[t] >= 0)
+                {
+                    if(deltaY[t] >= 0)  // dx >= 0, dy >= 0
+                    {
+                        if((deltaX[t] - deltaY[t]) >= 0)       // direction 1 (SEE, South-East-East)
+                        {
+                            alpha = (float)deltaY[t] / deltaX[t];
+                            mag1 = (1-alpha)*mag[t+1] + alpha*mag[t+offset+1];
+                            mag2 = (1-alpha)*mag[t-1] + alpha*mag[t-offset-1];
+                        }
+                        else                                // direction 2 (SSE)
+                        {
+                            alpha = (float)deltaX[t] / deltaY[t];
+                            mag1 = (1-alpha)*mag[t+offset] + alpha*mag[t+offset+1];
+                            mag2 = (1-alpha)*mag[t-offset] + alpha*mag[t-offset-1];
+                        }
+                    }
+                    
+                    else  // dx >= 0, dy < 0
+                    {
+                        if((deltaX[t] + deltaY[t]) >= 0)    // direction 8 (NEE)
+                        {
+                            alpha = (float)-deltaY[t] / deltaX[t];
+                            mag1 = (1-alpha)*mag[t+1] + alpha*mag[t-offset+1];
+                            mag2 = (1-alpha)*mag[t-1] + alpha*mag[t+offset-1];
+                        }
+                        else                                // direction 7 (NNE)
+                        {
+                            alpha = (float)deltaX[t] / -deltaY[t];
+                            mag1 = (1-alpha)*mag[t+offset] + alpha*mag[t+offset-1];
+                            mag2 = (1-alpha)*mag[t-offset] + alpha*mag[t-offset+1];
+                        }
+                    }
+                }
+                
+                else
+                {
+                    if(deltaY[t] >= 0) // dx < 0, dy >= 0
+                    {
+                        if((deltaX[t] + deltaY[t]) >= 0)    // direction 3 (SSW)
+                        {
+                            alpha = (float)-deltaX[t] / deltaY[t];
+                            mag1 = (1-alpha)*mag[t+offset] + alpha*mag[t+offset-1];
+                            mag2 = (1-alpha)*mag[t-offset] + alpha*mag[t-offset+1];
+                        }
+                        else                                // direction 4 (SWW)
+                        {
+                            alpha = (float)deltaY[t] / -deltaX[t];
+                            mag1 = (1-alpha)*mag[t-1] + alpha*mag[t+offset-1];
+                            mag2 = (1-alpha)*mag[t+1] + alpha*mag[t-offset+1];
+                        }
+                    }
+                    
+                    else // dx < 0, dy < 0
+                    {
+                        if((-deltaX[t] + deltaY[t]) >= 0)   // direction 5 (NWW)
+                        {
+                            alpha = (float)deltaY[t] / deltaX[t];
+                            mag1 = (1-alpha)*mag[t-1] + alpha*mag[t-offset-1];
+                            mag2 = (1-alpha)*mag[t+1] + alpha*mag[t+offset+1];
+                        }
+                        else                                // direction 6 (NNW)
+                        {
+                            alpha = (float)deltaX[t] / deltaY[t];
+                            mag1 = (1-alpha)*mag[t-offset] + alpha*mag[t-offset-1];
+                            mag2 = (1-alpha)*mag[t+offset] + alpha*mag[t+offset+1];
+                        }
+                    }
+                }
+                
+                // non-maximal suppression
+                // compare mag1, mag2 and mag[t]
+                // if mag[t] is smaller than one of the neighbours then suppress it
+                if((mag[t] < mag1) || (mag[t] < mag2))
+                    nms[t] = SUPPRESSED;
+                else
+                {
+                    nms[t] = mag[t];
+                }
+                
+            }
+        }
+    }
 }
 
 
