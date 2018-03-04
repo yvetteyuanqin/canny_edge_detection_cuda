@@ -65,17 +65,17 @@ int main() {
 	cout << "finished." << endl;
     
 
-	gray8_pixel_t **graidentImg = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*HEIGHT);
+	gray8_pixel_t **gradientImg = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*HEIGHT);
 	for (int i = 0; i < WIDTH; i++)
 	{
-		*(graidentImg + i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*WIDTH);
-		for (int j = 0; j<HEIGHT; j++) graidentImg[i][j] = 0;
+		*(gradientImg + i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*WIDTH);
+		for (int j = 0; j<HEIGHT; j++) gradientImg[i][j] = 0;
 	}
 
 
 	/*Gradient*/
 	cout << "enter gradient filter" << endl;
-	gradient(graidentImg, newImage, WIDTH, HEIGHT);
+	gradient(gradientImg, newImage, WIDTH, HEIGHT);
 	cout << "finished." << endl;
 
 
