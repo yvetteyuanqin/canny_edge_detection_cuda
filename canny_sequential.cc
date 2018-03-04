@@ -85,17 +85,17 @@ void gradient(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, in
 	   // deltaX = f(x+1) - f(x-1)
 	for (int i = 0; i < height; i++) {
 		for (int j = 0; j < width; j++){
-			if (j == 0) deltaX[i][j] = in_pixels[i][j + 1] - in_pixels[i][j]);
-			else if (j == width - 1)deltaX[i][j] = in_pixels[i][j] - in_pixels[i][j - 1]);
-			else deltaX[i][j] = in_pixels[i][j + 1] - in_pixels[i][j - 1]);
+			if (j == 0) deltaX[i][j] = in_pixels[i][j + 1] - in_pixels[i][j];
+			else if (j == width - 1)deltaX[i][j] = in_pixels[i][j] - in_pixels[i][j - 1];
+			else deltaX[i][j] = in_pixels[i][j + 1] - in_pixels[i][j - 1];
 		}
 	}
 
 	for (int i = 0; i < width; i++) {
 		for (int j = 0; j < height; j++) {
-			if (j == 0) deltaY[i][j] = in_pixels[i+1][j] - in_pixels[i][j]);
-			else if (j == width - 1)deltaY[i][j] = in_pixels[i][j] - in_pixels[i-1][j]);
-			else deltaY[i][j] = in_pixels[i+1][j] - in_pixels[i-1][j]);
+			if (j == 0) deltaY[i][j] = in_pixels[i+1][j] - in_pixels[i][j];
+			else if (j == width - 1)deltaY[i][j] = in_pixels[i][j] - in_pixels[i-1][j];
+			else deltaY[i][j] = in_pixels[i+1][j] - in_pixels[i-1][j];
 		}
 	}
 
