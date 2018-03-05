@@ -100,6 +100,21 @@ int main() {
     cout << "finished." << endl;
 
     
+    gray8_pixel_t **thresImg = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*HEIGHT);
+    for (int i = 0; i < WIDTH; i++)
+    {
+        *(thresImg + i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*WIDTH);
+        for (int j = 0; j<HEIGHT; j++) thresImg[i][j] = 0;
+    }
+    
+    /*non hysterious thresholding*/
+    cout << "enter hysterious" << endl;
+    pixel_channel_t hi = 0xFCC;
+    pixel_channel_t lo = 0xF5;
+    apply_hysteresis(thresImg,NMSImg, hi, lo, WIDTH,HEIGHT);
+    
+    cout << "finished." << endl;
+    
     
     /*revert image to check*/
     gray8_image_t img2(HEIGHT,WIDTH);
@@ -108,7 +123,7 @@ int main() {
 	cout << "create image view" << endl;
 	for (int i = 0; i < HEIGHT; ++i) {
         for (int j = 0; j < WIDTH; ++j) {
-            img_view(j, i) = NMSImg[i][j];
+            img_view(j, i) = thresImg[i][j];
         }
     }
 	cout << "finished." << endl;
