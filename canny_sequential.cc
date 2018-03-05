@@ -230,9 +230,9 @@ void apply_hysteresis(gray8_pixel_t **out_pixels, gray8_pixel_t **in_pixels, gra
                     
                     /* check 8 immediately surrounding neighbors
                      * if any of the neighbors are above the low threshold, preserve edge */
-                    trace_immed_neighbors(out_pixels, in_pixels, t, t_low);
+                    trace_immed_neighbors(out_pixels, in_pixels, i,j, t_low);
                 } else {
-                    out_pixels[t] = 0x00;
+                    out_pixels[i][j] = 0x00;
                 }
             }
         }
