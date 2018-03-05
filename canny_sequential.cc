@@ -10,7 +10,7 @@
 using namespace boost::gil;
 using namespace std;
 
-
+void trace_immed_neighbors(gray8_pixel_t *out_pixels, gray8_pixel_t **in_pixels, unsigned i, unsigned j, gray8_pixel_t t_low);
 /*create a gaussian filter*/
 Matrix createKernel(int height, int width, double sigma)
 {
@@ -244,33 +244,29 @@ void trace_immed_neighbors(gray8_pixel_t *out_pixels, gray8_pixel_t **in_pixels,
 
     gray8_pixel_t m_edge= 0xff;
     /* directions representing indices of neighbors */
-    unsigned n, s, e, w;
-    unsigned nw, ne, sw, se;
-    
-    
-    
-    if ((in_pixels[i-1][j-1] >= t_low) && (out_pixels[i-1][j-1] != m_edge)) {
+
+    if (((char)in_pixels[i-1][j-1] >= t_low) && ((char)out_pixels[i-1][j-1] != m_edge)) {
         out_pixels[i-1][j-1] = m_edge;
     }
-    if ((in_pixels[i-1][j] >= t_low) && (out_pixels[i-1][j] != m_edge)) {
+    if (((char)in_pixels[i-1][j] >= t_low) && ((char)out_pixels[i-1][j] != m_edge)) {
         out_pixels[i-1][j] = m_edge;
     }
-    if ((in_pixels[i-1][j+1] >= t_low) && (out_pixels[i-1][j+1] != m_edge)) {
+    if (((char)in_pixels[i-1][j+1] >= t_low) && ((char)out_pixels[i-1][j+1] != m_edge)) {
         out_pixels[i-1][j+1] = m_edge;
     }
-    if ((in_pixels[i][j-1] >= t_low) && (out_pixels[i][j-1]  != m_edge)) {
+    if (((char)in_pixels[i][j-1] >= t_low) && ((char)out_pixels[i][j-1]  != m_edge)) {
         out_pixels[i][j-1]  = m_edge;
     }
-    if ((in_pixels[i][j+1] >= t_low) && (out_pixels[i][j+1] != m_edge)) {
+    if (((char)in_pixels[i][j+1] >= t_low) && ((char)out_pixels[i][j+1] != m_edge)) {
         out_pixels[i][j+1] = m_edge;
     }
-    if ((in_pixels[i+1][j-1] >= t_low) && (out_pixels[i+1][j-1] != m_edge)) {
+    if (((char)in_pixels[i+1][j-1] >= t_low) && ((char)out_pixels[i+1][j-1] != m_edge)) {
         out_pixels[i+1][j-1] = m_edge;
     }
-    if ((in_pixels[i+1][j] >= t_low) && (out_pixels[i+1][j] != m_edge)) {
+    if (((char)in_pixels[i+1][j] >= t_low) && ((char)out_pixels[i+1][j] != m_edge)) {
         out_pixels[i+1][j] = m_edge;
     }
-    if ((in_pixels[i+1][j+1] >= t_low) && (out_pixels[i+1][j+1] != m_edge)) {
+    if (((char)in_pixels[i+1][j+1] >= t_low) && ((char)out_pixels[i+1][j+1] != m_edge)) {
         out_pixels[i+1][j+1] = m_edge;
     }
 }
