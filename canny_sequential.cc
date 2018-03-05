@@ -215,6 +215,74 @@ void suppress(gray8_pixel_t **newImage, gray8_pixel_t **mag, int width, int heig
     }
 }
 
+void apply_hysteresis(gray8_pixel_t **out_pixels, gray8_pixel_t **in_pixels, gray8_pixel_t t_high, gray8_pixel_t t_low, int width,int height)
+{
+    /* skip first and last rows and columns, since we'll check them as surrounding neighbors of
+     * the adjacent rows and columns */
+    
+    for(unsigned i = 1; i < height; i++) {
+        for(unsigned j = 1; j < width; j++) {
+            /* if our input is above the high threshold and the output hasn't already marked it as an edge */
+            if (out_pixels[i][j] != 0xFF) {
+                if (in_pixels[i][j] > t_high) {
+                    /* mark as strong edge */
+                    out_pixels[i][j] = m_edge;
+                    
+                    /* check 8 immediately surrounding neighbors
+                     * if any of the neighbors are above the low threshold, preserve edge */
+                    trace_immed_neighbors(out_pixels, in_pixels, t, t_low);
+                } else {
+                    out_pixels[t] = 0x00;
+                }
+            }
+        }
+    }
+}
+
+void trace_immed_neighbors(gray8_pixel_t *out_pixels, gray8_pixel_t **in_pixels, unsigned i, unsigned j, gray8_pixel_t t_low)
+{
+
+    
+    /* directions representing indices of neighbors */
+    unsigned n, s, e, w;
+    unsigned nw, ne, sw, se;
+    
+    /* get indices */
+    n = idx - m_image_mgr->getImgWidth();
+    nw = n - 1;
+    ne = n + 1;
+    s = idx + m_image_mgr->getImgWidth();
+    sw = s - 1;
+    se = s + 1;
+    w = idx - 1;
+    e = idx + 1;
+    
+    if ((in_pixels[i-1][j-1] >= t_low) && (out_pixels[i-1][j-1] != m_edge)) {
+        out_pixels[i-1][j-1] = m_edge;
+    }
+    if ((in_pixels[i-1][j] >= t_low) && (out_pixels[i-1][j] != m_edge)) {
+        out_pixels[i-1][j] = m_edge;
+    }
+    if ((in_pixels[i-1][j+1] >= t_low) && (out_pixels[i-1][j+1] != m_edge)) {
+        out_pixels[i-1][j+1] = m_edge;
+    }
+    if ((in_pixels[i][j-1] >= t_low) && (out_pixels[i][j-1]  != m_edge)) {
+        out_pixels[i][j-1]  = m_edge;
+    }
+    if ((in_pixels[i][j+1] >= t_low) && (out_pixels[i][j+1] != m_edge)) {
+        out_pixels[i][j+1] = m_edge;
+    }
+    if ((in_pixels[i+1][j-1] >= t_low) && (out_pixels[i+1][j-1] != m_edge)) {
+        out_pixels[i+1][j-1] = m_edge;
+    }
+    if ((in_pixels[i+1][j] >= t_low) && (out_pixels[i+1][j] != m_edge)) {
+        out_pixels[i+1][j] = m_edge;
+    }
+    if ((in_pixels[i+1][j+1] >= t_low) && (out_pixels[i+1][j+1] != m_edge)) {
+        out_pixels[i+1][j+1] = m_edge;
+    }
+}
+
 
 
 
