@@ -226,7 +226,7 @@ void apply_hysteresis(gray8_pixel_t **out_pixels, gray8_pixel_t **in_pixels, gra
             if (out_pixels[i][j] != 0xFF) {
                 if (in_pixels[i][j] > t_high) {
                     /* mark as strong edge */
-                    out_pixels[i][j] = m_edge;
+                    out_pixels[i][j] = 0xff;
                     
                     /* check 8 immediately surrounding neighbors
                      * if any of the neighbors are above the low threshold, preserve edge */
@@ -242,20 +242,12 @@ void apply_hysteresis(gray8_pixel_t **out_pixels, gray8_pixel_t **in_pixels, gra
 void trace_immed_neighbors(gray8_pixel_t *out_pixels, gray8_pixel_t **in_pixels, unsigned i, unsigned j, gray8_pixel_t t_low)
 {
 
-    
+    gray8_pixel_t m_edge= 0xff;
     /* directions representing indices of neighbors */
     unsigned n, s, e, w;
     unsigned nw, ne, sw, se;
     
-    /* get indices */
-    n = idx - m_image_mgr->getImgWidth();
-    nw = n - 1;
-    ne = n + 1;
-    s = idx + m_image_mgr->getImgWidth();
-    sw = s - 1;
-    se = s + 1;
-    w = idx - 1;
-    e = idx + 1;
+    
     
     if ((in_pixels[i-1][j-1] >= t_low) && (out_pixels[i-1][j-1] != m_edge)) {
         out_pixels[i-1][j-1] = m_edge;
