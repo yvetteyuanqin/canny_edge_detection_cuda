@@ -110,7 +110,7 @@ int main() {
     /*non hysterious thresholding*/
     cout << "enter hysterious" << endl;
 	unsigned char hi = 0xFC;
-	unsigned char lo = 0x20;
+	unsigned char lo = 0xC0;
     apply_hysteresis(thresImg,NMSImg, hi, lo, WIDTH,HEIGHT);
     
     cout << "finished." << endl;
