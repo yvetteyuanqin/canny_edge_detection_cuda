@@ -6,6 +6,7 @@
 #include <math.h>
 #include <iostream>
 #include <vector>
+
 #define KERNEL_SIZE 7
 
 typedef std::vector<double> Array;
