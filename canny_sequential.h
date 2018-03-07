@@ -20,5 +20,6 @@ void gradient(boost::gil::gray8_pixel_t **newImage, boost::gil::gray8_pixel_t **
 void suppress(boost::gil::gray8_pixel_t **newImage, boost::gil::gray8_pixel_t **mag, int width, int height,
 	boost::gil::gray8_pixel_t **deltaX, boost::gil::gray8_pixel_t **deltaY);
 void apply_hysteresis(boost::gil::gray8_pixel_t **out_pixels, boost::gil::gray8_pixel_t **in_pixels, char t_high, char t_low, int width,int height);
+void trace_immed_neighbors(gray8_pixel_t **out_pixels, gray8_pixel_t **in_pixels, unsigned i, unsigned j, char t_low);
 
 #endif
