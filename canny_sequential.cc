@@ -214,7 +214,7 @@ void suppress(gray8_pixel_t **newImage, gray8_pixel_t **mag, int width, int heig
     }
 }
 
-void apply_hysteresis(gray8_pixel_t **out_pixels, gray8_pixel_t **in_pixels, char t_high, char t_low, int width,int height)
+void apply_hysteresis(gray8_pixel_t **out_pixels, gray8_pixel_t **in_pixels, unsigned  char t_high, unsigned  char t_low, int width,int height)
 {
     /* skip first and last rows and columns, since we'll check them as surrounding neighbors of
      * the adjacent rows and columns */
@@ -238,34 +238,34 @@ void apply_hysteresis(gray8_pixel_t **out_pixels, gray8_pixel_t **in_pixels, cha
     }
 }
 
-void trace_immed_neighbors(gray8_pixel_t **out_pixels, gray8_pixel_t **in_pixels, unsigned i, unsigned j, char t_low)
+void trace_immed_neighbors(gray8_pixel_t **out_pixels, gray8_pixel_t **in_pixels, unsigned i, unsigned j, unsigned char t_low)
 {
 
-    char m_edge= 255;
+    unsigned char m_edge= 255;
     /* directions representing indices of neighbors */
 
-    if (((char)in_pixels[i-1][j-1] >= t_low) && ((char)out_pixels[i-1][j-1] != m_edge)) {
+    if (((unsigned char)in_pixels[i-1][j-1] >= t_low) && ((unsigned char)out_pixels[i-1][j-1] != m_edge)) {
         out_pixels[i-1][j-1] = m_edge;
     }
-    if (((char)in_pixels[i-1][j] >= t_low) && ((char)out_pixels[i-1][j] != m_edge)) {
+    if (((unsigned char)in_pixels[i-1][j] >= t_low) && ((unsigned char)out_pixels[i-1][j] != m_edge)) {
         out_pixels[i-1][j] = m_edge;
     }
-    if (((char)in_pixels[i-1][j+1] >= t_low) && ((char)out_pixels[i-1][j+1] != m_edge)) {
+    if (((unsigned char)in_pixels[i-1][j+1] >= t_low) && ((unsigned char)out_pixels[i-1][j+1] != m_edge)) {
         out_pixels[i-1][j+1] = m_edge;
     }
-    if (((char)in_pixels[i][j-1] >= t_low) && ((char)out_pixels[i][j-1]  != m_edge)) {
+    if (((unsigned char)in_pixels[i][j-1] >= t_low) && ((unsigned char)out_pixels[i][j-1]  != m_edge)) {
         out_pixels[i][j-1]  = m_edge;
     }
-    if (((char)in_pixels[i][j+1] >= t_low) && ((char)out_pixels[i][j+1] != m_edge)) {
+    if (((unsigned char)in_pixels[i][j+1] >= t_low) && ((unsigned char)out_pixels[i][j+1] != m_edge)) {
         out_pixels[i][j+1] = m_edge;
     }
-    if (((char)in_pixels[i+1][j-1] >= t_low) && ((char)out_pixels[i+1][j-1] != m_edge)) {
+    if (((unsigned char)in_pixels[i+1][j-1] >= t_low) && ((unsigned char)out_pixels[i+1][j-1] != m_edge)) {
         out_pixels[i+1][j-1] = m_edge;
     }
-    if (((char)in_pixels[i+1][j] >= t_low) && ((char)out_pixels[i+1][j] != m_edge)) {
+    if (((unsigned char)in_pixels[i+1][j] >= t_low) && ((unsigned char)out_pixels[i+1][j] != m_edge)) {
         out_pixels[i+1][j] = m_edge;
     }
-    if (((char)in_pixels[i+1][j+1] >= t_low) && ((char)out_pixels[i+1][j+1] != m_edge)) {
+    if (((unsigned char)in_pixels[i+1][j+1] >= t_low) && ((unsigned char)out_pixels[i+1][j+1] != m_edge)) {
         out_pixels[i+1][j+1] = m_edge;
     }
 }
