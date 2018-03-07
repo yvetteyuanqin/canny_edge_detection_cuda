@@ -1,6 +1,0 @@
-import binascii
-filename = '001.png'
-out = open('001.txt','w')
-with open(filename, 'rb') as f:
-    content = f.readline()
-	out.write(content)

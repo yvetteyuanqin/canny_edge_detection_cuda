@@ -19,6 +19,6 @@ void gradient(boost::gil::gray8_pixel_t **newImage, boost::gil::gray8_pixel_t **
 	boost::gil::gray8_pixel_t **deltaX, boost::gil::gray8_pixel_t **deltaY);
 void suppress(boost::gil::gray8_pixel_t **newImage, boost::gil::gray8_pixel_t **mag, int width, int height,
 	boost::gil::gray8_pixel_t **deltaX, boost::gil::gray8_pixel_t **deltaY);
-void apply_hysteresis(boost::gil::gray8_pixel_t **out_pixels, boost::gil::gray8_pixel_t **in_pixels, boost::gil::gray8_pixel_t t_high, boost::gil::gray8_pixel_t t_low, int width,int height);
+void apply_hysteresis(boost::gil::gray8_pixel_t **out_pixels, boost::gil::gray8_pixel_t **in_pixels, char t_high, char t_low, int width,int height);
 
 #endif
