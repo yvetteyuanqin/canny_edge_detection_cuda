@@ -219,8 +219,8 @@ void apply_hysteresis(gray8_pixel_t **out_pixels, gray8_pixel_t **in_pixels, cha
     /* skip first and last rows and columns, since we'll check them as surrounding neighbors of
      * the adjacent rows and columns */
     
-    for(unsigned i = 1; i < height; i++) {
-        for(unsigned j = 1; j < width; j++) {
+    for(unsigned i = 1; i < height-1; i++) {
+        for(unsigned j = 1; j < width-1; j++) {
             /* if our input is above the high threshold and the output hasn't already marked it as an edge */
             if (out_pixels[i][j] != 0xFF) {
                 if (in_pixels[i][j] > t_high) {
