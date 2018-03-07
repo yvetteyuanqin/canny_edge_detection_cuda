@@ -215,7 +215,7 @@ void suppress(gray8_pixel_t **newImage, gray8_pixel_t **mag, int width, int heig
     }
 }
 
-void apply_hysteresis(gray8_pixel_t **out_pixels, gray8_pixel_t **in_pixels, gray8_pixel_t t_high, gray8_pixel_t t_low, int width,int height)
+void apply_hysteresis(gray8_pixel_t **out_pixels, gray8_pixel_t **in_pixels, gray8_pixel_t t_high, char t_low, int width,int height)
 {
     /* skip first and last rows and columns, since we'll check them as surrounding neighbors of
      * the adjacent rows and columns */
@@ -239,7 +239,7 @@ void apply_hysteresis(gray8_pixel_t **out_pixels, gray8_pixel_t **in_pixels, gra
     }
 }
 
-void trace_immed_neighbors(gray8_pixel_t *out_pixels, gray8_pixel_t **in_pixels, unsigned i, unsigned j, gray8_pixel_t t_low)
+void trace_immed_neighbors(gray8_pixel_t *out_pixels, gray8_pixel_t **in_pixels, unsigned i, unsigned j, char t_low)
 {
 
     gray8_pixel_t m_edge= 255;
