@@ -4,7 +4,7 @@
 #include <math.h>
 #include <iostream>
 #include <vector>
-#include "canny_sequential.h"
+#include "canny_p.h"
 
 
 using namespace boost::gil;
