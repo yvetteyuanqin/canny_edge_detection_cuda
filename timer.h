@@ -1,6 +1,6 @@
-#if defined (__cplusplus)
+//#if defined (__cplusplus)
 extern "C" {
-#endif
+//#endif
 
   struct stopwatch_t * stopwatch_create (void);
   void stopwatch_destroy (struct stopwatch_t* T);
@@ -10,6 +10,6 @@ extern "C" {
   
   long double stopwatch_stop (struct stopwatch_t* T);
   
-#if defined (__cplusplus)
+//#if defined (__cplusplus)
 }
-#endif
+//#endif
