@@ -38,7 +38,7 @@ void gaussian_filter(gray8_pixel_t **newImage,gray8_pixel_t **in_pixels,int widt
 {
 
 	cout << "create kernel" << endl;
-    Matrix filter = createKernel(5, 5, 5.0);
+    Matrix filter = createKernel(5, 5, 10.0);
 	cout << "finish create kernel" << endl;
     int filterHeight = filter.size();
     int filterWidth = filter[0].size();
