@@ -13,6 +13,7 @@
 #include <vector>
 #include <iostream>
 #include "canny_sequential.h"
+#include "timer.h"
 #define HEIGHT 512
 #define WIDTH 512
 
@@ -20,14 +21,23 @@ using namespace std;
 
 int main() {
     
+    struct stopwatch_t* timer = NULL;
+    long double t_gaussian, t_gradient,t_nms,t_thres;
+    /* initialize timer */
+    stopwatch_init ();
+    timer = stopwatch_create ();
+    stopwatch_start (timer);
+//    t_gaussian= stopwatch_stop (timer);
+//    cout<< "Time to execute gaussian:"<< t_gaussian<<endl;
+    
+    
 	//string filename = argv[1]
     using namespace boost::gil;
     gray8_image_t img(HEIGHT,WIDTH);
     png_read_image("001.png", img);
     //png_write_view("testimg.png",const_view(img));
     
-    
-    
+
     // Get a raw pointer to the grey buffer
     unsigned char * buf = &view(img)[0][0];//new unsigned char[w * h];
     gray8_pixel_t **imgbuff = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*WIDTH);
@@ -61,7 +71,9 @@ int main() {
     
     /*apply gaussian filter*/
 	cout << "enter gaussian filter" << endl;
+    t_gaussian= stopwatch_stop (timer);
     gaussian_filter(newImage,imgbuff,WIDTH, HEIGHT);
+    cout<< "Time to execute gaussian:"<< t_gaussian<<endl;
 	cout << "finished." << endl;
     
 
@@ -83,7 +95,10 @@ int main() {
     
 	/*Gradient*/
 	cout << "enter gradient filter" << endl;
-	gradient(gradientImg, newImage, WIDTH, HEIGHT,deltaX,deltaY);
+    t_gradient= stopwatch_stop (timer);
+    gradient(gradientImg, newImage, WIDTH, HEIGHT,deltaX,deltaY);
+    cout<< "Time to execute gradient:"<< t_gradient<<endl;
+	
 	cout << "finished." << endl;
     
     
@@ -96,7 +111,10 @@ int main() {
     
     /*non maximum suppression*/
     cout << "enter suppression filter" << endl;
+    t_nms= stopwatch_stop (timer);
     suppress(NMSImg,gradientImg,WIDTH, HEIGHT,deltaX,deltaY);
+    cout<< "Time to execute nms:"<< t_nms<<endl;
+    
     cout << "finished." << endl;
 
     
@@ -111,7 +129,10 @@ int main() {
     cout << "enter hysterious" << endl;
 	unsigned char hi = 0xFC;
 	unsigned char lo = 0xC0;
+    t_thres= stopwatch_stop (timer);
     apply_hysteresis(thresImg,NMSImg, hi, lo, WIDTH,HEIGHT);
+    cout<< "Time to execute thresholded:"<< t_thres<<endl;
+
     
     cout << "finished." << endl;
     
