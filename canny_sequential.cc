@@ -10,7 +10,7 @@
 using namespace boost::gil;
 using namespace std;
 
-void trace_immed_neighbors(gray8_pixel_t *out_pixels, gray8_pixel_t **in_pixels, unsigned i, unsigned j, gray8_pixel_t t_low);
+void trace_immed_neighbors(gray8_pixel_t **out_pixels, gray8_pixel_t **in_pixels, unsigned i, unsigned j, gray8_pixel_t t_low);
 /*create a gaussian filter*/
 Matrix createKernel(int height, int width, double sigma)
 {
