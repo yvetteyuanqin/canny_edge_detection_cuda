@@ -239,10 +239,10 @@ void apply_hysteresis(gray8_pixel_t **out_pixels, gray8_pixel_t **in_pixels, gra
     }
 }
 
-void trace_immed_neighbors(gray8_pixel_t *out_pixels, gray8_pixel_t **in_pixels, unsigned i, unsigned j, char t_low)
+void trace_immed_neighbors(gray8_pixel_t **out_pixels, gray8_pixel_t **in_pixels, unsigned i, unsigned j, char t_low)
 {
 
-    gray8_pixel_t m_edge= 255;
+    char m_edge= 255;
     /* directions representing indices of neighbors */
 
     if (((char)in_pixels[i-1][j-1] >= t_low) && ((char)out_pixels[i-1][j-1] != m_edge)) {
