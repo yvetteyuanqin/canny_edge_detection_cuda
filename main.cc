@@ -104,7 +104,7 @@ int main() {
     for (int i = 0; i < WIDTH; i++)
     {
         *(thresImg + i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*WIDTH);
-        for (int j = 0; j<HEIGHT; j++) thresImg[i][j] = 0;
+        for (int j = 0; j<HEIGHT; j++) thresImg[i][j] = 255;
     }
     
     /*non hysterious thresholding*/
