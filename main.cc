@@ -71,8 +71,10 @@ int main() {
     
     /*apply gaussian filter*/
 	cout << "enter gaussian filter" << endl;
-    t_gaussian= stopwatch_stop (timer);
+    stopwatch_start (timer);
     gaussian_filter(newImage,imgbuff,WIDTH, HEIGHT);
+    t_gaussian= stopwatch_stop (timer);
+   
     cout<< "Time to execute gaussian:"<< t_gaussian<<endl;
 	cout << "finished." << endl;
     
@@ -95,8 +97,10 @@ int main() {
     
 	/*Gradient*/
 	cout << "enter gradient filter" << endl;
+    stopwatch_start (timer);
+     gradient(gradientImg, newImage, WIDTH, HEIGHT,deltaX,deltaY);
     t_gradient= stopwatch_stop (timer);
-    gradient(gradientImg, newImage, WIDTH, HEIGHT,deltaX,deltaY);
+   
     cout<< "Time to execute gradient:"<< t_gradient<<endl;
 	
 	cout << "finished." << endl;
@@ -111,8 +115,10 @@ int main() {
     
     /*non maximum suppression*/
     cout << "enter suppression filter" << endl;
+    stopwatch_start (timer);
+        suppress(NMSImg,gradientImg,WIDTH, HEIGHT,deltaX,deltaY);
     t_nms= stopwatch_stop (timer);
-    suppress(NMSImg,gradientImg,WIDTH, HEIGHT,deltaX,deltaY);
+
     cout<< "Time to execute nms:"<< t_nms<<endl;
     
     cout << "finished." << endl;
@@ -129,8 +135,10 @@ int main() {
     cout << "enter hysterious" << endl;
 	unsigned char hi = 0xFC;
 	unsigned char lo = 0xC0;
-    t_thres= stopwatch_stop (timer);
+    stopwatch_start (timer);
     apply_hysteresis(thresImg,NMSImg, hi, lo, WIDTH,HEIGHT);
+    t_thres= stopwatch_stop (timer);
+
     cout<< "Time to execute thresholded:"<< t_thres<<endl;
 
     
