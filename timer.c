@@ -13,8 +13,8 @@
 #define USE_STD_CREATE
 #define USE_STD_DESTROY
 
-#include <time.h>
-
+#include <sys/time.h>
+#include "time.h"
 struct stopwatch_t
 {
   struct timeval t_start_;
