@@ -37,22 +37,17 @@ Matrix createKernel(int height, int width, double sigma)
 void gaussian_filter(gray8_pixel_t **newImage,gray8_pixel_t **in_pixels,int width, int height)
 {
 
-	cout << "create kernel" << endl;
     Matrix filter = createKernel(5, 5, 10.0);
-	cout << "finish create kernel" << endl;
     int filterHeight = filter.size();
     int filterWidth = filter[0].size();
     int newImageHeight = height-filterHeight;
     int newImageWidth = width-filterWidth;
 
-	cout << "newImageHeight " << newImageHeight << " newImageWidth " << newImageWidth << endl;
-	cout << "filterHeight " << filterHeight  << " filterWidth " << filterWidth << endl;
-	cout << "width " << width << " height " << height << endl;
+
 
     int i,j,h,w;
     /*allocate newimage*/
     
-	cout << "start convolution" << endl;
         for (i=0 ; i<newImageHeight ; i++) {
             for (j=0 ; j<newImageWidth ; j++) {
                 for (h=i ; h<i+filterHeight ; h++) {
@@ -71,7 +66,6 @@ void gradient(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, in
 
 	   // compute delta X ***************************
 	   // deltaX = f(x+1) - f(x-1)
-	cout << "do deltaX" << endl;
 	for (int i = 0; i < height; i++) {
 		for (int j = 0; j < width; j++){
 			if (j == 0) deltaX[i][j] = in_pixels[i][j + 1] - in_pixels[i][j];
@@ -79,8 +73,6 @@ void gradient(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, in
 			else deltaX[i][j] = in_pixels[i][j + 1] - in_pixels[i][j - 1];
 		}
 	}
-	cout << "finished deltaX" << endl;
-	cout << "do deltaY" << endl;
 	for (int i = 0; i < width; i++) {
 		for (int j = 0; j < height; j++) {
 			if (i == 0) deltaY[i][j] = in_pixels[i+1][j] - in_pixels[i][j];
@@ -88,15 +80,12 @@ void gradient(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, in
 			else deltaY[i][j] = in_pixels[i+1][j] - in_pixels[i-1][j];
 		}
 	}
-	cout << "finished deltaY" << endl;
-	cout << "do magnitude" << endl;
 	for (int i = 0; i < width; i++) {
 		for (int j = 0; j < height; j++) {
 				newImage[i][j] = (gray8_pixel_t)(sqrt((double)deltaX[i][j] * deltaX[i][j] +
 					(double)deltaY[i][j] * deltaY[i][j]) + 0.5);
 		}
 	}
-	cout << "finish " << endl;
 
 }
 
