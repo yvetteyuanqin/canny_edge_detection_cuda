@@ -14,7 +14,7 @@
 #define USE_STD_DESTROY
 
 #include <sys/time.h>
-#include "time.h"
+#include "timer.h"
 struct stopwatch_t
 {
   struct timeval t_start_;
