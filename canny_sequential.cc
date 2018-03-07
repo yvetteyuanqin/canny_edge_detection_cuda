@@ -214,7 +214,7 @@ void suppress(gray8_pixel_t **newImage, gray8_pixel_t **mag, int width, int heig
     }
 }
 
-void apply_hysteresis(gray8_pixel_t **out_pixels, gray8_pixel_t **in_pixels, gray8_pixel_t t_high, char t_low, int width,int height)
+void apply_hysteresis(gray8_pixel_t **out_pixels, gray8_pixel_t **in_pixels, char t_high, char t_low, int width,int height)
 {
     /* skip first and last rows and columns, since we'll check them as surrounding neighbors of
      * the adjacent rows and columns */
