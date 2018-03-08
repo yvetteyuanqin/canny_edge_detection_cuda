@@ -11,6 +11,7 @@ using namespace boost::gil;
 using namespace std;
 
 /*create a gaussian filter*/
+__device__
 Matrix createKernel(int height, int width, double sigma)
 {
     Matrix kernel(height, Array(width));
@@ -34,6 +35,7 @@ Matrix createKernel(int height, int width, double sigma)
 }
 
 /*Step 1 blur the image to reduce noice*/
+__global__
 void gaussian_filter(gray8_pixel_t **newImage,gray8_pixel_t **in_pixels,int width, int height)
 {
 
@@ -59,6 +61,7 @@ void gaussian_filter(gray8_pixel_t **newImage,gray8_pixel_t **in_pixels,int widt
         }
 
 }
+__global__
 void gradient(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, int height,
 	gray8_pixel_t **deltaX, gray8_pixel_t **deltaY)
 {
@@ -89,6 +92,7 @@ void gradient(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, in
 
 }
 
+__global__
 void suppress(gray8_pixel_t **newImage, gray8_pixel_t **mag, int width, int height,
 	gray8_pixel_t **deltaX, gray8_pixel_t **deltaY)
 {
@@ -226,7 +230,7 @@ void apply_hysteresis(gray8_pixel_t **out_pixels, gray8_pixel_t **in_pixels, uns
         }
     }
 }
-
+__device__
 void trace_immed_neighbors(gray8_pixel_t **out_pixels, gray8_pixel_t **in_pixels, unsigned i, unsigned j, unsigned char t_low)
 {
 
