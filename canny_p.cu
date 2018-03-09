@@ -36,7 +36,7 @@ return kernel;
 
 /*Step 1 blur the image to reduce noice*/
 __global__
-void gaussian_filter(gray8_pixel_t **newImage,gray8_pixel_t **in_pixels,int width, int height)
+void gaussian_filter(unsigned char **newImage,unsigned char **in_pixels,int width, int height)
 {
 
 Matrix filter = createKernel(5, 5, 10.0);
@@ -66,8 +66,8 @@ __syncthreads();
 
 }
 __global__
-void gradient(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, int height,
-gray8_pixel_t **deltaX, gray8_pixel_t **deltaY)
+void gradient(unsigned char **newImage, unsigned char **in_pixels, int width, int height,
+unsigned char **deltaX, unsigned char **deltaY)
 {
 
 
@@ -89,7 +89,7 @@ else deltaY[i][j] = in_pixels[i+1][j] - in_pixels[i-1][j];
 }
 for (int i = 0; i < width; i++) {
 for (int j = 0; j < height; j++) {
-newImage[i][j] = (gray8_pixel_t)(sqrt((double)deltaX[i][j] * deltaX[i][j] +
+newImage[i][j] = (unsigned char)(sqrt((double)deltaX[i][j] * deltaX[i][j] +
 (double)deltaY[i][j] * deltaY[i][j]) + 0.5);
 }
 }
@@ -97,8 +97,8 @@ newImage[i][j] = (gray8_pixel_t)(sqrt((double)deltaX[i][j] * deltaX[i][j] +
 }
 
 __global__
-void suppress(gray8_pixel_t **newImage, gray8_pixel_t **mag, int width, int height,
-gray8_pixel_t **deltaX, gray8_pixel_t **deltaY)
+void suppress(unsigned char **newImage, unsigned char **mag, int width, int height,
+unsigned char **deltaX, unsigned char **deltaY)
 {
 
 float alpha;
@@ -211,7 +211,7 @@ newImage[i][j] = mag[i][j];
 }
 }
 __global__
-void apply_hysteresis(gray8_pixel_t **out_pixels, gray8_pixel_t **in_pixels, unsigned  char t_high, unsigned  char t_low, int width,int height)
+void apply_hysteresis(unsigned char **out_pixels, unsigned char **in_pixels, unsigned  char t_high, unsigned  char t_low, int width,int height)
 {
 /* skip first and last rows and columns, since we'll check them as surrounding neighbors of
 * the adjacent rows and columns */
@@ -235,7 +235,7 @@ out_pixels[i][j] = 0x00;
 }
 }
 __device__
-void trace_immed_neighbors(gray8_pixel_t **out_pixels, gray8_pixel_t **in_pixels, unsigned i, unsigned j, unsigned char t_low)
+void trace_immed_neighbors(unsigned char **out_pixels, unsigned char **in_pixels, unsigned i, unsigned j, unsigned char t_low)
 {
 
 unsigned char m_edge= 255;
@@ -267,5 +267,47 @@ out_pixels[i+1][j+1] = m_edge;
 }
 }
 
+void edge_detector((unsigned char)** h_newImg, (unsigned char)** h_imgbuff, int WIDTH, int HEIGHT){
 
+
+    unsigned char **d_imgbuff;
+	unsigned char **d_newImage;
+	cudaMalloc(&d_imgbuff, sizeof(unsigned char*)*HEIGHT);
+	cudaMalloc(&d_newImage, sizeof(unsigned char*)*HEIGHT);
+	for (int i = 0; i < WIDTH; i++)
+	{
+		cudaMalloc(&d_imgbuff[i], sizeof(unsigned char)*WIDTH);
+		cudaMalloc(&d_newImage + i, sizeof(unsigned char)*WIDTH);
+	}
+	//memcopy
+	cudaMemcpy2D(d_imgbuff, sizeof(unsigned char)*WIDTH, h_imgbuff, sizeof(unsigned char) * WIDTH, sizeof(unsigned char) *WIDTH, HEIGHT, cudaMemcpyHostToDevice);
+
+	
+	/*apply gaussian filter*/
+	cout << "enter gaussian filter" << endl;
+	int numBlocks = 1;
+	dim3 threadsPerBlock(HEIGHT, WIDTH);
+	stopwatch_start(timer);
+	gaussian_filter <<<numBlocks, threadsPerBlock >>>(d_newImage, d_imgbuff, WIDTH, HEIGHT);
+	t_gaussian = stopwatch_stop(timer);
+
+	//MEMCOPY BACK TO HOST
+	cudaMemcpy2D(h_newImage, sizeof(unsigned char)*WIDTH, d_newImage, sizeof(unsigned char) * WIDTH, sizeof(unsigned char) *WIDTH, HEIGHT, cudaMemcpyDeviceToHost);
+
+	//free device mem
+
+
+	for (int i = 0; i < WIDTH; i++)
+	{
+		cudaFree(d_imgbuff + i);
+		cudaFree(d_newImage + i);
+	}
+	cudaFree(d_newImage);
+	cudaFree(d_imgbuff);
+
+	cout << "Time to execute gaussian:" << t_gaussian << endl;
+	cout << "finished." << endl;
+
+
+}
 

@@ -1,7 +1,5 @@
 #ifndef _CANNY_SEQUENTIAL_HPP_
 #define _CANNY_SEQUENTIAL_HPP_
-#include <boost/gil/rgb.hpp>
-#include <boost/gil/extension/io/png_dynamic_io.hpp>
 #include <stdint.h>
 #include <math.h>
 #include <iostream>
@@ -15,12 +13,13 @@ typedef std::vector<Array> Matrix;
 /*create a gaussian filter*/
 Matrix createKernel(int height, int width, double sigma);
 /*Step 1 blur the image to reduce noice*/
-__global__ void gaussian_filter(boost::gil::gray8_pixel_t **newImage,boost::gil::gray8_pixel_t **in_pixels,int width, int height);
-__global__ void gradient(boost::gil::gray8_pixel_t **newImage, boost::gil::gray8_pixel_t **mag, int width, int height,
-	boost::gil::gray8_pixel_t **deltaX, boost::gil::gray8_pixel_t **deltaY);
-__global__ void suppress(boost::gil::gray8_pixel_t **newImage, boost::gil::gray8_pixel_t **mag, int width, int height,
-	boost::gil::gray8_pixel_t **deltaX, boost::gil::gray8_pixel_t **deltaY);
-__global__ void apply_hysteresis(boost::gil::gray8_pixel_t **out_pixels, boost::gil::gray8_pixel_t **in_pixels, unsigned  char t_high, unsigned  char t_low, int width,int height);
-__device__ void trace_immed_neighbors(boost::gil::gray8_pixel_t **out_pixels, boost::gil::gray8_pixel_t **in_pixels, unsigned i, unsigned j, unsigned  char t_low);
+__global__ void gaussian_filter(unsigned char**newImage, unsigned char **in_pixels,int width, int height);
+__global__ void gradient(unsigned char **newImage, unsigned char **mag, int width, int height,
+	unsigned char **deltaX, unsigned char **deltaY);
+__global__ void suppress(unsigned char **newImage, unsigned char **mag, int width, int height,
+	unsigned char **deltaX, unsigned char **deltaY);
+__global__ void apply_hysteresis(unsigned char **out_pixels, unsigned char **in_pixels, unsigned  char t_high, unsigned  char t_low, int width,int height);
+__device__ void trace_immed_neighbors(unsigned char **out_pixels, unsigned char **in_pixels, unsigned i, unsigned j, unsigned  char t_low);
 
+void edge_detector(unsigned char**newImage, unsigned char **in_pixels, int WIDTH, int HEIGHT);
 #endif
