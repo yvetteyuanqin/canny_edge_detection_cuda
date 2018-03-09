@@ -178,7 +178,7 @@ cout << "finished." << endl;
 
 /*revert image to check*/
 gray8_image_t img2(HEIGHT,WIDTH);
-view_t img_view = view(img2);
+gray8_view_t img_view = view(img2);
 
 cout << "create image view" << endl;
 for (int i = 0; i < HEIGHT; ++i) {
