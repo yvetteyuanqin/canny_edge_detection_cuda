@@ -69,7 +69,7 @@ cudaMalloc(&d_imgbuff,sizeof(gray8_pixel_t*)*HEIGHT);
 cudaMalloc(&d_newImage,sizeof(gray8_pixel_t*)*HEIGHT);
 for(int i = 0; i < WIDTH; i++)
 {
-cudaMalloc(&(d_imgbuff+i),sizeof(gray8_pixel_t)*WIDTH);
+cudaMalloc(&d_imgbuff[i],sizeof(gray8_pixel_t)*WIDTH);
 cudaMalloc(&(d_newImage+i),sizeof(gray8_pixel_t)*WIDTH);
 }
 //memcopy
