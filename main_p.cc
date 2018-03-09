@@ -64,7 +64,7 @@ int main() {
     }
     
 	int d_imgbuff[HEIGHT][WIDTH];
-	int h_newImage[HEIGHT][WIDTH];
+	int d_newImage[HEIGHT][WIDTH];
      
     
     /*apply gaussian filter*/
