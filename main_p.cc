@@ -63,16 +63,43 @@ int main() {
         for(int j = 0;j<HEIGHT;j++) h_newImage[i][j]=0;
     }
     
-	int d_imgbuff[HEIGHT][WIDTH];
-	int h_newImage[HEIGHT][WIDTH];
-     
+	gray8_pixel_t **d_imgbuff;
+	gray8_pixel_t **d_newImage;
+    cudaMalloc(&d_imgbuff,sizeof(gray8_pixel_t*)*HEIGHT);
+    cudaMalloc(&d_newImage,sizeof(gray8_pixel_t*)*HEIGHT);
+    for(int i = 0; i < WIDTH; i++)
+    {
+        cudaMalloc(&(d_imgbuff+i),sizeof(gray8_pixel_t)*WIDTH);
+        cudaMalloc(&(d_newImage+i),sizeof(gray8_pixel_t)*WIDTH);
+    }
+    //memcopy
+    cudaMemcpy2D(d_imgbuff, sizeof(gray8_pixel_t)*WIDTH, h_imgbuff, sizeof(gray8_pixel_t) * WIDTH, sizeof(gray8_pixel_t) *WIDTH, HEIGHT, cudaMemcpyHostToDevice);
+//    for(int i = 0; i < WIDTH; i++)
+//    {
+//        cudaMemcpy(d_imgbuff, h_imgbuff, sizeof(gray8_pixel_t) * HEIGHT, cudaMemcpyHostToDevice);
+//    }
+//
+    
     
     /*apply gaussian filter*/
 	cout << "enter gaussian filter" << endl;
     stopwatch_start (timer);
-    gaussian_filter<<<,256>>>(newImage,imgbuff,WIDTH, HEIGHT);
+    gaussian_filter<<<512,512>>>(d_newImage,d_imgbuff,WIDTH, HEIGHT);
     t_gaussian= stopwatch_stop (timer);
-   
+    
+//MEMCOPY BACK TO HOST
+    cudaMemcpy2D(h_newImage, sizeof(gray8_pixel_t)*WIDTH, d_newImage, sizeof(gray8_pixel_t) * WIDTH, sizeof(gray8_pixel_t) *WIDTH, HEIGHT, cudaMemcpyDeviceToHost);
+
+//free device mem
+
+    for(int i = 0; i < WIDTH; i++)
+    {
+        cudaFree(d_imgbuff+i);
+        cudaFree(d_newImage+i);
+    }
+        cudaFree(d_newImage);
+        cudaFree(d_imgbuff);
+    
     cout<< "Time to execute gaussian:"<< t_gaussian<<endl;
 	cout << "finished." << endl;
     
@@ -150,7 +177,7 @@ int main() {
 	cout << "create image view" << endl;
 	for (int i = 0; i < HEIGHT; ++i) {
         for (int j = 0; j < WIDTH; ++j) {
-            img_view(j, i) = thresImg[i][j];
+            img_view(j, i) = h_newImage[i][j];
         }
     }
 	cout << "finished." << endl;

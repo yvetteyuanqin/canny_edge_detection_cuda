@@ -206,7 +206,7 @@ void suppress(gray8_pixel_t **newImage, gray8_pixel_t **mag, int width, int heig
         }
     }
 }
-
+__global__
 void apply_hysteresis(gray8_pixel_t **out_pixels, gray8_pixel_t **in_pixels, unsigned  char t_high, unsigned  char t_low, int width,int height)
 {
     /* skip first and last rows and columns, since we'll check them as surrounding neighbors of
