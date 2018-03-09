@@ -12,7 +12,7 @@
 #include <stdint.h>
 #include <vector>
 #include <iostream>
-#include "canny_sequential.h"
+#include "canny_p.h"
 #include "timer.h"
 #define HEIGHT 512
 #define WIDTH 512
