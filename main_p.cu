@@ -175,7 +175,7 @@ cout << "finished." << endl;
 
 /*revert image to check*/
 gray8_image_t img2(HEIGHT,WIDTH);
-auto img_view = view(img2);
+image_view img_view = view(img2);
 
 cout << "create image view" << endl;
 for (int i = 0; i < HEIGHT; ++i) {
@@ -186,11 +186,7 @@ img_view(j, i) = h_newImage[i][j];
 cout << "finished." << endl;
 
 png_write_view("testimg.png", const_view(img2));
-/*
-cout<<endl;
-cout<<cnt<<endl;
-cout<<sizeof(imgbuff)<<' '<<sizeof(imgbuff)<<endl;
-*/
+
 
 return 0;
 
