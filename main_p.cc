@@ -81,10 +81,13 @@ int main() {
 //
     
     
+    
     /*apply gaussian filter*/
 	cout << "enter gaussian filter" << endl;
+    int numBlocks = 1;
+    dim3 threadsPerBlock(HEIGHT, WIDTH);
     stopwatch_start (timer);
-    gaussian_filter<<<512,512>>>(d_newImage,d_imgbuff,WIDTH, HEIGHT);
+    gaussian_filter<<<numBlocks,threadsPerBlock>>>(d_newImage,d_imgbuff,WIDTH, HEIGHT);
     t_gaussian= stopwatch_stop (timer);
     
 //MEMCOPY BACK TO HOST
