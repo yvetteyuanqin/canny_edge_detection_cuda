@@ -12,7 +12,7 @@
 #include <stdint.h>
 #include <vector>
 #include <iostream>
-#include "canny_sequential.h"
+#include "canny_p.h"
 #include "timer.h"
 #define HEIGHT 512
 #define WIDTH 512
@@ -69,8 +69,8 @@ cudaMalloc(&d_imgbuff,sizeof(gray8_pixel_t*)*HEIGHT);
 cudaMalloc(&d_newImage,sizeof(gray8_pixel_t*)*HEIGHT);
 for(int i = 0; i < WIDTH; i++)
 {
-cudaMalloc(&(d_imgbuff+i),sizeof(gray8_pixel_t)*WIDTH);
-cudaMalloc(&(d_newImage+i),sizeof(gray8_pixel_t)*WIDTH);
+cudaMalloc(&d_imgbuff[i],sizeof(gray8_pixel_t)*WIDTH);
+cudaMalloc(&d_newImage+i,sizeof(gray8_pixel_t)*WIDTH);
 }
 //memcopy
 cudaMemcpy2D(d_imgbuff, sizeof(gray8_pixel_t)*WIDTH, h_imgbuff, sizeof(gray8_pixel_t) * WIDTH, sizeof(gray8_pixel_t) *WIDTH, HEIGHT, cudaMemcpyHostToDevice);
