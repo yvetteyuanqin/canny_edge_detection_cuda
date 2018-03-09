@@ -38,33 +38,33 @@ int main() {
     //png_write_view("testimg.png",const_view(img));
     
 
-    // Get a raw pointer to the grey buffer
+    // Get a raw pointer to the gray buffer
     unsigned char * buf = &view(img)[0][0];//new unsigned char[w * h];
-    gray8_pixel_t **imgbuff = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*WIDTH);
+    gray8_pixel_t **h_imgbuff = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*WIDTH);
     for(int i = 0; i < WIDTH; i++)
     {
-        *(imgbuff+i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*HEIGHT);
+        *(h_imgbuff+i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*HEIGHT);
     }
-    
+   
+	/*put the image pixel into the gray buffer*/
     gray8_view_t srcview = interleaved_view(img.width(), img.height(), (gray8_pixel_t*)buf, view(img).pixels().row_size());
 
     for (int i = 0; i < HEIGHT; ++i) {
         for (int j = 0; j < WIDTH; ++j) {
-            imgbuff[i][j]=srcview(j, i);
-           // cout<<hex<<int(imgbuff[i][j]);
-           
+            h_imgbuff[i][j]=srcview(j, i);
         }
     }
 
     /*canny_sequential*/
-    gray8_pixel_t **newImage = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*HEIGHT);
+    gray8_pixel_t **h_newImage = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*HEIGHT);
     for(int i = 0; i < WIDTH; i++)
     {
-        *(newImage+i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*WIDTH);
-        for(int j = 0;j<HEIGHT;j++) newImage[i][j]=0;
+        *(h_newImage+i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*WIDTH);
+        for(int j = 0;j<HEIGHT;j++) h_newImage[i][j]=0;
     }
     
-    
+	int d_imgbuff[HEIGHT][WIDTH];
+	int h_newImage[HEIGHT][WIDTH];
      
     
     /*apply gaussian filter*/
