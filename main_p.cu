@@ -9,6 +9,8 @@
 //Mar.6th.2018
 #include <boost/gil/rgb.hpp>
 #include <boost/gil/extension/io/png_dynamic_io.hpp>
+#include <boost/fusion/view.hpp>
+#include <boost/fusion/include/view.hpp>
 #include <stdint.h>
 #include <vector>
 #include <iostream>
