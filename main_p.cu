@@ -74,6 +74,7 @@ cudaMalloc(&d_newImage+i,sizeof(gray8_pixel_t)*WIDTH);
 }
 //memcopy
 cudaMemcpy2D(d_imgbuff, sizeof(gray8_pixel_t)*WIDTH, h_imgbuff, sizeof(gray8_pixel_t) * WIDTH, sizeof(gray8_pixel_t) *WIDTH, HEIGHT, cudaMemcpyHostToDevice);
+
 //    for(int i = 0; i < WIDTH; i++)
 //    {
 //        cudaMemcpy(d_imgbuff, h_imgbuff, sizeof(gray8_pixel_t) * HEIGHT, cudaMemcpyHostToDevice);
@@ -175,7 +176,7 @@ cout << "finished." << endl;
 
 /*revert image to check*/
 gray8_image_t img2(HEIGHT,WIDTH);
-const View &img_view = view(img2);
+view_t img_view = view(img2);
 
 cout << "create image view" << endl;
 for (int i = 0; i < HEIGHT; ++i) {
