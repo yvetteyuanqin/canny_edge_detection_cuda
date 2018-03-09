@@ -1,8 +1,8 @@
 /**
- *  Sequential canny detection
- *
- *
- */
+*  Sequential canny detection
+*
+*
+*/
 //Yuan Qin
 //Lai Man Tang
 
@@ -20,62 +20,92 @@
 using namespace std;
 
 int main() {
-    
-    struct stopwatch_t* timer = NULL;
-    long double t_gaussian, t_gradient,t_nms,t_thres;
-    /* initialize timer */
-    stopwatch_init ();
-    timer = stopwatch_create ();
-    stopwatch_start (timer);
+
+struct stopwatch_t* timer = NULL;
+long double t_gaussian, t_gradient,t_nms,t_thres;
+/* initialize timer */
+stopwatch_init ();
+timer = stopwatch_create ();
+stopwatch_start (timer);
 //    t_gaussian= stopwatch_stop (timer);
 //    cout<< "Time to execute gaussian:"<< t_gaussian<<endl;
-    
-    
-	//string filename = argv[1]
-    using namespace boost::gil;
-    gray8_image_t img(HEIGHT,WIDTH);
-    png_read_image("001.png", img);
-    //png_write_view("testimg.png",const_view(img));
-    
 
-    // Get a raw pointer to the gray buffer
-    unsigned char * buf = &view(img)[0][0];//new unsigned char[w * h];
-    gray8_pixel_t **h_imgbuff = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*WIDTH);
-    for(int i = 0; i < WIDTH; i++)
-    {
-        *(h_imgbuff+i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*HEIGHT);
-    }
-   
-	/*put the image pixel into the gray buffer*/
-    gray8_view_t srcview = interleaved_view(img.width(), img.height(), (gray8_pixel_t*)buf, view(img).pixels().row_size());
 
-    for (int i = 0; i < HEIGHT; ++i) {
-        for (int j = 0; j < WIDTH; ++j) {
-            h_imgbuff[i][j]=srcview(j, i);
-        }
-    }
+//string filename = argv[1]
+using namespace boost::gil;
+gray8_image_t img(HEIGHT,WIDTH);
+png_read_image("001.png", img);
+//png_write_view("testimg.png",const_view(img));
 
-    /*canny_sequential*/
-    gray8_pixel_t **h_newImage = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*HEIGHT);
-    for(int i = 0; i < WIDTH; i++)
-    {
-        *(h_newImage+i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*WIDTH);
-        for(int j = 0;j<HEIGHT;j++) h_newImage[i][j]=0;
-    }
-    
-	int d_imgbuff[HEIGHT][WIDTH];
-	int h_newImage[HEIGHT][WIDTH];
-     
-    
-    /*apply gaussian filter*/
-	cout << "enter gaussian filter" << endl;
-    stopwatch_start (timer);
-    gaussian_filter<<<,256>>>(newImage,imgbuff,WIDTH, HEIGHT);
-    t_gaussian= stopwatch_stop (timer);
-   
-    cout<< "Time to execute gaussian:"<< t_gaussian<<endl;
-	cout << "finished." << endl;
-    
+
+// Get a raw pointer to the gray buffer
+unsigned char * buf = &view(img)[0][0];//new unsigned char[w * h];
+gray8_pixel_t **h_imgbuff = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*WIDTH);
+for(int i = 0; i < WIDTH; i++)
+{
+*(h_imgbuff+i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*HEIGHT);
+}
+
+/*put the image pixel into the gray buffer*/
+gray8_view_t srcview = interleaved_view(img.width(), img.height(), (gray8_pixel_t*)buf, view(img).pixels().row_size());
+
+for (int i = 0; i < HEIGHT; ++i) {
+for (int j = 0; j < WIDTH; ++j) {
+h_imgbuff[i][j]=srcview(j, i);
+}
+}
+
+/*canny_sequential*/
+gray8_pixel_t **h_newImage = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*HEIGHT);
+for(int i = 0; i < WIDTH; i++)
+{
+*(h_newImage+i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*WIDTH);
+for(int j = 0;j<HEIGHT;j++) h_newImage[i][j]=0;
+}
+
+gray8_pixel_t **d_imgbuff;
+gray8_pixel_t **d_newImage;
+cudaMalloc(&d_imgbuff,sizeof(gray8_pixel_t*)*HEIGHT);
+cudaMalloc(&d_newImage,sizeof(gray8_pixel_t*)*HEIGHT);
+for(int i = 0; i < WIDTH; i++)
+{
+cudaMalloc(&(d_imgbuff+i),sizeof(gray8_pixel_t)*WIDTH);
+cudaMalloc(&(d_newImage+i),sizeof(gray8_pixel_t)*WIDTH);
+}
+//memcopy
+cudaMemcpy2D(d_imgbuff, sizeof(gray8_pixel_t)*WIDTH, h_imgbuff, sizeof(gray8_pixel_t) * WIDTH, sizeof(gray8_pixel_t) *WIDTH, HEIGHT, cudaMemcpyHostToDevice);
+//    for(int i = 0; i < WIDTH; i++)
+//    {
+//        cudaMemcpy(d_imgbuff, h_imgbuff, sizeof(gray8_pixel_t) * HEIGHT, cudaMemcpyHostToDevice);
+//    }
+//
+
+
+
+/*apply gaussian filter*/
+cout << "enter gaussian filter" << endl;
+int numBlocks = 1;
+dim3 threadsPerBlock(HEIGHT, WIDTH);
+stopwatch_start (timer);
+gaussian_filter<<<numBlocks,threadsPerBlock>>>(d_newImage,d_imgbuff,WIDTH, HEIGHT);
+t_gaussian= stopwatch_stop (timer);
+
+//MEMCOPY BACK TO HOST
+cudaMemcpy2D(h_newImage, sizeof(gray8_pixel_t)*WIDTH, d_newImage, sizeof(gray8_pixel_t) * WIDTH, sizeof(gray8_pixel_t) *WIDTH, HEIGHT, cudaMemcpyDeviceToHost);
+
+//free device mem
+
+for(int i = 0; i < WIDTH; i++)
+{
+cudaFree(d_imgbuff+i);
+cudaFree(d_newImage+i);
+}
+cudaFree(d_newImage);
+cudaFree(d_imgbuff);
+
+cout<< "Time to execute gaussian:"<< t_gaussian<<endl;
+cout << "finished." << endl;
+
 
 //    gray8_pixel_t **gradientImg = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*HEIGHT);
 //    for (int i = 0; i < WIDTH; i++)
@@ -139,30 +169,29 @@ int main() {
 //
 //    cout<< "Time to execute thresholded:"<< t_thres<<endl;
 
-    
-    cout << "finished." << endl;
-    
-    
-    /*revert image to check*/
-    gray8_image_t img2(HEIGHT,WIDTH);
-    auto img_view = view(img2);
-    
-	cout << "create image view" << endl;
-	for (int i = 0; i < HEIGHT; ++i) {
-        for (int j = 0; j < WIDTH; ++j) {
-            img_view(j, i) = thresImg[i][j];
-        }
-    }
-	cout << "finished." << endl;
-    
-    png_write_view("testimg.png", const_view(img2));
-   /*
-    cout<<endl;
-    cout<<cnt<<endl;
-    cout<<sizeof(imgbuff)<<' '<<sizeof(imgbuff)<<endl;
-*/
-    
-    return 0;
-    
-}
 
+cout << "finished." << endl;
+
+
+/*revert image to check*/
+gray8_image_t img2(HEIGHT,WIDTH);
+auto img_view = view(img2);
+
+cout << "create image view" << endl;
+for (int i = 0; i < HEIGHT; ++i) {
+for (int j = 0; j < WIDTH; ++j) {
+img_view(j, i) = h_newImage[i][j];
+}
+}
+cout << "finished." << endl;
+
+png_write_view("testimg.png", const_view(img2));
+/*
+cout<<endl;
+cout<<cnt<<endl;
+cout<<sizeof(imgbuff)<<' '<<sizeof(imgbuff)<<endl;
+*/
+
+return 0;
+
+}
