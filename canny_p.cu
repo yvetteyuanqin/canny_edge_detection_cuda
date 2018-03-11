@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 #include "canny_p.h"
-#include "timer.h"
+//#include "timer.h"
 
 using namespace std;
 
@@ -312,10 +312,10 @@ out_pixels[i+1][j+1] = m_edge;
 void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, int WIDTH, int HEIGHT){
 
 /* initialize timer */
-struct stopwatch_t* timer = NULL;
-long double t_gaussian, t_gradient, t_nms, t_thres;
-stopwatch_init();
-timer = stopwatch_create();
+//struct stopwatch_t* timer = NULL;
+//long double t_gaussian, t_gradient, t_nms, t_thres;
+//stopwatch_init();
+//timer = stopwatch_create();
 
 unsigned char **d_imgbuff;
 unsigned char **d_newImage;
@@ -334,9 +334,9 @@ cudaMemcpy2D(d_imgbuff, sizeof(unsigned char)*WIDTH, h_imgbuff, sizeof(unsigned 
 cout << "enter gaussian filter" << endl;
 int numBlocks = 1;
 dim3 threadsPerBlock(HEIGHT, WIDTH);
-stopwatch_start(timer);
+//stopwatch_start(timer);
 gaussian_filter <<<numBlocks, threadsPerBlock >>>(d_newImage, d_imgbuff, WIDTH, HEIGHT);
-t_gaussian = stopwatch_stop(timer);
+//t_gaussian = stopwatch_stop(timer);
 
 //MEMCOPY BACK TO HOST
 cudaMemcpy2D(h_newImg, sizeof(unsigned char)*WIDTH, d_newImage, sizeof(unsigned char) * WIDTH, sizeof(unsigned char) *WIDTH, HEIGHT, cudaMemcpyDeviceToHost);
