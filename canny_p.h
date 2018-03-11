@@ -4,6 +4,7 @@
 #include <math.h>
 #include <iostream>
 #include <vector>
+#include "timer.h"
 
 #define KERNEL_SIZE 7
 

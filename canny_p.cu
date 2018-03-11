@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 #include "canny_p.h"
-
+#include "timer.h"
 
 using namespace std;
 
