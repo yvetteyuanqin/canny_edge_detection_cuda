@@ -50,8 +50,10 @@ int wd = 5;
 double **filter=(double **)malloc(sizeof(double*)*hi);
 for (int i = 0; i < wd; i++)
 {
-*(filter+i)=(double **)malloc(sizeof(double)*wd);
+*(filter+i)=(double *)malloc(sizeof(double)*wd);
 }
+
+
 
 double sum=0.0;
 
