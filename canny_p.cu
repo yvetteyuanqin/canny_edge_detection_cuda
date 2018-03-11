@@ -45,26 +45,26 @@ void gaussian_filter(unsigned char **newImage,unsigned char **in_pixels,int widt
 {
 // create kernel
 double **filter;
-int h = 5;
-int w = 5;
-cudaMalloc(&filter, sizeof(unsigned char*)*h);
-for (int i = 0; i < w; i++)
+int hi = 5;
+int wd = 5;
+cudaMalloc(&filter, sizeof(unsigned char*)*hi);
+for (int i = 0; i < wd; i++)
 {
-cudaMalloc(&filter[i], sizeof(unsigned char)*w);
+cudaMalloc(&filter[i], sizeof(unsigned char)*wd);
 }
 
 double sum=0.0;
 
 double sigma = 10.0;
-for (int i=0 ; i<height ; i++) {
-for (int j=0 ; j<width ; j++) {
+for (int i=0 ; i<ht ; i++) {
+for (int j=0 ; j<wd ; j++) {
 filter[i][j] = exp(-(i*i+j*j)/(2*sigma*sigma))/(2*M_PI*sigma*sigma);
 sum += filter[i][j];
 }
 }
 
-for (i=0 ; i<h ; i++) {
-for (j=0 ; j<w ; j++) {
+for (int i=0 ; i<hi ; i++) {
+for (int j=0 ; j<wd ; j++) {
 filter[i][j] /= sum;
 }
 }
