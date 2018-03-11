@@ -11,7 +11,7 @@
 //__device__ typedef std::vector<double> Array;
 //__device__ typedef std::vector<Array> Matrix;
 
-__global__
+
 void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, int WIDTH, int HEIGHT);
 
 
