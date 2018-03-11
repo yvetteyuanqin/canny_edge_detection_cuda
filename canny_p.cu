@@ -75,7 +75,7 @@ __syncthreads();
 
 for (int i=0 ; i<hi ; i++) {
 for (int j=0 ; j<wd ; j++) {
-filter[i][j] *= sum;
+filter[i][j] /= sum;
 }
 }
 
