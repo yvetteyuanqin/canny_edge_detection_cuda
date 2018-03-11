@@ -47,22 +47,26 @@ void gaussian_filter(unsigned char **newImage,unsigned char **in_pixels,int widt
 
 int hi = 5;
 int wd = 5;
-__shared__ double filter[height][width];
+__shared__ double filter[5][5];
+
 //=(double **)malloc(sizeof(double*)*hi);
 //for (int i = 0; i < wd; i++)
 //{
 //*(filter+i)=(double *)malloc(sizeof(double)*wd);
 //}
 
+/*allocate newimage*/
+int i = threadIdx.x;
+int j = threadIdx.y;
 
 
 double sum=0.0;
 
 double sigma = 10.0;
-for (int i=0 ; i<hi ; i++) {
-for (int j=0 ; j<wd ; j++) {
-filter[i][j] = exp(-(i*i+j*j)/(2*sigma*sigma))/(2*M_PI*sigma*sigma);
-sum += filter[i][j];
+for (int h=0 ; i<hi ; h++) {
+for (int w=0 ; j<wd ; w++) {
+filter[h][w] = exp(-(h*h+w*w)/(2*sigma*sigma))/(2*M_PI*sigma*sigma);
+sum += filter[h][w];
 }
 }
 
@@ -88,9 +92,7 @@ int newImageWidth = width-filterWidth;
 
 
 int h,w;
-/*allocate newimage*/
-int i = threadIdx.x;
-int j = threadIdx.y;
+
 //
 //        for (i=0 ; i<newImageHeight ; i++) {
 //            for (j=0 ; j<newImageWidth ; j++) {
