@@ -268,6 +268,7 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, int WIDT
 	
 	/* initialize timer */
 	struct stopwatch_t* timer = NULL;
+	long double t_gaussian, t_gradient, t_nms, t_thres;
 	stopwatch_init();
 	timer = stopwatch_create();
 
