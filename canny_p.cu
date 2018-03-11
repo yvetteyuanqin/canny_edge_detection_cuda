@@ -9,9 +9,17 @@ using namespace std;
 
 /*create a gaussian filter*/
 __device__
-Matrix createKernel(int height, int width, double sigma)
+double** createKernel(int height, int width, double sigma)
 {
-Matrix kernel(height, Array(width));
+//Matrix kernel(height, Array(width));
+
+double **d_kernel;
+cudaMalloc(&d_kernel, sizeof(unsigned char*)*height);
+for (int i = 0; i < width; i++)
+{
+cudaMalloc(&d_kernel[i], sizeof(unsigned char)*width);
+}
+
 double sum=0.0;
 int i,j;
 
@@ -36,9 +44,9 @@ __global__
 void gaussian_filter(unsigned char **newImage,unsigned char **in_pixels,int width, int height)
 {
 
-Matrix filter = createKernel(5, 5, 10.0);
-int filterHeight = filter.size();
-int filterWidth = filter[0].size();
+double** filter = createKernel(5, 5, 10.0);
+int filterHeight = 5;
+int filterWidth = 5;
 int newImageHeight = height-filterHeight;
 int newImageWidth = width-filterWidth;
 
