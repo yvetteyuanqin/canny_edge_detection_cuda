@@ -56,7 +56,7 @@ cudaMalloc(&filter[i], sizeof(unsigned char)*wd);
 double sum=0.0;
 
 double sigma = 10.0;
-for (int i=0 ; i<ht ; i++) {
+for (int i=0 ; i<hi ; i++) {
 for (int j=0 ; j<wd ; j++) {
 filter[i][j] = exp(-(i*i+j*j)/(2*sigma*sigma))/(2*M_PI*sigma*sigma);
 sum += filter[i][j];
