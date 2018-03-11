@@ -8,7 +8,7 @@
 #include <thrust/host_vector.h>
 #include <thrust/device_vector.h>
 
-
+using namespace thrust;
 typedef thrust::vector<double> Array;//device
 typedef thrust::vector<Array> Matrix;//device
 
