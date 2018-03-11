@@ -8,7 +8,7 @@
 using namespace std;
 
 /*create a gaussian filter*/
-__device__
+__global__
 double** createKernel(int height, int width, double sigma)
 {
 //Matrix kernel(height, Array(width));
