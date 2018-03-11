@@ -5,51 +5,94 @@
 #include "canny_p.h"
 #include "timer.h"
 
-
-
 using namespace std;
 
 /*create a gaussian filter*/
-__device__
-Matrix createKernel(int height, int width, double sigma)
-{
-Matrix kernel(height, Array(width));
-double sum=0.0;
-int i,j;
-
-for (i=0 ; i<height ; i++) {
-for (j=0 ; j<width ; j++) {
-kernel[i][j] = exp(-(i*i+j*j)/(2*sigma*sigma))/(2*M_PI*sigma*sigma);
-sum += kernel[i][j];
-}
-}
-
-for (i=0 ; i<height ; i++) {
-for (j=0 ; j<width ; j++) {
-kernel[i][j] /= sum;
-}
-}
-
-return kernel;
-}
+//__global__
+//double** createKernel(int height, int width, double sigma)
+//{
+//Matrix kernel(height, Array(width));
+//
+//double **d_kernel;
+//cudaMalloc(&d_kernel, sizeof(unsigned char*)*height);
+//for (int i = 0; i < width; i++)
+//{
+//cudaMalloc(&d_kernel[i], sizeof(unsigned char)*width);
+//}
+//
+//double sum=0.0;
+//int i,j;
+//
+//for (i=0 ; i<height ; i++) {
+//for (j=0 ; j<width ; j++) {
+//d_kernel[i][j] = exp(-(i*i+j*j)/(2*sigma*sigma))/(2*M_PI*sigma*sigma);
+//sum += d_kernel[i][j];
+//}
+//}
+//
+//for (i=0 ; i<height ; i++) {
+//for (j=0 ; j<width ; j++) {
+//d_kernel[i][j] /= sum;
+//}
+//}
+//
+//return d_kernel;
+//}
 
 /*Step 1 blur the image to reduce noice*/
 __global__
 void gaussian_filter(unsigned char **newImage,unsigned char **in_pixels,int width, int height)
 {
+// create kernel
 
-Matrix filter = createKernel(5, 5, 10.0);
-int filterHeight = filter.size();
-int filterWidth = filter[0].size();
+int hi = 5;
+int wd = 5;
+__shared__ double filter[5][5];
+
+//=(double **)malloc(sizeof(double*)*hi);
+//for (int i = 0; i < wd; i++)
+//{
+//*(filter+i)=(double *)malloc(sizeof(double)*wd);
+//}
+
+/*allocate newimage*/
+int i = threadIdx.x;
+int j = threadIdx.y;
+
+
+double sum=0.0;
+
+double sigma = 10.0;
+for (int h=0 ; i<hi ; h++) {
+for (int w=0 ; j<wd ; w++) {
+filter[h][w] = exp(-(h*h+w*w)/(2*sigma*sigma))/(2*M_PI*sigma*sigma);
+sum += filter[h][w];
+}
+}
+
+if (threadIdx.x == 0) sum = 1/sum;
+__syncthreads();
+
+for (int i=0 ; i<hi ; i++) {
+for (int j=0 ; j<wd ; j++) {
+filter[i][j] *= sum;
+}
+}
+
+__syncthreads();
+
+
+//start filtering
+//double** filter = createKernel(5, 5, 10.0);
+int filterHeight = 5;
+int filterWidth = 5;
 int newImageHeight = height-filterHeight;
 int newImageWidth = width-filterWidth;
 
 
 
 int h,w;
-/*allocate newimage*/
-int i = threadIdx.x;
-int j = threadIdx.y;
+
 //
 //        for (i=0 ; i<newImageHeight ; i++) {
 //            for (j=0 ; j<newImageWidth ; j++) {
@@ -266,7 +309,6 @@ out_pixels[i+1][j+1] = m_edge;
 }
 }
 
-
 __global__
 void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, int WIDTH, int HEIGHT){
 
@@ -316,3 +358,4 @@ cout << "finished." << endl;
 
 
 }
+
