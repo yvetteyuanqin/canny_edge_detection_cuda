@@ -5,7 +5,12 @@
 #include "canny_p.h"
 #include "timer.h"
 
+#include <thrust/host_vector.h>
+#include <thrust/device_vector.h>
 
+
+typedef thrust::vector<double> Array;//device
+typedef thrust::vector<Array> Matrix;//device
 
 using namespace std;
 
