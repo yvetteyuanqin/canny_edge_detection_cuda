@@ -352,7 +352,7 @@ cudaFree(d_newImage + i);
 cudaFree(d_newImage);
 cudaFree(d_imgbuff);
 
-cout << "Time to execute gaussian:" << t_gaussian << endl;
+//cout << "Time to execute gaussian:" << t_gaussian << endl;
 cout << "finished." << endl;
 
 
