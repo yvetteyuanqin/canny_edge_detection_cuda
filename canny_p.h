@@ -16,7 +16,7 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, int WIDT
 
 
 /*create a gaussian filter*/
-__device__ Matrix createKernel(int height, int width, double sigma);
+__device__ double** createKernel(int height, int width, double sigma);
 /*Step 1 blur the image to reduce noice*/
 __global__ void gaussian_filter(unsigned char**newImage, unsigned char **in_pixels,int width, int height);
 __global__ void gradient(unsigned char **newImage, unsigned char **mag, int width, int height,
