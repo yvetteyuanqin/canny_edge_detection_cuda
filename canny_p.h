@@ -21,7 +21,6 @@ double** createKernel(int height, int width, double sigma);
 void gaussian_filter(unsigned char**newImage, unsigned char **in_pixels,int width, int height);
 void gradient(unsigned char **newImage, unsigned char **mag, int width, int height,
                          unsigned char **deltaX, unsigned char **deltaY);
-                         unsigned char **deltaX, unsigned char **deltaY);
 void apply_hysteresis(unsigned char **out_pixels, unsigned char **in_pixels, unsigned  char t_high, unsigned  char t_low, int width,int height);
 void trace_immed_neighbors(unsigned char **out_pixels, unsigned char **in_pixels, unsigned i, unsigned j, unsigned  char t_low);
 
