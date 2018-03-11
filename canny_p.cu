@@ -40,7 +40,7 @@ using namespace std;
 //}
 
 /*Step 1 blur the image to reduce noice*/
-__device__
+__global__
 void gaussian_filter(unsigned char **newImage,unsigned char **in_pixels,int width, int height)
 {
 // create kernel
@@ -309,7 +309,6 @@ out_pixels[i+1][j+1] = m_edge;
 }
 }
 
-__global__
 void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, int WIDTH, int HEIGHT){
 
 /* initialize timer */
