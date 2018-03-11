@@ -8,43 +8,69 @@
 using namespace std;
 
 /*create a gaussian filter*/
-__global__
-double** createKernel(int height, int width, double sigma)
-{
+//__global__
+//double** createKernel(int height, int width, double sigma)
+//{
 //Matrix kernel(height, Array(width));
-
-double **d_kernel;
-cudaMalloc(&d_kernel, sizeof(unsigned char*)*height);
-for (int i = 0; i < width; i++)
-{
-cudaMalloc(&d_kernel[i], sizeof(unsigned char)*width);
-}
-
-double sum=0.0;
-int i,j;
-
-for (i=0 ; i<height ; i++) {
-for (j=0 ; j<width ; j++) {
-d_kernel[i][j] = exp(-(i*i+j*j)/(2*sigma*sigma))/(2*M_PI*sigma*sigma);
-sum += d_kernel[i][j];
-}
-}
-
-for (i=0 ; i<height ; i++) {
-for (j=0 ; j<width ; j++) {
-d_kernel[i][j] /= sum;
-}
-}
-
-return d_kernel;
-}
+//
+//double **d_kernel;
+//cudaMalloc(&d_kernel, sizeof(unsigned char*)*height);
+//for (int i = 0; i < width; i++)
+//{
+//cudaMalloc(&d_kernel[i], sizeof(unsigned char)*width);
+//}
+//
+//double sum=0.0;
+//int i,j;
+//
+//for (i=0 ; i<height ; i++) {
+//for (j=0 ; j<width ; j++) {
+//d_kernel[i][j] = exp(-(i*i+j*j)/(2*sigma*sigma))/(2*M_PI*sigma*sigma);
+//sum += d_kernel[i][j];
+//}
+//}
+//
+//for (i=0 ; i<height ; i++) {
+//for (j=0 ; j<width ; j++) {
+//d_kernel[i][j] /= sum;
+//}
+//}
+//
+//return d_kernel;
+//}
 
 /*Step 1 blur the image to reduce noice*/
 __global__
 void gaussian_filter(unsigned char **newImage,unsigned char **in_pixels,int width, int height)
 {
+// create kernel
+double **filter;
+cudaMalloc(&filter, sizeof(unsigned char*)*height);
+for (int i = 0; i < width; i++)
+{
+cudaMalloc(&filter[i], sizeof(unsigned char)*width);
+}
 
-double** filter = createKernel(5, 5, 10.0);
+double sum=0.0;
+int i,j;
+int height = 5;
+int width = 5;
+double sigma = 10.0
+for (i=0 ; i<height ; i++) {
+for (j=0 ; j<width ; j++) {
+filter[i][j] = exp(-(i*i+j*j)/(2*sigma*sigma))/(2*M_PI*sigma*sigma);
+sum += filter[i][j];
+}
+}
+
+for (i=0 ; i<height ; i++) {
+for (j=0 ; j<width ; j++) {
+filter[i][j] /= sum;
+}
+}
+
+//start filtering
+//double** filter = createKernel(5, 5, 10.0);
 int filterHeight = 5;
 int filterWidth = 5;
 int newImageHeight = height-filterHeight;
