@@ -9,8 +9,8 @@
 #include <thrust/device_vector.h>
 #define KERNEL_SIZE 7
 
-__device__ typedef thrust::vector<double> Array;
-__device__ typedef thrust::vector<Array> Matrix;
+typedef thrust::vector<double> Array;
+typedef thrust::vector<Array> Matrix;
 
 
 void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, int WIDTH, int HEIGHT);
