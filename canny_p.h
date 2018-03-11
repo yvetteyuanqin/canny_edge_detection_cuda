@@ -8,8 +8,8 @@
 
 #define KERNEL_SIZE 7
 
-typedef std::vector<double> Array;
-typedef std::vector<Array> Matrix;
+__device__ typedef std::vector<double> Array;
+__device__ typedef std::vector<Array> Matrix;
 
 
 void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, int WIDTH, int HEIGHT);
