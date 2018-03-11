@@ -47,11 +47,12 @@ void gaussian_filter(unsigned char **newImage,unsigned char **in_pixels,int widt
 
 int hi = 5;
 int wd = 5;
-double **filter=(double **)malloc(sizeof(double*)*hi);
-for (int i = 0; i < wd; i++)
-{
-*(filter+i)=(double *)malloc(sizeof(double)*wd);
-}
+__shared__ double filter[height][width];
+//=(double **)malloc(sizeof(double*)*hi);
+//for (int i = 0; i < wd; i++)
+//{
+//*(filter+i)=(double *)malloc(sizeof(double)*wd);
+//}
 
 
 
@@ -65,11 +66,17 @@ sum += filter[i][j];
 }
 }
 
+if (threadIdx.x == 0) sum = 1/sum;
+__syncthreads();
+
 for (int i=0 ; i<hi ; i++) {
 for (int j=0 ; j<wd ; j++) {
-filter[i][j] /= sum;
+filter[i][j] *= sum;
 }
 }
+
+__syncthreads();
+
 
 //start filtering
 //double** filter = createKernel(5, 5, 10.0);
