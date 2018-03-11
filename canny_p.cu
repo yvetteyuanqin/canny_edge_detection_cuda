@@ -26,7 +26,7 @@ int i,j;
 for (i=0 ; i<height ; i++) {
 for (j=0 ; j<width ; j++) {
 d_kernel[i][j] = exp(-(i*i+j*j)/(2*sigma*sigma))/(2*M_PI*sigma*sigma);
-sum += kernel[i][j];
+sum += d_kernel[i][j];
 }
 }
 
