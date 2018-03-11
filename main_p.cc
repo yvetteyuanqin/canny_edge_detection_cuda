@@ -66,6 +66,13 @@ int main() {
 
     edge_detector(h_newImage, h_imgbuff, WIDTH, HEIGHT);
 
+	gray8_pixel_t **newImage = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*HEIGHT);
+	for (int i = 0; i < WIDTH; i++)
+	{
+		*(newImage + i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*WIDTH);
+		for (int j = 0; j<HEIGHT; j++) newImage[i][j] = h_newImage[i][j];
+	}
+
 
 
 
@@ -76,7 +83,7 @@ int main() {
 	cout << "create image view" << endl;
 	for (int i = 0; i < HEIGHT; ++i) {
 		for (int j = 0; j < WIDTH; ++j) {
-			img_view(j, i) = (gray8_view_t)h_newImage[i][j];
+			img_view(j, i) = newImage[i][j];
 		}
 	}
 	cout << "finished." << endl;
