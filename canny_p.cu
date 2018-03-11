@@ -8,17 +8,17 @@
 #include <thrust/host_vector.h>
 #include <thrust/device_vector.h>
 
-//using namespace thrust;
-//typedef thrust::vector<double> Array;//device
-//typedef thrust::vector<Array> Matrix;//device
+using namespace thrust;
+typedef thrust::vector<double> Array;//device
+typedef thrust::vector<Array> Matrix;//device
 
 using namespace std;
 
 /*create a gaussian filter*/
 __device__
-thrust::vector<thrust::vector<double>> createKernel(int height, int width, double sigma)
+Matrix createKernel(int height, int width, double sigma)
 {
-thrust::vector<thrust::vector<double>> kernel(height, thrust::vector<Array>(width));
+Matrix kernel(height, Array(width));
 double sum=0.0;
 int i,j;
 
