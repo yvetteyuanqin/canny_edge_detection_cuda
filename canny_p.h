@@ -5,15 +5,14 @@
 #include <iostream>
 #include <vector>
 #include "timer.h"
-#include <thrust/host_vector.h>
-#include <thrust/device_vector.h>
+#include "canny_p.cu"
 #define KERNEL_SIZE 7
 
-typedef thrust::vector<double> Array;
-typedef thrust::vector<Array> Matrix;
+__device__ typedef std::vector<double> Array;
+__device__ typedef std::vector<Array> Matrix;
 
 
-void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, int WIDTH, int HEIGHT);
+__global__ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, int WIDTH, int HEIGHT);
 
 
 /*create a gaussian filter*/

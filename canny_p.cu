@@ -5,12 +5,7 @@
 #include "canny_p.h"
 #include "timer.h"
 
-#include <thrust/host_vector.h>
-#include <thrust/device_vector.h>
 
-using namespace thrust;
-typedef thrust::vector<double> Array;//device
-typedef thrust::vector<Array> Matrix;//device
 
 using namespace std;
 
@@ -271,6 +266,8 @@ out_pixels[i+1][j+1] = m_edge;
 }
 }
 
+
+__global__
 void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, int WIDTH, int HEIGHT){
 
 /* initialize timer */
@@ -319,4 +316,3 @@ cout << "finished." << endl;
 
 
 }
-
