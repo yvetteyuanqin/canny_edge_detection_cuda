@@ -23,12 +23,11 @@ using namespace std;
 
 int main() {
 
-	struct stopwatch_t* timer = NULL;
+
 	long double t_gaussian, t_gradient, t_nms, t_thres;
 	/* initialize timer */
 	stopwatch_init();
-	timer = stopwatch_create();
-	stopwatch_start(timer);
+
 	//    t_gaussian= stopwatch_stop (timer);
 	//    cout<< "Time to execute gaussian:"<< t_gaussian<<endl;
 

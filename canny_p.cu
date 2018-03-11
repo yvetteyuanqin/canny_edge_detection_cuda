@@ -265,7 +265,9 @@ out_pixels[i+1][j+1] = m_edge;
 }
 
 void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, int WIDTH, int HEIGHT){
-
+	
+	/* initialize timer */
+	struct stopwatch_t* timer = NULL;
 	stopwatch_init();
 	timer = stopwatch_create();
 
@@ -291,7 +293,7 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, int WIDT
 	t_gaussian = stopwatch_stop(timer);
 
 	//MEMCOPY BACK TO HOST
-	cudaMemcpy2D(h_newImage, sizeof(unsigned char)*WIDTH, d_newImage, sizeof(unsigned char) * WIDTH, sizeof(unsigned char) *WIDTH, HEIGHT, cudaMemcpyDeviceToHost);
+	cudaMemcpy2D(h_newImg, sizeof(unsigned char)*WIDTH, d_newImage, sizeof(unsigned char) * WIDTH, sizeof(unsigned char) *WIDTH, HEIGHT, cudaMemcpyDeviceToHost);
 
 	//free device mem
 
