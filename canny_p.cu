@@ -264,7 +264,7 @@ out_pixels[i+1][j+1] = m_edge;
 }
 }
 
-void edge_detector((unsigned char)** h_newImg, (unsigned char)** h_imgbuff, int WIDTH, int HEIGHT){
+void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, int WIDTH, int HEIGHT){
 
 
     unsigned char **d_imgbuff;
