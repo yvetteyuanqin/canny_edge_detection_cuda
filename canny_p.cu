@@ -25,18 +25,18 @@ int i,j;
 
 for (i=0 ; i<height ; i++) {
 for (j=0 ; j<width ; j++) {
-kernel[i][j] = exp(-(i*i+j*j)/(2*sigma*sigma))/(2*M_PI*sigma*sigma);
+d_kernel[i][j] = exp(-(i*i+j*j)/(2*sigma*sigma))/(2*M_PI*sigma*sigma);
 sum += kernel[i][j];
 }
 }
 
 for (i=0 ; i<height ; i++) {
 for (j=0 ; j<width ; j++) {
-kernel[i][j] /= sum;
+d_kernel[i][j] /= sum;
 }
 }
 
-return kernel;
+return d_kernel;
 }
 
 /*Step 1 blur the image to reduce noice*/
