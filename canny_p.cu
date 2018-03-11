@@ -44,13 +44,13 @@ __global__
 void gaussian_filter(unsigned char **newImage,unsigned char **in_pixels,int width, int height)
 {
 // create kernel
-double **filter;
+
 int hi = 5;
 int wd = 5;
-cudaMalloc(&filter, sizeof(unsigned char*)*hi);
+double **filter=malloc(sizeof(unsigned char*)*hi);
 for (int i = 0; i < wd; i++)
 {
-cudaMalloc(&filter[i], sizeof(unsigned char)*wd);
+double *filter[i]=malloc(sizeof(unsigned char)*wd);
 }
 
 double sum=0.0;
