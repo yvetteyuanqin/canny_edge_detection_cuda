@@ -5,94 +5,51 @@
 #include "canny_p.h"
 #include "timer.h"
 
+
+
 using namespace std;
 
 /*create a gaussian filter*/
-//__global__
-//double** createKernel(int height, int width, double sigma)
-//{
-//Matrix kernel(height, Array(width));
-//
-//double **d_kernel;
-//cudaMalloc(&d_kernel, sizeof(unsigned char*)*height);
-//for (int i = 0; i < width; i++)
-//{
-//cudaMalloc(&d_kernel[i], sizeof(unsigned char)*width);
-//}
-//
-//double sum=0.0;
-//int i,j;
-//
-//for (i=0 ; i<height ; i++) {
-//for (j=0 ; j<width ; j++) {
-//d_kernel[i][j] = exp(-(i*i+j*j)/(2*sigma*sigma))/(2*M_PI*sigma*sigma);
-//sum += d_kernel[i][j];
-//}
-//}
-//
-//for (i=0 ; i<height ; i++) {
-//for (j=0 ; j<width ; j++) {
-//d_kernel[i][j] /= sum;
-//}
-//}
-//
-//return d_kernel;
-//}
+__device__
+Matrix createKernel(int height, int width, double sigma)
+{
+Matrix kernel(height, Array(width));
+double sum=0.0;
+int i,j;
+
+for (i=0 ; i<height ; i++) {
+for (j=0 ; j<width ; j++) {
+kernel[i][j] = exp(-(i*i+j*j)/(2*sigma*sigma))/(2*M_PI*sigma*sigma);
+sum += kernel[i][j];
+}
+}
+
+for (i=0 ; i<height ; i++) {
+for (j=0 ; j<width ; j++) {
+kernel[i][j] /= sum;
+}
+}
+
+return kernel;
+}
 
 /*Step 1 blur the image to reduce noice*/
 __global__
 void gaussian_filter(unsigned char **newImage,unsigned char **in_pixels,int width, int height)
 {
-// create kernel
 
-int hi = 5;
-int wd = 5;
-__shared__ double filter[5][5];
-
-//=(double **)malloc(sizeof(double*)*hi);
-//for (int i = 0; i < wd; i++)
-//{
-//*(filter+i)=(double *)malloc(sizeof(double)*wd);
-//}
-
-/*allocate newimage*/
-int i = threadIdx.x;
-int j = threadIdx.y;
-
-
-double sum=0.0;
-
-double sigma = 10.0;
-for (int h=0 ; i<hi ; h++) {
-for (int w=0 ; j<wd ; w++) {
-filter[h][w] = exp(-(h*h+w*w)/(2*sigma*sigma))/(2*M_PI*sigma*sigma);
-sum += filter[h][w];
-}
-}
-
-if (threadIdx.x == 0) sum = 1/sum;
-__syncthreads();
-
-for (int i=0 ; i<hi ; i++) {
-for (int j=0 ; j<wd ; j++) {
-filter[i][j] *= sum;
-}
-}
-
-__syncthreads();
-
-
-//start filtering
-//double** filter = createKernel(5, 5, 10.0);
-int filterHeight = 5;
-int filterWidth = 5;
+Matrix filter = createKernel(5, 5, 10.0);
+int filterHeight = filter.size();
+int filterWidth = filter[0].size();
 int newImageHeight = height-filterHeight;
 int newImageWidth = width-filterWidth;
 
 
 
 int h,w;
-
+/*allocate newimage*/
+int i = threadIdx.x;
+int j = threadIdx.y;
 //
 //        for (i=0 ; i<newImageHeight ; i++) {
 //            for (j=0 ; j<newImageWidth ; j++) {
@@ -268,7 +225,7 @@ out_pixels[i][j] = 0xff;
 
 /* check 8 immediately surrounding neighbors
 * if any of the neighbors are above the low threshold, preserve edge */
- trace_immed_neighbors(out_pixels, in_pixels, i,j, t_low);
+trace_immed_neighbors(out_pixels, in_pixels, i,j, t_low);
 } else {
 out_pixels[i][j] = 0x00;
 }
@@ -310,50 +267,50 @@ out_pixels[i+1][j+1] = m_edge;
 }
 
 void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, int WIDTH, int HEIGHT){
-	
-	/* initialize timer */
-	struct stopwatch_t* timer = NULL;
-	long double t_gaussian, t_gradient, t_nms, t_thres;
-	stopwatch_init();
-	timer = stopwatch_create();
 
-    unsigned char **d_imgbuff;
-	unsigned char **d_newImage;
-	cudaMalloc(&d_imgbuff, sizeof(unsigned char*)*HEIGHT);
-	cudaMalloc(&d_newImage, sizeof(unsigned char*)*HEIGHT);
-	for (int i = 0; i < WIDTH; i++)
-	{
-		cudaMalloc(&d_imgbuff[i], sizeof(unsigned char)*WIDTH);
-		cudaMalloc(&d_newImage + i, sizeof(unsigned char)*WIDTH);
-	}
-	//memcopy
-	cudaMemcpy2D(d_imgbuff, sizeof(unsigned char)*WIDTH, h_imgbuff, sizeof(unsigned char) * WIDTH, sizeof(unsigned char) *WIDTH, HEIGHT, cudaMemcpyHostToDevice);
+/* initialize timer */
+struct stopwatch_t* timer = NULL;
+long double t_gaussian, t_gradient, t_nms, t_thres;
+stopwatch_init();
+timer = stopwatch_create();
 
-	
-	/*apply gaussian filter*/
-	cout << "enter gaussian filter" << endl;
-	int numBlocks = 1;
-	dim3 threadsPerBlock(HEIGHT, WIDTH);
-	stopwatch_start(timer);
-	gaussian_filter <<<numBlocks, threadsPerBlock >>>(d_newImage, d_imgbuff, WIDTH, HEIGHT);
-	t_gaussian = stopwatch_stop(timer);
-
-	//MEMCOPY BACK TO HOST
-	cudaMemcpy2D(h_newImg, sizeof(unsigned char)*WIDTH, d_newImage, sizeof(unsigned char) * WIDTH, sizeof(unsigned char) *WIDTH, HEIGHT, cudaMemcpyDeviceToHost);
-
-	//free device mem
+unsigned char **d_imgbuff;
+unsigned char **d_newImage;
+cudaMalloc(&d_imgbuff, sizeof(unsigned char*)*HEIGHT);
+cudaMalloc(&d_newImage, sizeof(unsigned char*)*HEIGHT);
+for (int i = 0; i < WIDTH; i++)
+{
+cudaMalloc(&d_imgbuff[i], sizeof(unsigned char)*WIDTH);
+cudaMalloc(&d_newImage + i, sizeof(unsigned char)*WIDTH);
+}
+//memcopy
+cudaMemcpy2D(d_imgbuff, sizeof(unsigned char)*WIDTH, h_imgbuff, sizeof(unsigned char) * WIDTH, sizeof(unsigned char) *WIDTH, HEIGHT, cudaMemcpyHostToDevice);
 
 
-	for (int i = 0; i < WIDTH; i++)
-	{
-		cudaFree(d_imgbuff + i);
-		cudaFree(d_newImage + i);
-	}
-	cudaFree(d_newImage);
-	cudaFree(d_imgbuff);
+/*apply gaussian filter*/
+cout << "enter gaussian filter" << endl;
+int numBlocks = 1;
+dim3 threadsPerBlock(HEIGHT, WIDTH);
+stopwatch_start(timer);
+gaussian_filter <<<numBlocks, threadsPerBlock >>>(d_newImage, d_imgbuff, WIDTH, HEIGHT);
+t_gaussian = stopwatch_stop(timer);
 
-	cout << "Time to execute gaussian:" << t_gaussian << endl;
-	cout << "finished." << endl;
+//MEMCOPY BACK TO HOST
+cudaMemcpy2D(h_newImg, sizeof(unsigned char)*WIDTH, d_newImage, sizeof(unsigned char) * WIDTH, sizeof(unsigned char) *WIDTH, HEIGHT, cudaMemcpyDeviceToHost);
+
+//free device mem
+
+
+for (int i = 0; i < WIDTH; i++)
+{
+cudaFree(d_imgbuff + i);
+cudaFree(d_newImage + i);
+}
+cudaFree(d_newImage);
+cudaFree(d_imgbuff);
+
+cout << "Time to execute gaussian:" << t_gaussian << endl;
+cout << "finished." << endl;
 
 
 }
