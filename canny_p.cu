@@ -9,8 +9,8 @@
 #include <thrust/device_vector.h>
 
 
-typedef thrust::vector<double> Array;//device
-typedef thrust::vector<Array> Matrix;//device
+#define thrust::vector<double> Array//device
+#define thrust::vector<Array> Matrix//device
 
 using namespace std;
 
