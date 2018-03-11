@@ -1,5 +1,3 @@
-#include <boost/gil/rgb.hpp>
-#include <boost/gil/extension/io/png_dynamic_io.hpp>
 #include <stdint.h>
 #include <math.h>
 #include <iostream>
@@ -7,7 +5,6 @@
 #include "canny_p.h"
 
 
-using namespace boost::gil;
 using namespace std;
 
 /*create a gaussian filter*/
