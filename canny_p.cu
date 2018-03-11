@@ -47,10 +47,10 @@ void gaussian_filter(unsigned char **newImage,unsigned char **in_pixels,int widt
 
 int hi = 5;
 int wd = 5;
-double **filter=malloc(sizeof(double*)*hi);
+double **filter=(double **)malloc(sizeof(double*)*hi);
 for (int i = 0; i < wd; i++)
 {
-double *filter[i]=malloc(sizeof(double)*wd);
+double *filter[i]=(double **)malloc(sizeof(double)*wd);
 }
 
 double sum=0.0;
