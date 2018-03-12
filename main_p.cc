@@ -22,15 +22,12 @@
 using namespace std;
 
 int main() {
-
-
-	long double t_gaussian, t_gradient, t_nms, t_thres;
 	/* initialize timer */
-	stopwatch_init();
-
-	//    t_gaussian= stopwatch_stop (timer);
-	//    cout<< "Time to execute gaussian:"<< t_gaussian<<endl;
-
+   
+    struct stopwatch_t* timer = NULL;
+    long double t_gaussian, t_gradient, t_nms, t_thres;
+    stopwatch_init();
+    timer = stopwatch_create();
 
 	//string filename = argv[1]
 	using namespace boost::gil;
@@ -63,9 +60,13 @@ int main() {
 		*(h_newImage + i) = (unsigned char*)malloc(sizeof(unsigned char)*WIDTH);
 		for (int j = 0; j < HEIGHT; j++) h_newImage[i][j] = 0;
 	}
-
+    
+    stopwatch_start(timer);
     edge_detector(h_newImage, h_imgbuff, WIDTH, HEIGHT);
-
+    t_gaussian = stopwatch_stop(timer);
+    cout<< "Time to execute gaussian:"<< t_gaussian<<endl;
+    
+    
 	gray8_pixel_t **newImage = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*HEIGHT);
 	for (int i = 0; i < WIDTH; i++)
 	{
