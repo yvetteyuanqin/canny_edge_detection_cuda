@@ -325,12 +325,14 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, int WIDT
 	cout<<"cudaMalloc"<<endl;
 	cudaMalloc(&d_imgbuff, sizeof(unsigned char*)*HEIGHT);
 	cudaMalloc(&d_newImage, sizeof(unsigned char*)*HEIGHT);
+	printf("cuda1D finish");
 	for (int i = 0; i < WIDTH; i++)
 	{
 		cudaMalloc(&d_imgbuff[i], sizeof(unsigned char)*WIDTH);
-		cudaMalloc(&d_newImage + i, sizeof(unsigned char)*WIDTH);
+		cudaMalloc(&d_newImage[i], sizeof(unsigned char)*WIDTH);
 	}
 	//memcopy
+	printf("cuda2D finish");
 	cudaMemcpy2D(d_imgbuff, sizeof(unsigned char)*WIDTH, h_imgbuff, sizeof(unsigned char) * WIDTH, sizeof(unsigned char) *WIDTH, HEIGHT, cudaMemcpyHostToDevice);
 	cout<<"cudaMalloc finished"<<endl;
 
