@@ -2,6 +2,7 @@
 #include <math.h>
 #include <iostream>
 #include <vector>
+#include <stdio.h>
 #include "canny_p.h"
 //#include "timer.h"
 
@@ -61,7 +62,7 @@ void gaussian_filter(unsigned char **newImage, unsigned char **in_pixels, int wi
 
 
 	double sum = 0.0;
-	cout<< "creating filter"<<endl;
+	printf("creating filter");
 	double sigma = 10.0;
 	for (int h = 0; i<hi; h++) {
 		for (int w = 0; j<wd; w++) {
@@ -80,7 +81,7 @@ void gaussian_filter(unsigned char **newImage, unsigned char **in_pixels, int wi
 
 	__syncthreads();
 
-	cout<< "finished filter"<<endl;
+	printf("finish filter");
 
 	//start filtering
 	//double** filter = createKernel(5, 5, 10.0);
@@ -92,7 +93,7 @@ void gaussian_filter(unsigned char **newImage, unsigned char **in_pixels, int wi
 
 
 	int h, w;
-	cout<<"apply gaussian filter"<<endl;
+	printf("apply gaussian filter");	
 	//
 	//        for (i=0 ; i<newImageHeight ; i++) {
 	//            for (j=0 ; j<newImageWidth ; j++) {
@@ -105,8 +106,7 @@ void gaussian_filter(unsigned char **newImage, unsigned char **in_pixels, int wi
 	//            }
 	//        }
 	//__syncthreads();
-
-	cout<<"finish gaussian filter"<<endl;
+	printf("finish gaussian filter");
 
 }
 __global__
