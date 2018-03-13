@@ -64,8 +64,8 @@ void gaussian_filter(unsigned char **newImage, unsigned char **in_pixels, int wi
 	double sum = 0.0;
 	printf("creating filter");
 	double sigma = 10.0;
-	for (int h = 0; i<hi; h++) {
-		for (int w = 0; j<wd; w++) {
+	for (int h = 0; h<hi; h++) {
+		for (int w = 0; w<wd; w++) {
 			filter[h][w] = exp(-(h*h + w*w) / (2 * sigma*sigma)) / (2 * M_PI*sigma*sigma);
 			sum += filter[h][w];
 		}
@@ -73,9 +73,9 @@ void gaussian_filter(unsigned char **newImage, unsigned char **in_pixels, int wi
 
 	__syncthreads();
 
-	for (int i = 0; i<hi; i++) {
-		for (int j = 0; j<wd; j++) {
-			filter[i][j] /= sum;
+	for (int h = 0; h<hi; h++) {
+		for (int w = 0; w<wd; w++) {
+			filter[h][w] /= sum;
 		}
 	}
 
