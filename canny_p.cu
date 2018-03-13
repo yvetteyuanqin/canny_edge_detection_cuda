@@ -389,7 +389,7 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, const in
 	for (int i = 0; i < HEIGHT; i++)
 	{
 
-		err = cudaMemcpy(h_newImg[i], h_newimgtemp[i], sizeof(unsigned char)*WIDTH, cudaMemcpyDeviceToHost);
+		err = cudaMemcpy(h_newImg[i], h_imgtemp[i], sizeof(unsigned char)*WIDTH, cudaMemcpyDeviceToHost);
 		if (err != cudaSuccess) cout << "Error h_newimgtemp :" << err << " i = " << i << endl;
 	}
 
