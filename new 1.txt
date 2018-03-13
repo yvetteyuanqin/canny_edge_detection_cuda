@@ -25,3 +25,7 @@ __global__ void apply_hysteresis(unsigned char **out_pixels, unsigned char **in_
 __device__ void trace_immed_neighbors(unsigned char **out_pixels, unsigned char **in_pixels, unsigned i, unsigned j, unsigned  char t_low);
 
 #endif
+
+
+module load  gcc/4.4.3
+module load  cuda/5.0
