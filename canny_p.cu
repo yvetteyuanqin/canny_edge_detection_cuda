@@ -93,7 +93,7 @@ void gaussian_filter(unsigned char **newImage, unsigned char **in_pixels, int wi
 
 
 	int h, w;
-	printf("apply gaussian filter");	
+	printf("apply gaussian filter");
 	//
 	//        for (i=0 ; i<newImageHeight ; i++) {
 	//            for (j=0 ; j<newImageWidth ; j++) {
@@ -312,7 +312,7 @@ void trace_immed_neighbors(unsigned char **out_pixels, unsigned char **in_pixels
 	}
 }
 
-void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, int WIDTH, int HEIGHT) {
+void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, const int WIDTH, const int HEIGHT) {
 
 	/* initialize timer */
 	//struct stopwatch_t* timer = NULL;
@@ -321,20 +321,53 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, int WIDT
 	//timer = stopwatch_create();
 
 	unsigned char **d_imgbuff;
+	unsigned char *   h_imgtemp[WIDTH];
 	unsigned char **d_newImage;
-	cout<<"cudaMalloc"<<endl;
-	cudaMalloc((void**)&d_imgbuff, sizeof(unsigned char*)*HEIGHT);
-	cudaMalloc((void**)&d_newImage, sizeof(unsigned char*)*HEIGHT);
-	printf("cuda1D finish");
-	for (int i = 0; i < WIDTH; i++)
+	unsigned char *   h_newimgtemp[WIDTH];
+	cout << "cudaMalloc" << endl;
+
+
+
+	cudaError_t err = cudaMalloc((void**)&d_imgbuff, sizeof(unsigned char*)*HEIGHT);
+
+	if (err == 0)	cout << "cuda1D d_imgbuff finish" << endl;
+	else cout << "Error :" << err << endl;
+
+	err = cudaMalloc((void**)&d_newImage, sizeof(unsigned char*)*HEIGHT);
+	if (err == 0)	cout << "cuda1D d_newImage finish" << endl;
+	else cout << "Error :" << err << endl;
+
+	cout << "cuda1D finish" << endl;
+	for (int i = 0; i < HEIGHT; i++)
 	{
-		cudaMalloc((void**)&d_imgbuff[i], sizeof(unsigned char)*WIDTH);
-		cudaMalloc((void**)&d_newImage[i], sizeof(unsigned char)*WIDTH);
+		err = cudaMalloc((void **)&h_imgtemp[i], sizeof(unsigned char)*WIDTH);
+		if (err != cudaSuccess) cout << "Error :" << err << " i = " << i << endl;
+
+		err = cudaMalloc((void**)&h_newimgtemp[i], sizeof(unsigned char)*WIDTH);
+		if (err != cudaSuccess) cout << "Error :" << err << " i = " << i << endl;
 	}
+
+
 	//memcopy
-	printf("cuda2D finish");
-	cudaMemcpy2D(d_imgbuff, sizeof(unsigned char)*WIDTH, h_imgbuff, sizeof(unsigned char) * WIDTH, sizeof(unsigned char) *WIDTH, HEIGHT, cudaMemcpyHostToDevice);
-	cout<<"cudaMalloc finished"<<endl;
+	err = cudaMemcpy(d_imgbuff, h_imgtemp, 10 * sizeof(int *), cudaMemcpyHostToDevice);
+	if (err != cudaSuccess) cout << "Error :" << err << endl;
+
+	cout << "cuda2D finish" << endl;
+
+	for (int i = 0; i < HEIGHT; i++)
+	{
+		err = cudaMemcpy(h_imgtemp[i], h_imgbuff[i], sizeof(unsigned char)*WIDTH, cudaMemcpyHostToDevice);
+		if (err != cudaSuccess) cout << "Error h_imgtemp :" << err << " i = " << i << endl;
+
+	}
+
+
+
+
+	//err = cudaMemcpy2D(d_imgbuff, sizeof(unsigned char)*WIDTH, h_imgbuff, sizeof(unsigned char) * WIDTH, sizeof(unsigned char) *WIDTH, HEIGHT, cudaMemcpyHostToDevice);
+	//if (err != cudaSuccess) cout << "Error cudaMemcpy2D :" << err << endl;
+
+	cout << "cudaMalloc finished" << endl;
 
 	/*apply gaussian filter*/
 	cout << "enter gaussian filter" << endl;
@@ -345,11 +378,20 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, int WIDT
 	//t_gaussian = stopwatch_stop(timer);
 
 	//MEMCOPY BACK TO HOST
-	cudaMemcpy2D(h_newImg, sizeof(unsigned char)*WIDTH, d_newImage, sizeof(unsigned char) * WIDTH, sizeof(unsigned char) *WIDTH, HEIGHT, cudaMemcpyDeviceToHost);
+	//cudaMemcpy2D(h_newImg, sizeof(unsigned char)*WIDTH, d_newImage, sizeof(unsigned char) * WIDTH, sizeof(unsigned char) *WIDTH, HEIGHT, cudaMemcpyDeviceToHost);
+
+	for (int i = 0; i < HEIGHT; i++)
+	{
+
+		err = cudaMemcpy(h_newImg[i], h_newimgtemp[i], sizeof(unsigned char)*WIDTH, cudaMemcpyDeviceToHost);
+		if (err != cudaSuccess) cout << "Error h_newimgtemp :" << err << " i = " << i << endl;
+	}
+
+	cout << "MEMCOPY BACK TO HOST finished" << endl;
 
 	//free device mem
 
-	cout<<"Free cuda"<<endl;
+	cout << "Free cuda" << endl;
 	for (int i = 0; i < WIDTH; i++)
 	{
 		cudaFree(d_imgbuff + i);
