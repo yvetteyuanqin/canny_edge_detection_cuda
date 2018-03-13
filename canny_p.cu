@@ -376,6 +376,14 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, const in
 
 	cout << "cudaMalloc finished" << endl;
 
+	for (int i = 0; i < HEIGHT; i++)
+	{
+
+		err = cudaMemcpy(h_newImg[i], d_newimgtemp[i], sizeof(unsigned char)*WIDTH, cudaMemcpyDeviceToHost);
+		if (err != cudaSuccess) cout << "Error h_newimgtemp :" << err << " i = " << i << endl;
+	}
+
+
 	/*apply gaussian filter*/
 	cout << "enter gaussian filter" << endl;
 	int numBlocks = 1;
@@ -386,14 +394,14 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, const in
 
 	//MEMCOPY BACK TO HOST
 	//cudaMemcpy2D(h_newImg, sizeof(unsigned char)*WIDTH, d_newImage, sizeof(unsigned char) * WIDTH, sizeof(unsigned char) *WIDTH, HEIGHT, cudaMemcpyDeviceToHost);
-
+/*
 	for (int i = 0; i < HEIGHT; i++)
 	{
 
 		err = cudaMemcpy(h_newImg[i], d_newimgtemp[i], sizeof(unsigned char)*WIDTH, cudaMemcpyDeviceToHost);
 		if (err != cudaSuccess) cout << "Error h_newimgtemp :" << err << " i = " << i << endl;
 	}
-
+*/
 	cout << "MEMCOPY BACK TO HOST finished" << endl;
 
 	//free device mem
