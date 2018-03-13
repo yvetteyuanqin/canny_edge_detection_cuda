@@ -6,7 +6,7 @@
 //Yuan Qin
 //Lai Man Tang
 
-//Mar.8th.2018
+//Mar.13th.2018
 #include <boost/gil/rgb.hpp>
 #include <boost/gil/extension/io/png_dynamic_io.hpp>
 #include <boost/fusion/view.hpp>
