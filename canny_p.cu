@@ -320,8 +320,8 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, int WIDT
 	//stopwatch_init();
 	//timer = stopwatch_create();
 
-	unsigned char *d_imgbuff;
-	unsigned char *d_newImage;
+	unsigned char **d_imgbuff;
+	unsigned char **d_newImage;
 	cout<<"cudaMalloc"<<endl;
 	cudaMalloc((void**)&d_imgbuff, sizeof(unsigned char*)*HEIGHT);
 	cudaMalloc((void**)&d_newImage, sizeof(unsigned char*)*HEIGHT);
