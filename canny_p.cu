@@ -60,7 +60,7 @@ void gaussian_filter(unsigned char **newImage, unsigned char **in_pixels, int wi
 	int i = threadIdx.x;
 	int j = threadIdx.y;
 
-
+	
 	double sum = 0.0;
 	printf("creating filter");
 	double sigma = 10.0;
@@ -97,12 +97,14 @@ void gaussian_filter(unsigned char **newImage, unsigned char **in_pixels, int wi
 	//
 	//        for (i=0 ; i<newImageHeight ; i++) {
 	//            for (j=0 ; j<newImageWidth ; j++) {
-	for (h = i; h<i + filterHeight; h++) {
-		for (w = j; w<j + filterWidth; w++) {
-			newImage[i][j] = newImage[i][j] + filter[h - i][w - j] * in_pixels[h][w];
+	if ( i < newImageHeight && j < newImageWidth){
+		for (h = i; h<i + filterHeight; h++) {
+			for (w = j; w<j + filterWidth; w++) {
+				newImage[i][j] = newImage[i][j] + filter[h - i][w - j] * in_pixels[h][w];
+			}
 		}
+		__syncthreads();
 	}
-	__syncthreads();
 	//            }
 	//        }
 	//__syncthreads();
@@ -349,10 +351,10 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, const in
 
 
 	//memcopy
-	err = cudaMemcpy(d_imgbuff, h_imgtemp, WIDTH * sizeof(unsigned char *), cudaMemcpyHostToDevice);
+	err = cudaMemcpy(d_imgbuff, h_imgtemp, HEIGHT * sizeof(unsigned char *), cudaMemcpyHostToDevice);
 	if (err != cudaSuccess) cout << "Error :" << err << endl;
 
-	err = cudaMemcpy(d_newImage, h_newimgtemp, WIDTH * sizeof(unsigned char *), cudaMemcpyHostToDevice);
+	err = cudaMemcpy(d_newImage, h_newimgtemp, HEIGHT * sizeof(unsigned char *), cudaMemcpyHostToDevice);
 	if (err != cudaSuccess) cout << "Error :" << err << endl;
 
 
