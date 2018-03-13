@@ -16,6 +16,6 @@ canny_seq: main.cc timer.c canny_sequential.cc
 
 
 clean:
-	rm -f
+	rm -f canny_p.o canny_par
 
 # eof
