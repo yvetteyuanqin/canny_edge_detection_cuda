@@ -50,17 +50,18 @@ void gaussian_filter(unsigned char **newImage, unsigned char **in_pixels, int wi
 	int wd = 5;
 	__shared__ double filter[5][5];
 
-	//=(double **)malloc(sizeof(double*)*hi);
-	//for (int i = 0; i < wd; i++)
-	//{
-	//*(filter+i)=(double *)malloc(sizeof(double)*wd);
-	//}
+	filter[0][0] = 1/273, filter[0][1] = 4 / 273, filter[0][2] = 7 / 273, filter[0][3] = 4 / 273, filter[0][4] = 1 / 273,
+	filter[1][0] = 4 / 273, filter[1][1] = 16 / 273, filter[1][2] = 26 / 273, filter[1][3] = 16 / 273, filter[1][4] = 4 / 273,
+	filter[2][0] = 7 / 273, filter[2][1] = 26 / 273, filter[2][2] = 41 / 273, filter[2][3] = 26 / 273, filter[2][4] = 7 / 273,
+	filter[3][0] = 4 / 273, filter[3][1] = 16 / 273, filter[3][2] = 26 / 273, filter[3][3] = 16 / 273, filter[3][4] = 4 / 273,
+	filter[4][0] = 1 / 273, filter[4][1] = 4 / 273, filter[4][2] = 7 / 273, filter[4][3] = 4 / 273, filter[4][4] = 1 / 273;
+	
 
 	/*allocate newimage*/
 	int i = threadIdx.x;
 	int j = threadIdx.y;
-
-	if (i == 0){
+/*
+	if (i == 0 && j==0){
 		double sum = 0.0;
 
 		printf("creating filter");
@@ -79,7 +80,7 @@ void gaussian_filter(unsigned char **newImage, unsigned char **in_pixels, int wi
 			}
 		}
 	}
-	__syncthreads();
+	__syncthreads();*/
 
 	printf("finish filter");
 
