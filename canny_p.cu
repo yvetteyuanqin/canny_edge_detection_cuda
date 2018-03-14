@@ -48,22 +48,27 @@ void gaussian_filter(unsigned char *newImagetmp, unsigned char *in_pixelstmp,con
 
 //int hi = 5;
 //int wd = 5;
+/*allocate newimage*/
+int i = threadIdx.x;
+int j = threadIdx.y;
 __shared__ double filter[5][5];
 
+if(i == 0 && j ==0){
 filter[0][0] = 1 / 273, filter[0][1] = 4 / 273, filter[0][2] = 7 / 273, filter[0][3] = 4 / 273, filter[0][4] = 1 / 273,
 filter[1][0] = 4 / 273, filter[1][1] = 16 / 273, filter[1][2] = 26 / 273, filter[1][3] = 16 / 273, filter[1][4] = 4 / 273,
 filter[2][0] = 7 / 273, filter[2][1] = 26 / 273, filter[2][2] = 41 / 273, filter[2][3] = 26 / 273, filter[2][4] = 7 / 273,
 filter[3][0] = 4 / 273, filter[3][1] = 16 / 273, filter[3][2] = 26 / 273, filter[3][3] = 16 / 273, filter[3][4] = 4 / 273,
 filter[4][0] = 1 / 273, filter[4][1] = 4 / 273, filter[4][2] = 7 / 273, filter[4][3] = 4 / 273, filter[4][4] = 1 / 273;
+}
+
+__syncthreads();
 
 /*flattening */
 //__shared__ unsigned char newImage[width][height];
 __shared__ unsigned char in_pixels[512][512];
 __shared__ unsigned char newImage[512][512];
-/*allocate newimage*/
-int i = threadIdx.x;
-int j = threadIdx.y;
 
+printf("shared memory created");
 
 
 /*
@@ -377,7 +382,7 @@ gaussian_filter << <numBlocks, threadsPerBlock >> >(d_newImage, d_imgbuff, WIDTH
 //t_gaussian = stopwatch_stop(timer);
 
 //MEMCOPY BACK TO HOST
-cudaMemcpy2D(h_newImg, sizeof(unsigned char)*WIDTH, d_imgbuff, pitch2, sizeof(unsigned char) *WIDTH, HEIGHT, cudaMemcpyDeviceToHost);
+cudaMemcpy2D(h_newImg, sizeof(unsigned char)*WIDTH, d_newImage, pitch2, sizeof(unsigned char) *WIDTH, HEIGHT, cudaMemcpyDeviceToHost);
 
 cout << "MEMCOPY BACK TO HOST finished" << endl;
 

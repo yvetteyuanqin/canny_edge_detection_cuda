@@ -74,7 +74,7 @@ int main() {
 		for (int j = 0; j<HEIGHT; j++) newImage[i][j] = h_newImage[i][j];
 	}
 
-
+	cout << "transfer to gray8" << endl;
 
 
 	/*revert image to check*/
