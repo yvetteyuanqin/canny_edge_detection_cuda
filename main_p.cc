@@ -61,13 +61,7 @@ int main() {
 		for (int j = 0; j < HEIGHT; j++) h_newImage[i][j] = 0;
 	}
     
-	for (int i = 0; i < HEIGHT; i++) {
-	//	cout << i << endl;
-		for (int j = 0; j < WIDTH; j++) {
-			cout << h_newImage[i][j] << " ";
-		}
-		cout << endl;
-	}
+
     stopwatch_start(timer);
     edge_detector(h_newImage, h_imgbuff, WIDTH, HEIGHT);
     t_gaussian = stopwatch_stop(timer);
