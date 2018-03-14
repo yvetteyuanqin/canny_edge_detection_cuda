@@ -106,8 +106,8 @@ printf("apply gaussian filter");
 //            for (j=0 ; j<newImageWidth ; j++) {
 if ( i < newImageHeight && j < newImageWidth){
 
-unsigned char* row = (unsigned char*)((char*)devPtr + i * pitch1);
-in_pixels[i][j] = row[c];
+unsigned char* row = (unsigned char*)((char*)in_pixels + i * pitch);
+in_pixels[i][j] = row[j];
 __syncthreads();
 
 for (h = i; h<i + filterHeight; h++) {
