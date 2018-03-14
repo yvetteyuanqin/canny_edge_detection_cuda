@@ -119,15 +119,15 @@ if (i < newImageHeight && j < newImageWidth) {
 unsigned char* row = (unsigned char*)((unsigned char*)in_pixelstmp + i * pitch);
 unsigned char in_pixels = row[j];
 newImagetmp[i*width+j] = 0;
-//        __syncthreads();
 
-//        for (h = i; h<i + filterHeight; h++) {
-//            for (w = j; w<j + filterWidth; w++) {
-//                newImagetmp[i*width+j] = newImagetmp[i*width+j] + filter[h - i][w - j] * in_pixels;
-//            }
-//        }
-//        //newImagetmp [i*width+j] = newImage[i][j];
-//
+
+for (h = i; h<i + filterHeight; h++) {
+for (w = j; w<j + filterWidth; w++) {
+newImagetmp[i*width+j] = newImagetmp[i*width+j] + filter[h - i][w - j] * in_pixels;
+}
+}
+//newImagetmp [i*width+j] = newImage[i][j];
+
 
 }
 __syncthreads();
@@ -139,7 +139,7 @@ __syncthreads();
 
 
 
-printf("finish gaussian filter");
+//printf("finish gaussian filter");
 
 }
 __global__
@@ -384,7 +384,7 @@ cout << "enter gaussian filter" << endl;
 dim3 threadsPerBlock(32, 32);
 dim3 numBlocks (HEIGHT/threadsPerBlock.x, WIDTH/threadsPerBlock.y);
 //stopwatch_start(timer);
-gaussian_filter << <numBlocks, threadsPerBlock >> >(d_newImage, d_imgbuff, WIDTH, HEIGHT, pitch1);
+gaussian_filter <<<numBlocks, threadsPerBlock >>>(d_newImage, d_imgbuff, WIDTH, HEIGHT, pitch1);
 //t_gaussian = stopwatch_stop(timer);
 
 //MEMCOPY BACK TO HOST
