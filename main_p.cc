@@ -66,7 +66,14 @@ int main() {
     t_gaussian = stopwatch_stop(timer);
     cout<< "Time to execute gaussian:"<< t_gaussian<<endl;
     
-    
+	for (int i = 0; i < HEIGHT; i++) {
+		for (int j = 0; j < HEIGHT; j++) {
+			cout << h_newImage[i][j];
+		}
+		cout << endl;
+	}
+
+   
 	gray8_pixel_t **newImage = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*HEIGHT);
 	for (int i = 0; i < WIDTH; i++)
 	{
