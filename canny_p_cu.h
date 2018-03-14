@@ -12,7 +12,7 @@
 //__device__ typedef std::vector<Array> Matrix;
 
 
-void edge_detector(unsigned char* h_newImg, unsigned char* h_imgbuff, int WIDTH, int HEIGHT);
+void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, int WIDTH, int HEIGHT);
 
 
 /*create a gaussian filter*/
