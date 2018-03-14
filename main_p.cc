@@ -67,8 +67,9 @@ int main() {
     cout<< "Time to execute gaussian:"<< t_gaussian<<endl;
     
 	for (int i = 0; i < HEIGHT; i++) {
-		for (int j = 0; j < HEIGHT; j++) {
-			cout << h_newImage[i][j];
+		cout << i << endl;
+		for (int j = 0; j < WIDTH; j++) {
+			cout << h_newImage[i][j] << " ";
 		}
 		cout << endl;
 	}
