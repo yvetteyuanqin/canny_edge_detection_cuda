@@ -114,18 +114,19 @@ if (i < newImageHeight && j < newImageWidth) {
 
 unsigned char* row = (unsigned char*)((unsigned char*)in_pixelstmp + i * pitch);
 unsigned char in_pixels = row[j];
-//newImage[i][j] = 0;
-__syncthreads();
+newImagetmp[i*width+j] = 0;
+//        __syncthreads();
 
-for (h = i; h<i + filterHeight; h++) {
-for (w = j; w<j + filterWidth; w++) {
-newImagetmp[i*width+j] = newImagetmp[i*width+j] + filter[h - i][w - j] * in_pixels;
-}
-}
-//newImagetmp [i*width+j] = newImage[i][j];
+//        for (h = i; h<i + filterHeight; h++) {
+//            for (w = j; w<j + filterWidth; w++) {
+//                newImagetmp[i*width+j] = newImagetmp[i*width+j] + filter[h - i][w - j] * in_pixels;
+//            }
+//        }
+//        //newImagetmp [i*width+j] = newImage[i][j];
+//
 
-__syncthreads();
 }
+__syncthreads();
 //            }
 //        }
 //__syncthreads();
