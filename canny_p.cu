@@ -46,8 +46,8 @@ void gaussian_filter(unsigned char *newImagetmp, unsigned char *in_pixelstmp, in
 {
 // create kernel
 
-int hi = 5;
-int wd = 5;
+//int hi = 5;
+//int wd = 5;
 __shared__ double filter[5][5];
 
 filter[0][0] = 1/273, filter[0][1] = 4 / 273, filter[0][2] = 7 / 273, filter[0][3] = 4 / 273, filter[0][4] = 1 / 273,
