@@ -61,18 +61,19 @@ int main() {
 		for (int j = 0; j < HEIGHT; j++) h_newImage[i][j] = 0;
 	}
     
-    stopwatch_start(timer);
-    edge_detector(h_newImage, h_imgbuff, WIDTH, HEIGHT);
-    t_gaussian = stopwatch_stop(timer);
-    cout<< "Time to execute gaussian:"<< t_gaussian<<endl;
-    
 	for (int i = 0; i < HEIGHT; i++) {
-		cout << i << endl;
+	//	cout << i << endl;
 		for (int j = 0; j < WIDTH; j++) {
 			cout << h_newImage[i][j] << " ";
 		}
 		cout << endl;
 	}
+    stopwatch_start(timer);
+    edge_detector(h_newImage, h_imgbuff, WIDTH, HEIGHT);
+    t_gaussian = stopwatch_stop(timer);
+    cout<< "Time to execute gaussian:"<< t_gaussian<<endl;
+    
+
 
    
 	gray8_pixel_t **newImage = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*HEIGHT);
