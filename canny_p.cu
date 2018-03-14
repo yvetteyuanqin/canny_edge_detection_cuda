@@ -121,11 +121,11 @@ unsigned char in_pixels = row[j];
 newImagetmp[i*width+j] = 0;
 
 
-//        for (h = i; h<i + filterHeight; h++) {
-//            for (w = j; w<j + filterWidth; w++) {
-//                newImagetmp[i*width+j] = newImagetmp[i*width+j] + filter[h - i][w - j] * in_pixels;
-//            }
-//        }
+for (h = i; h<i + filterHeight; h++) {
+for (w = j; w<j + filterWidth; w++) {
+newImagetmp[i*width+j] = newImagetmp[i*width+j] + filter[h - i][w - j] * in_pixels;
+}
+}
 //newImagetmp [i*width+j] = newImage[i][j];
 
 
