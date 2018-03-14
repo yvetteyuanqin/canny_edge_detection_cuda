@@ -73,7 +73,7 @@ __syncthreads();
 //unsigned char in_pixels[512][512];
 //unsigned char newImage[512][512];
 
-printf("filter created");
+//printf("filter created");
 
 
 /*
@@ -110,7 +110,7 @@ int newImageWidth = width - filterWidth;
 
 
 int h, w;
-printf("apply gaussian filter");
+//printf("apply gaussian filter");
 //
 //        for (i=0 ; i<newImageHeight ; i++) {
 //            for (j=0 ; j<newImageWidth ; j++) {
