@@ -42,7 +42,7 @@ using namespace std;
 
 /*Step 1 blur the image to reduce noice*/
 __global__
-void gaussian_filter(unsigned char *newImage, unsigned char *in_pixels, int width, int height，unsigned char pitch)
+void gaussian_filter(unsigned char *newImagetmp, unsigned char *in_pixelstmp, int width, int height，unsigned char pitch)
 {
 // create kernel
 
@@ -106,7 +106,7 @@ printf("apply gaussian filter");
 //            for (j=0 ; j<newImageWidth ; j++) {
 if ( i < newImageHeight && j < newImageWidth){
 
-unsigned char* row = (unsigned char*)((char*)in_pixels + i * pitch);
+unsigned char* row = (unsigned char*)((char*)in_pixelstmp + i * pitch);
 in_pixels[i][j] = row[j];
 __syncthreads();
 
