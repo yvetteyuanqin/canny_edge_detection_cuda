@@ -49,8 +49,9 @@ void gaussian_filter(unsigned char *newImagetmp, unsigned char *in_pixelstmp,con
 //int hi = 5;
 //int wd = 5;
 /*allocate newimage*/
-int i = threadIdx.x;
-int j = threadIdx.y;
+int i = blockIdx.x * blockDim.x + threadIdx.x;
+int j = blockIdx.y * blockDim.y + threadIdx.y;
+
 __shared__ double filter[5][5];
 
 if(i == 0 && j ==0){
@@ -375,8 +376,8 @@ cout << "cudaMalloc finished" << endl;
 
 /*apply gaussian filter*/
 cout << "enter gaussian filter" << endl;
-int numBlocks = 1;
-dim3 threadsPerBlock(HEIGHT, WIDTH);
+dim3 threadsPerBlock(16, 16);
+dim3 numBlocks (HEIGHT/threadsPerBlock.x, WIDTH/threadsPerBlock.y);
 //stopwatch_start(timer);
 gaussian_filter << <numBlocks, threadsPerBlock >> >(d_newImage, d_imgbuff, WIDTH, HEIGHT, pitch1);
 //t_gaussian = stopwatch_stop(timer);
