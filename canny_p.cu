@@ -58,8 +58,8 @@ void gaussian_filter(unsigned char *newImagetmp, unsigned char *in_pixelstmp,con
 
 	/*flattening */
 	//__shared__ unsigned char newImage[width][height];
-	__shared__ unsigned char in_pixels[width][height];
-	__shared__ unsigned char newImage[width][height];
+	__shared__ unsigned char in_pixels[512][512];
+	__shared__ unsigned char newImage[512][512];
 	/*allocate newimage*/
 	int i = threadIdx.x;
 	int j = threadIdx.y;
