@@ -66,8 +66,8 @@ __syncthreads();
 
 /*flattening */
 //__shared__ unsigned char newImage[width][height];
-unsigned char in_pixels[512][512];
-unsigned char newImage[512][512];
+//unsigned char in_pixels[512][512];
+//unsigned char newImage[512][512];
 
 printf("shared memory created");
 
@@ -113,15 +113,15 @@ printf("apply gaussian filter");
 if (i < newImageHeight && j < newImageWidth) {
 
 unsigned char* row = (unsigned char*)((unsigned char*)in_pixelstmp + i * pitch);
-in_pixels[i][j] = row[j];
-newImage[i][j] = 0;
+unsigned char in_pixels = row[j];
+//newImage[i][j] = 0;
 __syncthreads();
 
-//        for (h = i; h<i + filterHeight; h++) {
-//            for (w = j; w<j + filterWidth; w++) {
-//                newImage[i][j] = newImage[i][j] + filter[h - i][w - j] * in_pixels[h][w];
-//            }
-//        }
+for (h = i; h<i + filterHeight; h++) {
+for (w = j; w<j + filterWidth; w++) {
+newImagetmp[i*width+j] = newImagetmp[i*width+j] + filter[h - i][w - j] * in_pixels;
+}
+}
 //newImagetmp [i*width+j] = newImage[i][j];
 
 __syncthreads();
