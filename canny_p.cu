@@ -117,12 +117,12 @@ in_pixels[i][j] = row[j];
 newImage[i][j] = 0;
 __syncthreads();
 
-for (h = i; h<i + filterHeight; h++) {
-for (w = j; w<j + filterWidth; w++) {
-newImage[i][j] = newImage[i][j] + filter[h - i][w - j] * in_pixels[h][w];
-}
-}
-newImagetmp [i*width+j] = newImage[i][j];
+//        for (h = i; h<i + filterHeight; h++) {
+//            for (w = j; w<j + filterWidth; w++) {
+//                newImage[i][j] = newImage[i][j] + filter[h - i][w - j] * in_pixels[h][w];
+//            }
+//        }
+//newImagetmp [i*width+j] = newImage[i][j];
 
 __syncthreads();
 }
