@@ -42,7 +42,7 @@ using namespace std;
 
 /*Step 1 blur the image to reduce noice*/
 __global__
-void gaussian_filter(unsigned char *newImagetmp, unsigned char *in_pixelstmp, int width, int height，unsigned char pitch)
+void gaussian_filter(unsigned char **newImage, unsigned char **in_pixels, int width, int height，unsigned char pitch)
 {
 // create kernel
 
@@ -58,7 +58,7 @@ filter[4][0] = 1 / 273, filter[4][1] = 4 / 273, filter[4][2] = 7 / 273, filter[4
 
 /*flattening */
 //__shared__ unsigned char newImage[width][height];
-__shared__ unsigned char in_pixels[width][height];
+// __shared__ unsigned char in_pixels[width][height];
 
 /*allocate newimage*/
 int i = threadIdx.x;
@@ -106,9 +106,9 @@ printf("apply gaussian filter");
 //            for (j=0 ; j<newImageWidth ; j++) {
 if ( i < newImageHeight && j < newImageWidth){
 
-unsigned char* row = (unsigned char*)((char*)devPtr + i * pitch1);
-in_pixels[i][j] = row[c];
-__syncthreads();
+//        unsigned char* row = (unsigned char*)((char*)devPtr + i * pitch1);
+//        in_pixels[i][j] = row[c];
+//        __syncthreads();
 
 for (h = i; h<i + filterHeight; h++) {
 for (w = j; w<j + filterWidth; w++) {
@@ -348,7 +348,7 @@ cudaError_t err = cudaMallocPitch(&d_imgbuff,&pitch1,WIDTH,HEIGHT);
 if (err == 0)    cout << "cuda2D d_imgbuff finish" << endl;
 else cout << "Error :" << err << endl;
 unsigned char pitch2;
-cudaError_t err = cudaMallocPitch(&d_newImage,&pitch2,WIDTH,HEIGHT);
+err = cudaMallocPitch(&d_newImage,&pitch2,WIDTH,HEIGHT);
 if (err == 0)    cout << "cuda2D d_newImg finish" << endl;
 else cout << "Error :" << err << endl;
 
@@ -365,7 +365,7 @@ cout << "enter gaussian filter" << endl;
 int numBlocks = 1;
 dim3 threadsPerBlock(HEIGHT, WIDTH);
 //stopwatch_start(timer);
-gaussian_filter << <numBlocks, threadsPerBlock >> >(d_newImage, d_imgbuff, WIDTH, HEIGHT,pitch1);
+gaussian_filter << <numBlocks, threadsPerBlock >> >(d_newImage, d_imgbuff, WIDTH, HEIGHT, pitch1);
 //t_gaussian = stopwatch_stop(timer);
 
 //MEMCOPY BACK TO HOST
