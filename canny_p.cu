@@ -366,7 +366,7 @@ err = cudaMallocPitch(&d_newImage, &pitch2, WIDTH, HEIGHT);
 if (err == 0)    cout << "cuda2D d_newImg finish" << endl;
 else cout << "Error :" << err << endl;
 
-err = cudaMemcpy2D(d_imgbuff, sizeof(unsigned char)*WIDTH, h_imgbuff, pitch1, sizeof(unsigned char) *WIDTH, HEIGHT, cudaMemcpyHostToDevice);
+err = cudaMemcpy2D(d_imgbuff, pitch1, h_imgbuff, pitch1, sizeof(unsigned char) *WIDTH, HEIGHT, cudaMemcpyHostToDevice);
 if (err != cudaSuccess) cout << "Error :" << err << endl;
 
 
@@ -383,7 +383,7 @@ gaussian_filter << <numBlocks, threadsPerBlock >> >(d_newImage, d_imgbuff, WIDTH
 //t_gaussian = stopwatch_stop(timer);
 
 //MEMCOPY BACK TO HOST
-cudaMemcpy2D(h_newImg, sizeof(unsigned char)*WIDTH, d_newImage, pitch2, sizeof(unsigned char) *WIDTH, HEIGHT, cudaMemcpyDeviceToHost);
+cudaMemcpy2D(h_newImg, pitch2, d_newImage, pitch2, sizeof(unsigned char) *WIDTH, HEIGHT, cudaMemcpyDeviceToHost);
 
 cout << "MEMCOPY BACK TO HOST finished" << endl;
 
@@ -403,4 +403,5 @@ cout << "finished." << endl;
 
 
 }
+
 
