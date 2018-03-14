@@ -52,15 +52,20 @@ void gaussian_filter(unsigned char *newImagetmp, unsigned char *in_pixelstmp,con
 int i = blockIdx.x * blockDim.x + threadIdx.x;
 int j = blockIdx.y * blockDim.y + threadIdx.y;
 
-double filter[5][5];
+const double filter[5][5]={{1/273,4/273,7/273，4/273，1/273},
+{4/273，16/273，26/273，16/273，4/273}，
+{7/273，26/273，41/273，26/273，7/273}，
+{4/273，16/273，26/273，16/273，4/273}
+{1/273,4/273,7/273，4/273，1/273}，
+};
 
-if(i == 0 && j ==0){
-filter[0][0] = 1 / 273, filter[0][1] = 4 / 273, filter[0][2] = 7 / 273, filter[0][3] = 4 / 273, filter[0][4] = 1 / 273,
-filter[1][0] = 4 / 273, filter[1][1] = 16 / 273, filter[1][2] = 26 / 273, filter[1][3] = 16 / 273, filter[1][4] = 4 / 273,
-filter[2][0] = 7 / 273, filter[2][1] = 26 / 273, filter[2][2] = 41 / 273, filter[2][3] = 26 / 273, filter[2][4] = 7 / 273,
-filter[3][0] = 4 / 273, filter[3][1] = 16 / 273, filter[3][2] = 26 / 273, filter[3][3] = 16 / 273, filter[3][4] = 4 / 273,
-filter[4][0] = 1 / 273, filter[4][1] = 4 / 273, filter[4][2] = 7 / 273, filter[4][3] = 4 / 273, filter[4][4] = 1 / 273;
-}
+
+//        filter[0][0] = 1 / 273, filter[0][1] = 4 / 273, filter[0][2] = 7 / 273, filter[0][3] = 4 / 273, filter[0][4] = 1 / 273,
+//        filter[1][0] = 4 / 273, filter[1][1] = 16 / 273, filter[1][2] = 26 / 273, filter[1][3] = 16 / 273, filter[1][4] = 4 / 273,
+//        filter[2][0] = 7 / 273, filter[2][1] = 26 / 273, filter[2][2] = 41 / 273, filter[2][3] = 26 / 273, filter[2][4] = 7 / 273,
+//        filter[3][0] = 4 / 273, filter[3][1] = 16 / 273, filter[3][2] = 26 / 273, filter[3][3] = 16 / 273, filter[3][4] = 4 / 273,
+//        filter[4][0] = 1 / 273, filter[4][1] = 4 / 273, filter[4][2] = 7 / 273, filter[4][3] = 4 / 273, filter[4][4] = 1 / 273;
+//
 
 __syncthreads();
 
@@ -69,7 +74,7 @@ __syncthreads();
 //unsigned char in_pixels[512][512];
 //unsigned char newImage[512][512];
 
-printf("shared memory created");
+printf("filter created");
 
 
 /*
@@ -94,7 +99,7 @@ filter[h][w] /= sum;
 }
 __syncthreads();*/
 
-printf("finish filter");
+
 
 //start filtering
 //double** filter = createKernel(5, 5, 10.0);
@@ -377,7 +382,7 @@ cout << "cudaMalloc finished" << endl;
 
 /*apply gaussian filter*/
 cout << "enter gaussian filter" << endl;
-dim3 threadsPerBlock(16, 16);
+dim3 threadsPerBlock(32, 32);
 dim3 numBlocks (HEIGHT/threadsPerBlock.x, WIDTH/threadsPerBlock.y);
 //stopwatch_start(timer);
 gaussian_filter << <numBlocks, threadsPerBlock >> >(d_newImage, d_imgbuff, WIDTH, HEIGHT, pitch1);
