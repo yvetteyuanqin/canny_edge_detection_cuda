@@ -377,7 +377,7 @@ gaussian_filter << <numBlocks, threadsPerBlock >> >(d_newImage, d_imgbuff, WIDTH
 //t_gaussian = stopwatch_stop(timer);
 
 //MEMCOPY BACK TO HOST
-cudaMemcpy2D(h_newImg, sizeof(unsigned char)*WIDTH, d_newImage, pitch2, sizeof(unsigned char) *WIDTH, HEIGHT, cudaMemcpyDeviceToHost);
+cudaMemcpy2D(h_newImg, sizeof(unsigned char)*WIDTH, d_imgbuff, pitch2, sizeof(unsigned char) *WIDTH, HEIGHT, cudaMemcpyDeviceToHost);
 
 cout << "MEMCOPY BACK TO HOST finished" << endl;
 
