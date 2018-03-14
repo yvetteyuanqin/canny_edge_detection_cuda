@@ -122,7 +122,7 @@ for (w = j; w<j + filterWidth; w++) {
 newImage[i][j] = newImage[i][j] + filter[h - i][w - j] * in_pixels[h][w];
 }
 }
-newImagetmp [i*pitch+j] = newImage[i][j];
+newImagetmp [i*width+j] = newImage[i][j];
 
 __syncthreads();
 }
