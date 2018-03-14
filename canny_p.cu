@@ -52,7 +52,7 @@ void gaussian_filter(unsigned char *newImagetmp, unsigned char *in_pixelstmp,con
 int i = blockIdx.x * blockDim.x + threadIdx.x;
 int j = blockIdx.y * blockDim.y + threadIdx.y;
 
-__shared__ double filter[5][5];
+double filter[5][5];
 
 if(i == 0 && j ==0){
 filter[0][0] = 1 / 273, filter[0][1] = 4 / 273, filter[0][2] = 7 / 273, filter[0][3] = 4 / 273, filter[0][4] = 1 / 273,
@@ -66,8 +66,8 @@ __syncthreads();
 
 /*flattening */
 //__shared__ unsigned char newImage[width][height];
-__shared__ unsigned char in_pixels[512][512];
-__shared__ unsigned char newImage[512][512];
+unsigned char in_pixels[512][512];
+unsigned char newImage[512][512];
 
 printf("shared memory created");
 
