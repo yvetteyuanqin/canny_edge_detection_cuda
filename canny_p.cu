@@ -57,7 +57,7 @@ void gaussian_filter(unsigned char **newImagetmp, unsigned char **in_pixelstmp, 
 	int j = threadID % 512;
 
 	printf("TS [%d][%d] \n",i ,j );
-__syncthreads();
+
 
 	const double filter[5][5] = { { 1 / 273,4 / 273,7 / 273,4 / 273,1 / 273 },
 	{ 4 / 273,16 / 273,26 / 273,16 / 273,4 / 273 },
@@ -65,13 +65,17 @@ __syncthreads();
 	{ 4 / 273,16 / 273,26 / 273,16 / 273,4 / 273 },
 	{ 1 / 273,4 / 273,7 / 273,4 / 273,1 / 273 } };
 
-	printf("filterOK");
-unsigned char in_pixels = 0;
-__syncthreads();
+
+
+
+
+
+	unsigned char in_pixels = 0;
+	__syncthreads();
 	if(in_pixelstmp[i][j] == NULL)
 		printf("Error in [%d][%d]", i, j);
-		else in_pixels = in_pixelstmp[i][j];
-__syncthreads();
+	else in_pixels = in_pixelstmp[i][j];
+	__syncthreads();
 	//        filter[0][0] = 1 / 273, filter[0][1] = 4 / 273, filter[0][2] = 7 / 273, filter[0][3] = 4 / 273, filter[0][4] = 1 / 273,
 	//        filter[1][0] = 4 / 273, filter[1][1] = 16 / 273, filter[1][2] = 26 / 273, filter[1][3] = 16 / 273, filter[1][4] = 4 / 273,
 	//        filter[2][0] = 7 / 273, filter[2][1] = 26 / 273, filter[2][2] = 41 / 273, filter[2][3] = 26 / 273, filter[2][4] = 7 / 273,
@@ -131,9 +135,6 @@ __syncthreads();
 		//unsigned char* row = (unsigned char*)((unsigned char*)in_pixelstmp + i * width);
 		
 
-		if(in_pixelstmp[i][j] == NULL)
-		printf("Error in [%d][%d]", i, j);
-		else in_pixels = in_pixelstmp[i][j];
 		__syncthreads();
 		//newImagetmp[i*width+j] = 0;
 		
@@ -434,7 +435,7 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, const in
 	for (int i = 0; i < HEIGHT; i++)
 	{
 
-		err = cudaMemcpy(h_newImg[i], d_imgtemp[i], sizeof(unsigned char)*WIDTH, cudaMemcpyDeviceToHost);
+		err = cudaMemcpy(h_newImg[i], d_imgbuff[i], sizeof(unsigned char)*WIDTH, cudaMemcpyDeviceToHost);
 		if (err != cudaSuccess) cout << "Error h_newimgtemp :" << err << " i = " << i << endl;
 	}
 
