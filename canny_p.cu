@@ -65,7 +65,10 @@ void gaussian_filter(unsigned char **newImagetmp, unsigned char **in_pixelstmp, 
 	{ 4 / 273,16 / 273,26 / 273,16 / 273,4 / 273 },
 	{ 1 / 273,4 / 273,7 / 273,4 / 273,1 / 273 } };
 
-
+	for(int k = 0;  k< 5; k++){
+		for(int l = 0; l < 5 ; l ++)
+			printf("%.2f", filter[k][l]);
+	}
 
 
 
@@ -419,6 +422,14 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, const in
 	dim3 threadsPerBlock(4,4);
 	dim3 numBlocks (HEIGHT/threadsPerBlock.x, WIDTH/threadsPerBlock.y);
 	//stopwatch_start(timer);
+	gaussian_filter << <numBlocks, threadsPerBlock >> >(d_newImage, d_imgbuff, WIDTH, HEIGHT);
+	
+	err = cudaThreadSynchronize();
+	if (err != cudaSuccess) cout << "Error cudaThreadSynchronize :" << err << endl;
+	
+	err = cudaDeviceSynchronize();
+	if (err != cudaSuccess) cout << "Error cudaDeviceSynchronize :" << err << endl;
+
 	
 	gaussian_filter << <numBlocks, threadsPerBlock >> >(d_newImage, d_imgbuff, WIDTH, HEIGHT);
 	
