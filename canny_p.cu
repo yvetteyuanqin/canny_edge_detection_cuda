@@ -408,8 +408,8 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, const in
 
 	/*apply gaussian filter*/
 	cout << "enter gaussian filter" << endl;
-	dim3 threadsPerBlock(256,1,1);
-	dim3 numBlocks (HEIGHT/threadsPerBlock.x, WIDTH/threadsPerBlock.y,1);
+	dim3 threadsPerBlock(32,32);
+	dim3 numBlocks (HEIGHT/threadsPerBlock.x, WIDTH/threadsPerBlock.y);
 	//stopwatch_start(timer);
 	
 	gaussian_filter << <numBlocks, threadsPerBlock >> >(d_newImage, d_imgbuff, WIDTH, HEIGHT);
