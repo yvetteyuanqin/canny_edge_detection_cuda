@@ -18,7 +18,7 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, int WIDT
 /*create a gaussian filter*/
 double** createKernel(int height, int width, double sigma);
 /*Step 1 blur the image to reduce noice*/
-void gaussian_filter(unsigned char *newImagetmp, unsigned char *in_pixelstmp,const int width,const int height,size_t pitch);
+void gaussian_filter(unsigned char *newImagetmp, unsigned char *in_pixelstmp,const int width,const int height);
 void gradient(unsigned char **newImage, unsigned char **mag, int width, int height,
                          unsigned char **deltaX, unsigned char **deltaY);
 void apply_hysteresis(unsigned char **out_pixels, unsigned char **in_pixels, unsigned  char t_high, unsigned  char t_low, int width,int height);

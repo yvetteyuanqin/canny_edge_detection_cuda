@@ -42,7 +42,7 @@ using namespace std;
 
 /*Step 1 blur the image to reduce noice*/
 __global__
-void gaussian_filter(unsigned char *newImagetmp, unsigned char *in_pixelstmp,const int width,const int height, size_t pitch)
+void gaussian_filter(unsigned char *newImagetmp, unsigned char *in_pixelstmp,const int width,const int height)
 {
 // create kernel
 
@@ -116,7 +116,8 @@ int h, w;
 //            for (j=0 ; j<newImageWidth ; j++) {
 if (i < newImageHeight && j < newImageWidth) {
 
-unsigned char* row = (unsigned char*)((unsigned char*)in_pixelstmp + i * pitch);
+//unsigned char* row = (unsigned char*)((unsigned char*)in_pixelstmp + i * pitch);
+unsigned char* row = (unsigned char*)((unsigned char*)in_pixelstmp + i * width);
 unsigned char in_pixels = row[j];
 newImagetmp[i*width+j] = 0;
 
@@ -362,16 +363,22 @@ cout << "cudaMalloc2d" << endl;
 
 
 
-size_t pitch1;
-cudaError_t err = cudaMallocPitch((void**)&d_imgbuff, &pitch1, WIDTH* sizeof(unsigned char), HEIGHT);
-if (err == 0)    cout << "cuda2D d_imgbuff finish" << endl;
+//size_t pitch1;
+//    cudaError_t err = cudaMallocPitch((void**)&d_imgbuff, &pitch1, WIDTH* sizeof(unsigned char), HEIGHT);
+cudaError_t err = cudaMalloc(&d_imgbuff, WIDTH*HEIGHT*sizeof(unsigned char));
+if (err == 0)    cout << "cuda d_imgbuff finish" << endl;
 else cout << "Error :" << cudaGetErrorString(err) << endl;
-size_t pitch2;
-err = cudaMallocPitch((void**)&d_newImage, &pitch2, WIDTH* sizeof(unsigned char), HEIGHT);
+//size_t pitch2;
+//    err = cudaMallocPitch((void**)&d_newImage, &pitch2, WIDTH* sizeof(unsigned char), HEIGHT);
+err = cudaMalloc(&d_newImage, WIDTH*HEIGHT*sizeof(unsigned char));
 if (err == 0)    cout << "cuda2D d_newImg finish" << endl;
 else cout << "Error :" << cudaGetErrorString(err) << endl;
 
-err = cudaMemcpy2D(d_imgbuff, pitch1, h_imgbuff, WIDTH* sizeof(unsigned char), sizeof(unsigned char) *WIDTH, HEIGHT, cudaMemcpyHostToDevice);
+//    err = cudaMemcpy2D(d_imgbuff, pitch1, h_imgbuff, WIDTH* sizeof(unsigned char), sizeof(unsigned char) *WIDTH, HEIGHT, cudaMemcpyHostToDevice);
+
+err = cudaMemcpy (d_imgbuff, h_imgbuff, WIDTH * HEIGHT * sizeof (unsigned char),
+cudaMemcpyHostToDevice);
+
 if (err != cudaSuccess) cout << "Error :" << cudaGetErrorString(err) << endl;
 
 
@@ -384,11 +391,16 @@ cout << "enter gaussian filter" << endl;
 dim3 threadsPerBlock(32, 32);
 dim3 numBlocks (HEIGHT/threadsPerBlock.x, WIDTH/threadsPerBlock.y);
 //stopwatch_start(timer);
-gaussian_filter <<<numBlocks, threadsPerBlock >>>(d_newImage, d_imgbuff, WIDTH, HEIGHT, pitch1);
+//    gaussian_filter <<<numBlocks, threadsPerBlock >>>(d_newImage, d_imgbuff, WIDTH, HEIGHT, pitch1);
+gaussian_filter <<<numBlocks, threadsPerBlock >>>(d_newImage, d_imgbuff, WIDTH, HEIGHT);
+cudaThreadSynchronize ();
 //t_gaussian = stopwatch_stop(timer);
 
 //MEMCOPY BACK TO HOST
-err = cudaMemcpy2D(h_newImg, WIDTH* sizeof(unsigned char), d_newImage, pitch2, sizeof(unsigned char) *WIDTH, HEIGHT, cudaMemcpyDeviceToHost);
+//    err = cudaMemcpy2D(h_newImg, WIDTH* sizeof(unsigned char), d_newImage, pitch2, sizeof(unsigned char) *WIDTH, HEIGHT, cudaMemcpyDeviceToHost);
+err = cudaMemcpy (h_newImg, d_newImage, WIDTH * HEIGHT * sizeof (unsigned char),
+cudaMemcpyDeviceToHost);
+
 if (err != cudaSuccess) cout << "Error :" << cudaGetErrorString(err) << endl;
 
 
