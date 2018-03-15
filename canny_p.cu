@@ -123,6 +123,8 @@ void gaussian_filter(unsigned char **newImagetmp, unsigned char **in_pixelstmp, 
 		//unsigned char* row = (unsigned char*)((unsigned char*)in_pixelstmp + i * pitch);
 		//unsigned char* row = (unsigned char*)((unsigned char*)in_pixelstmp + i * width);
 		unsigned char in_pixels = in_pixelstmp[i][j];
+		if(in_pixelstmp[i][j] == NULL)
+		printf("Error [%d][%d]", i, j);
 		//newImagetmp[i*width+j] = 0;
 		newImagetmp[i][j] = 0;
 
@@ -136,6 +138,8 @@ void gaussian_filter(unsigned char **newImagetmp, unsigned char **in_pixelstmp, 
 		}
 	}
 	__syncthreads();
+
+	printf("TT [%d][%d] \n",i,j);
 }
 
 
