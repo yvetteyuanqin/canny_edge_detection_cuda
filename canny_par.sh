@@ -28,7 +28,7 @@
 #
 
 # Module load Cuda Compilers and GCC
-module load  cuda/8.0
+module load  cuda/5.0
 module load  gcc/4.4.3
 
 # Runs a bunch of standard command-line
