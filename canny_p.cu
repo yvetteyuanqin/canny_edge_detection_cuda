@@ -136,15 +136,16 @@ __syncthreads();
 		else in_pixels = in_pixelstmp[i][j];
 		__syncthreads();
 		//newImagetmp[i*width+j] = 0;
-		newImagetmp[i][j] = 0;
-
+		
+		unsigned char pvalue;
 		for (int h = 0; h < 5; h++) {
 			for (int w =0; w < 5; w++) {
 				//newImagetmp[i*width+j] = newImagetmp[i*width+j] + filter[h - i][w - j] * in_pixels;
-				newImagetmp[i][j] = newImagetmp[i][j] + filter[h][j] * in_pixels;
+				pvalue = pvalue + filter[h][j] * in_pixels;
 			}
-			if(newImagetmp[i][j] == NULL)
-			printf("Error out [%d][%d]", i, j);
+			if(in_pixelstmp[i][j] == NULL)
+				printf("Error out [%d][%d]", i, j);
+			else in_pixelstmp[i][j] = pvalue;
 		}
 	}else printf("TT [%d][%d] \n",i,j);
 	__syncthreads();
@@ -433,7 +434,7 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, const in
 	for (int i = 0; i < HEIGHT; i++)
 	{
 
-		err = cudaMemcpy(h_newImg[i], d_newimgtemp[i], sizeof(unsigned char)*WIDTH, cudaMemcpyDeviceToHost);
+		err = cudaMemcpy(h_newImg[i], d_imgtemp[i], sizeof(unsigned char)*WIDTH, cudaMemcpyDeviceToHost);
 		if (err != cudaSuccess) cout << "Error h_newimgtemp :" << err << " i = " << i << endl;
 	}
 
