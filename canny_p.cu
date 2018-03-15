@@ -56,6 +56,9 @@ void gaussian_filter(unsigned char **newImagetmp, unsigned char **in_pixelstmp, 
 	int i = threadID /512;
 	int j = threadID % 512;
 
+	printf("TS [%d][%d]",i ,j );
+
+
 	const double filter[5][5] = { { 1 / 273,4 / 273,7 / 273,4 / 273,1 / 273 },
 	{ 4 / 273,16 / 273,26 / 273,16 / 273,4 / 273 },
 	{ 7 / 273,26 / 273,41 / 273,26 / 273,7 / 273 },
@@ -122,9 +125,12 @@ void gaussian_filter(unsigned char **newImagetmp, unsigned char **in_pixelstmp, 
 	if (i < height && j < width) {
 		//unsigned char* row = (unsigned char*)((unsigned char*)in_pixelstmp + i * pitch);
 		//unsigned char* row = (unsigned char*)((unsigned char*)in_pixelstmp + i * width);
-		unsigned char in_pixels = in_pixelstmp[i][j];
+		unsigned char in_pixels = 0;
+
 		if(in_pixelstmp[i][j] == NULL)
 		printf("Error [%d][%d]", i, j);
+		else in_pixels = in_pixelstmp[i][j];
+		
 		//newImagetmp[i*width+j] = 0;
 		newImagetmp[i][j] = 0;
 
@@ -401,8 +407,8 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, const in
 
 	/*apply gaussian filter*/
 	cout << "enter gaussian filter" << endl;
-	dim3 threadsPerBlock(16, 16);
-	dim3 numBlocks (HEIGHT/threadsPerBlock.x, WIDTH/threadsPerBlock.y);
+	dim3 threadsPerBlock(256,1,1);
+	dim3 numBlocks (HEIGHT/threadsPerBlock.x, WIDTH/threadsPerBlock.y,1);
 	//stopwatch_start(timer);
 	
 	gaussian_filter << <numBlocks, threadsPerBlock >> >(d_newImage, d_imgbuff, WIDTH, HEIGHT);
