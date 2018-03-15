@@ -129,7 +129,7 @@ void gaussian_filter(unsigned char **newImagetmp, unsigned char **in_pixelstmp, 
 		for (int h = 0; h < 5; h++) {
 			for (int w =0; w < 5; w++) {
 				//newImagetmp[i*width+j] = newImagetmp[i*width+j] + filter[h - i][w - j] * in_pixels;
-				newImagetmp[i][j] = newImagetmp[i] + filter[h][j] * in_pixels;
+				newImagetmp[i][j] = newImagetmp[i][j] + filter[h][j] * in_pixels;
 			}
 			if(newImagetmp[i][j] == NULL)
 			printf("Error [%d][%d]", i, j);
