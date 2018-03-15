@@ -50,7 +50,7 @@ void gaussian_filter(unsigned char *newImagetmp, unsigned char *in_pixelstmp,con
 //int wd = 5;
 /*allocate newimage*/
 int i = blockIdx.x * blockDim.x + threadIdx.x;
-int j = blockIdx.y * blockDim.y + threadIdx.y;
+//int j = blockIdx.y * blockDim.y + threadIdx.y;
 
 const double filter[5][5]={{1/273,4/273,7/273,4/273,1/273},
 {4/273,16/273,26/273,16/273,4/273},
@@ -114,18 +114,20 @@ int h, w;
 //
 //        for (i=0 ; i<newImageHeight ; i++) {
 //            for (j=0 ; j<newImageWidth ; j++) {
-if (i < newImageHeight && j < newImageWidth) {
-
+//if (i < newImageHeight && j < newImageWidth) {
+if (i < newImageHeight *newImageWidth) {
 //unsigned char* row = (unsigned char*)((unsigned char*)in_pixelstmp + i * pitch);
-unsigned char* row = (unsigned char*)((unsigned char*)in_pixelstmp + i * width);
-unsigned char in_pixels = row[j];
-newImagetmp[i*width+j] = 0;
-
+//unsigned char* row = (unsigned char*)((unsigned char*)in_pixelstmp + i * width);
+unsigned char in_pixels = in_pixelstmp[i];
+//newImagetmp[i*width+j] = 0;
+newImagetmp[i] = 0;
 
 for (h = i; h<i + filterHeight; h++) {
 for (w = j; w<j + filterWidth; w++) {
-newImagetmp[i*width+j] = newImagetmp[i*width+j] + filter[h - i][w - j] * in_pixels;
+//newImagetmp[i*width+j] = newImagetmp[i*width+j] + filter[h - i][w - j] * in_pixels;
+newImagetmp[i] = newImagetmp[i] + filter[h - i][w - j] * in_pixels;
 }
+printf("newImage %d = %d",i,newImagetmp[i]);
 }
 //newImagetmp [i*width+j] = newImage[i][j];
 
@@ -140,7 +142,7 @@ __syncthreads();
 
 
 
-//printf("finish gaussian filter");
+printf("finish gaussian filter thread:%d",i);
 
 }
 __global__
@@ -371,7 +373,7 @@ else cout << "Error :" << cudaGetErrorString(err) << endl;
 //size_t pitch2;
 //    err = cudaMallocPitch((void**)&d_newImage, &pitch2, WIDTH* sizeof(unsigned char), HEIGHT);
 err = cudaMalloc(&d_newImage, WIDTH*HEIGHT*sizeof(unsigned char));
-if (err == 0)    cout << "cuda2D d_newImg finish" << endl;
+if (err == 0)    cout << "cuda d_newImg finish" << endl;
 else cout << "Error :" << cudaGetErrorString(err) << endl;
 
 //    err = cudaMemcpy2D(d_imgbuff, pitch1, h_imgbuff, WIDTH* sizeof(unsigned char), sizeof(unsigned char) *WIDTH, HEIGHT, cudaMemcpyHostToDevice);
@@ -388,11 +390,11 @@ cout << "cudaMalloc finished" << endl;
 
 /*apply gaussian filter*/
 cout << "enter gaussian filter" << endl;
-dim3 threadsPerBlock(32, 32);
-dim3 numBlocks (HEIGHT/threadsPerBlock.x, WIDTH/threadsPerBlock.y);
+//    dim3 threadsPerBlock(32, 32);
+//    dim3 numBlocks (HEIGHT/threadsPerBlock.x, WIDTH/threadsPerBlock.y);
 //stopwatch_start(timer);
 //    gaussian_filter <<<numBlocks, threadsPerBlock >>>(d_newImage, d_imgbuff, WIDTH, HEIGHT, pitch1);
-gaussian_filter <<<numBlocks, threadsPerBlock >>>(d_newImage, d_imgbuff, WIDTH, HEIGHT);
+gaussian_filter <<<WIDTH*HEIGHT/512, 512 >>>(d_newImage, d_imgbuff, WIDTH, HEIGHT);
 cudaThreadSynchronize ();
 //t_gaussian = stopwatch_stop(timer);
 
