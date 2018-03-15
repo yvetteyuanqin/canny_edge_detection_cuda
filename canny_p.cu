@@ -51,7 +51,7 @@ void gaussian_filter(unsigned char **newImagetmp, unsigned char **in_pixelstmp, 
 	/*allocate newimage*/
 	
 	int blockId = blockIdx.x + blockIdx.y * gridDim.x; 
-	int threadID = blockId * (blockDim.x * blockDim.y) + (sizeof(unsigned char*) + threadIdx.y * blockDim.x) + threadIdx.x;
+	int threadID = blockId * (blockDim.x * blockDim.y) + ( threadIdx.y * blockDim.x) + threadIdx.x;
 	
 	int i = threadID /512;
 	int j = threadID % 512;
@@ -136,10 +136,9 @@ void gaussian_filter(unsigned char **newImagetmp, unsigned char **in_pixelstmp, 
 			if(newImagetmp[i][j] == NULL)
 			printf("Error [%d][%d]", i, j);
 		}
-	}
+	}else printf("TT [%d][%d] \n",i,j);
 	__syncthreads();
 
-	printf("TT [%d][%d] \n",i,j);
 }
 
 
