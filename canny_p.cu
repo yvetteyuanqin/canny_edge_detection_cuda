@@ -67,7 +67,8 @@ void gaussian_filter(unsigned char **newImagetmp, unsigned char **in_pixelstmp, 
 
 	for(int k = 0;  k< 5; k++){
 		for(int l = 0; l < 5 ; l ++)
-			printf("%.2f", filter[k][l]);
+			printf("%.4f ", filter[k][l]);
+		
 	}
 
 
@@ -422,7 +423,7 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, const in
 	dim3 threadsPerBlock(4,4);
 	dim3 numBlocks (HEIGHT/threadsPerBlock.x, WIDTH/threadsPerBlock.y);
 	//stopwatch_start(timer);
-	gaussian_filter << <numBlocks, threadsPerBlock >> >(d_newImage, d_imgbuff, WIDTH, HEIGHT);
+	gaussian_filter << <numBlocks, threadsPerBlock >> >(d_newimgtemp, d_imgtemp, WIDTH, HEIGHT);
 	
 	err = cudaThreadSynchronize();
 	if (err != cudaSuccess) cout << "Error cudaThreadSynchronize :" << err << endl;
@@ -431,7 +432,7 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, const in
 	if (err != cudaSuccess) cout << "Error cudaDeviceSynchronize :" << err << endl;
 
 	
-	gaussian_filter << <numBlocks, threadsPerBlock >> >(d_newImage, d_imgbuff, WIDTH, HEIGHT);
+	gaussian_filter << <numBlocks, threadsPerBlock >> >(d_newImage, d_imgtemp, WIDTH, HEIGHT);
 	
 	err = cudaThreadSynchronize();
 	if (err != cudaSuccess) cout << "Error cudaThreadSynchronize :" << err << endl;
@@ -446,7 +447,7 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, const in
 	for (int i = 0; i < HEIGHT; i++)
 	{
 
-		err = cudaMemcpy(h_newImg[i], d_imgbuff[i], sizeof(unsigned char)*WIDTH, cudaMemcpyDeviceToHost);
+		err = cudaMemcpy(h_newImg[i], d_imgtemp[i], sizeof(unsigned char)*WIDTH, cudaMemcpyDeviceToHost);
 		if (err != cudaSuccess) cout << "Error h_newimgtemp :" << err << " i = " << i << endl;
 	}
 
