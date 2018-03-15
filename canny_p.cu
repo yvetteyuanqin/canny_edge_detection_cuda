@@ -123,9 +123,9 @@ unsigned char in_pixels = in_pixelstmp[i];
 newImagetmp[i] = 0;
 
 for (h = i; h<i + filterHeight; h++) {
-for (w = j; w<j + filterWidth; w++) {
+for (w = i%width; w<i%width + filterWidth; w++) {
 //newImagetmp[i*width+j] = newImagetmp[i*width+j] + filter[h - i][w - j] * in_pixels;
-newImagetmp[i] = newImagetmp[i] + filter[h - i][w - j] * in_pixels;
+newImagetmp[i] = newImagetmp[i] + filter[h - i][w - i%width] * in_pixels;
 }
 printf("newImage %d = %d",i,newImagetmp[i]);
 }
