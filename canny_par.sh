@@ -40,10 +40,8 @@ echo "Current directory: ${PWD}"
 
 echo ""
 echo "=== Running 5 trials of naive ... ==="
-for trial in 1 2 3 4 5; do
-  echo "*** Trial ${trial} ***"
-  ./canny_par
-done
+./canny_par
+
 
 echo ""
 echo "=== Done! ==="
