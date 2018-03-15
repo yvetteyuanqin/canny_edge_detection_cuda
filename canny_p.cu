@@ -365,7 +365,7 @@ cout << "cudaMalloc2d" << endl;
 size_t pitch1;
 cudaError_t err = cudaMallocPitch((void**)&d_imgbuff, &pitch1, WIDTH* sizeof(unsigned char), HEIGHT);
 if (err == 0)    cout << "cuda2D d_imgbuff finish" << endl;
-else cout << "Error :" << err << endl;
+else cout << "Error :" << cudaGetErrorString(err) << endl;
 size_t pitch2;
 err = cudaMallocPitch((void**)&d_newImage, &pitch2, WIDTH* sizeof(unsigned char), HEIGHT);
 if (err == 0)    cout << "cuda2D d_newImg finish" << endl;
