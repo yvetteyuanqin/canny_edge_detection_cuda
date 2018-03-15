@@ -65,7 +65,7 @@ void gaussian_filter(unsigned char **newImagetmp, unsigned char **in_pixelstmp, 
 	{ 4 / 273,16 / 273,26 / 273,16 / 273,4 / 273 },
 	{ 1 / 273,4 / 273,7 / 273,4 / 273,1 / 273 } };
 
-
+	printf("filterOK");
 	//        filter[0][0] = 1 / 273, filter[0][1] = 4 / 273, filter[0][2] = 7 / 273, filter[0][3] = 4 / 273, filter[0][4] = 1 / 273,
 	//        filter[1][0] = 4 / 273, filter[1][1] = 16 / 273, filter[1][2] = 26 / 273, filter[1][3] = 16 / 273, filter[1][4] = 4 / 273,
 	//        filter[2][0] = 7 / 273, filter[2][1] = 26 / 273, filter[2][2] = 41 / 273, filter[2][3] = 26 / 273, filter[2][4] = 7 / 273,
@@ -408,7 +408,7 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, const in
 
 	/*apply gaussian filter*/
 	cout << "enter gaussian filter" << endl;
-	dim3 threadsPerBlock(32,32);
+	dim3 threadsPerBlock(4,4);
 	dim3 numBlocks (HEIGHT/threadsPerBlock.x, WIDTH/threadsPerBlock.y);
 	//stopwatch_start(timer);
 	
