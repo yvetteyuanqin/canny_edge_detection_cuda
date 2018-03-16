@@ -4,7 +4,8 @@
 #include <math.h>
 #include <iostream>
 #include <vector>
-#include "canny_sequential.h"
+#include "canny_omp.h"
+#include <omp.h>
 
 
 using namespace boost::gil;
@@ -16,7 +17,7 @@ Matrix createKernel(int height, int width, double sigma)
     Matrix kernel(height, Array(width));
     double sum=0.0;
     int i,j;
-    
+#pragma omp parallel for private(i)
     for (i=0 ; i<height ; i++) {
         for (j=0 ; j<width ; j++) {
             kernel[i][j] = exp(-(i*i+j*j)/(2*sigma*sigma))/(2*M_PI*sigma*sigma);
@@ -45,13 +46,13 @@ void gaussian_filter(gray8_pixel_t **newImage,gray8_pixel_t **in_pixels,int widt
 
 
 
-    int i,j,h,w;
     /*allocate newimage*/
-    
-        for (i=0 ; i<newImageHeight ; i++) {
-            for (j=0 ; j<newImageWidth ; j++) {
-                for (h=i ; h<i+filterHeight ; h++) {
-                    for (w=j ; w<j+filterWidth ; w++) {
+#pragma omp parallel for private(i)
+        for (int i=0 ; i<newImageHeight ; i++) {
+#pragma omp parallel for private(j,h,w)
+            for (int j=0 ; j<newImageWidth ; j++) {
+                for (int h=i ; h<i+filterHeight ; h++) {
+                    for (int w=j ; w<j+filterWidth ; w++) {
                         newImage[i][j] = newImage[i][j] +filter[h-i][w-j]*in_pixels[h][w];
                     }
                 }

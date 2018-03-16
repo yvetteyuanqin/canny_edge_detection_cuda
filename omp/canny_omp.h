@@ -1,11 +1,12 @@
-#ifndef _CANNY_SEQUENTIAL_HPP_
-#define _CANNY_SEQUENTIAL_HPP_
+#ifndef _CANNY_OMP_HPP_
+#define _CANNY_OMP_HPP_
 #include <boost/gil/rgb.hpp>
 #include <boost/gil/extension/io/png_dynamic_io.hpp>
 #include <stdint.h>
 #include <math.h>
 #include <iostream>
 #include <vector>
+#include <omp.h>
 
 #define KERNEL_SIZE 7
 

@@ -12,8 +12,9 @@
 #include <stdint.h>
 #include <vector>
 #include <iostream>
-#include "canny_sequential.h"
+#include "canny_omp.h"
 #include "timer.h"
+#include <omp.h>
 #define HEIGHT 512
 #define WIDTH 512
 
@@ -72,6 +73,7 @@ int main() {
     /*apply gaussian filter*/
 	cout << "enter gaussian filter" << endl;
     stopwatch_start (timer);
+#pragma omp parallel
     gaussian_filter(newImage,imgbuff,WIDTH, HEIGHT);
     t_gaussian= stopwatch_stop (timer);
    
