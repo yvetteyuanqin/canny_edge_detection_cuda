@@ -50,6 +50,7 @@ void gaussian_filter(gray8_pixel_t **newImage,gray8_pixel_t **in_pixels,int widt
 	{
 		int i, j, h, w;
 		/*allocate newimage*/
+#pragma omp parallel for private(i, j, h, w) shared(newImage) collapse(2)
 		for (i = 0; i < newImageHeight; i++) {
 			for (j = 0; j < newImageWidth; j++) {
 				for (h = i; h < i + filterHeight; h++) {
