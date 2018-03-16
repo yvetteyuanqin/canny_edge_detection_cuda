@@ -52,7 +52,7 @@ void gaussian_filter(gray8_pixel_t **newImage,gray8_pixel_t **in_pixels,int widt
 		/*allocate newimage*/
 #pragma omp for private(i)
 		for (i = 0; i < newImageHeight; i++) {
-#pragma omp for shared (newImage, in_pixels, filter ) private(j,h,w)
+#pragma omp for private(j,h,w)
 			for (j = 0; j < newImageWidth; j++) {
 				for (h = i; h < i + filterHeight; h++) {
 					for (w = j; w < j + filterWidth; w++) {
