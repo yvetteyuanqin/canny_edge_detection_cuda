@@ -85,6 +85,7 @@ void gradient(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, in
 		}
 	}
 
+	int i, j;
 
 #pragma omp parallel for private(i, j) shared(newImage) collapse(2)
 	for (int i = 0; i < width; i++) {
