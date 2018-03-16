@@ -69,6 +69,8 @@ void gaussian_filter(unsigned char **newImagetmp, unsigned char **in_pixelstmp, 
 	if(in_pixelstmp[i][j] == NULL)
 		printf("Error in [%d][%d]", i, j);
 	else in_pixels = in_pixelstmp[i][j];
+
+
 	__syncthreads();
 	//        filter[0][0] = 1 / 273, filter[0][1] = 4 / 273, filter[0][2] = 7 / 273, filter[0][3] = 4 / 273, filter[0][4] = 1 / 273,
 	//        filter[1][0] = 4 / 273, filter[1][1] = 16 / 273, filter[1][2] = 26 / 273, filter[1][3] = 16 / 273, filter[1][4] = 4 / 273,
@@ -131,10 +133,11 @@ void gaussian_filter(unsigned char **newImagetmp, unsigned char **in_pixelstmp, 
 				//newImagetmp[i*width+j] = newImagetmp[i*width+j] + filter[h - i][w - j] * in_pixels;
 				pvalue = pvalue + filter[h] * in_pixels;
 			
-			if(in_pixelstmp[i][j] == NULL)
-				printf("Error out [%d][%d]", i, j);
-			else in_pixelstmp[i][j] = pvalue;
+			
 		}
+		if(in_pixelstmp[i][j] == NULL)
+				printf("Error out [%d][%d]\n", i, j);
+		else in_pixelstmp[i][j] = pvalue;
 	}else printf("TT [%d][%d] \n",i,j);
 	__syncthreads();
 
@@ -417,13 +420,7 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, const in
 
 	cout << "cudaMalloc finished" << endl;
 
-	for(int i = 0; i < HEIGHT; i++){
-		for(int j = 0; j < WIDTH;j++){
-			cout<<(int)h_imgbuff[i][j]<<" ";
-		}
-	
-		cout<<endl;
-	}
+
 
 	
 	/*apply gaussian filter*/
