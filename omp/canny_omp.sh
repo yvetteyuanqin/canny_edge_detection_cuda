@@ -16,7 +16,7 @@ echo "Current directory: ${PWD}"
 
 echo ""
 echo "=== Running 5 trials of naive ... ==="
-./canny_par
+./canny_omp
 
 
 echo ""
