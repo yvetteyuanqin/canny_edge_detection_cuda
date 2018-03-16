@@ -50,7 +50,7 @@ void gaussian_filter(unsigned char newImagetmp[512][512], unsigned char in_pixel
 	//int wd = 5;
 	/*allocate newimage*/
 
-	_shared__ double filter[25];
+	__shared__ double filter[25];
     for (int i = 0; i < 25; ++i) {
             filter[i] = filter_[i];
         
