@@ -17,7 +17,7 @@ Matrix createKernel(int height, int width, double sigma)
     Matrix kernel(height, Array(width));
     double sum=0.0;
     int i,j;
-#pragma omp parallel for reduction(+:sum)
+
     for (i=0 ; i<height ; i++) {
         for (j=0 ; j<width ; j++) {
             kernel[i][j] = exp(-(i*i+j*j)/(2*sigma*sigma))/(2*M_PI*sigma*sigma);
@@ -38,18 +38,14 @@ Matrix createKernel(int height, int width, double sigma)
 void gaussian_filter(gray8_pixel_t **newImage,gray8_pixel_t **in_pixels,int width, int height)
 {
 
-   // Matrix filter = createKernel(5, 5, 10.0);
+    Matrix filter = createKernel(5, 5, 10.0);
     int filterHeight = filter.size();
     int filterWidth = filter[0].size();
     int newImageHeight = height-filterHeight;
     int newImageWidth = width-filterWidth;
 
 
-	double filter[5][5] = { 1 / 273,4 / 273,7 / 273,4 / 273,1 / 273 ,
-		4 / 273,16 / 273,26 / 273,16 / 273,4 / 273 ,
-		7 / 273,26 / 273,41 / 273,26 / 273,7 / 273 ,
-		4 / 273,16 / 273,26 / 273,16 / 273,4 / 273 ,
-		1 / 273,4 / 273,7 / 273,4 / 273,1 / 273 };
+	
 
 
     int i,j,h,w;
