@@ -87,7 +87,7 @@ void gradient(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, in
 
 	int i, j;
 
-#pragma omp parallel for private(i, j) shared(newImage,deltaY,deltaX) // collapse(2)
+#pragma omp parallel for private(i, j) shared(newImage)  collapse(2)
 	for (int i = 0; i < width; i++) {
 		for (int j = 0; j < height; j++) {
 				newImage[i][j] = (gray8_pixel_t)(sqrt((double)deltaX[i][j] * deltaX[i][j] +
@@ -103,6 +103,7 @@ void suppress(gray8_pixel_t **newImage, gray8_pixel_t **mag, int width, int heig
     
     float alpha;
     float mag1, mag2;
+	int i, j;
     // put zero all boundaries of image
     // TOP edge line of the image
 	for (int k = 0; k < height; ++k) {
@@ -111,13 +112,14 @@ void suppress(gray8_pixel_t **newImage, gray8_pixel_t **mag, int width, int heig
 		newImage[k][0] = 0;
 		newImage[k][width - 1]= 0;
 	}
-   
+ 
 
+#pragma omp parallel for private(i, j,mag1,mag2,alpha ) shared(newImage, mag)  collapse(2)
     // skip boundaries of image
     // start and stop 1 pixel inner pixels from boundaries
-    for(unsigned i = 1; i < height-1; i++)
+    for( i = 1; i < height-1; i++)
     {
-        for(unsigned j = 1; j < width-1; j++)
+        for( j = 1; j < width-1; j++)
         {
             // if magnitude = 0, no edge
             if(mag[i][j] == 0) newImage[i][j] = 0;//suppressed
