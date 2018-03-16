@@ -56,7 +56,7 @@ void gaussian_filter(unsigned char **newImagetmp, unsigned char **in_pixelstmp, 
 	int i = threadID /512;
 	int j = threadID % 512;
 
-	printf("TS [%d][%d] \n",i ,j );
+	//printf("TS [%d][%d] \n",i ,j );
 
 
 
