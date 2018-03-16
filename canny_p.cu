@@ -42,7 +42,7 @@ using namespace std;
 
 /*Step 1 blur the image to reduce noice*/
 __global__
-void gaussian_filter(unsigned char **newImagetmp, unsigned char **in_pixelstmp, const int width, const int height, double filte[25])
+void gaussian_filter(unsigned char **newImagetmp, unsigned char **in_pixelstmp, const int width, const int height, double filter[25])
 {
 	// create kernel
 
