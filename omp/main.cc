@@ -98,14 +98,14 @@ int main() {
     }
     
 	///*Gradient*/
-	//cout << "enter gradient filter" << endl;
- //   stopwatch_start (timer);
- //    gradient(gradientImg, newImage, WIDTH, HEIGHT,deltaX,deltaY);
- //   t_gradient= stopwatch_stop (timer);
- //  
- //   cout<< "Time to execute gradient:"<< t_gradient<<endl;
-	//
-	//cout << "finished." << endl;
+	cout << "enter gradient filter" << endl;
+    stopwatch_start (timer);
+     gradient(gradientImg, newImage, WIDTH, HEIGHT,deltaX,deltaY);
+    t_gradient= stopwatch_stop (timer);
+   
+    cout<< "Time to execute gradient:"<< t_gradient<<endl;
+	
+	cout << "finished." << endl;
  //   
  //   
  //   gray8_pixel_t **NMSImg = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*HEIGHT);
@@ -154,7 +154,7 @@ int main() {
 	cout << "create image view" << endl;
 	for (int i = 0; i < HEIGHT; ++i) {
         for (int j = 0; j < WIDTH; ++j) {
-            img_view(j, i) = newImage[i][j];
+            img_view(j, i) = gradientImg[i][j];
         }
     }
 	cout << "finished." << endl;

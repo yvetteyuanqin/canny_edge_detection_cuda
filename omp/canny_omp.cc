@@ -69,6 +69,7 @@ void gradient(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, in
 
 	   // compute delta X ***************************
 	   // deltaX = f(x+1) - f(x-1)
+
 	for (int i = 0; i < height; i++) {
 		for (int j = 0; j < width; j++){
 			if (j == 0) deltaX[i][j] = in_pixels[i][j + 1] - in_pixels[i][j];
@@ -83,6 +84,9 @@ void gradient(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, in
 			else deltaY[i][j] = in_pixels[i+1][j] - in_pixels[i-1][j];
 		}
 	}
+
+
+#pragma omp parallel for private(i, j) shared(newImage) collapse(2)
 	for (int i = 0; i < width; i++) {
 		for (int j = 0; j < height; j++) {
 				newImage[i][j] = (gray8_pixel_t)(sqrt((double)deltaX[i][j] * deltaX[i][j] +
