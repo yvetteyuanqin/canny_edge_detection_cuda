@@ -73,7 +73,7 @@ int main() {
     /*apply gaussian filter*/
 	cout << "enter gaussian filter" << endl;
     stopwatch_start (timer);
-#pragma omp parallel
+
     gaussian_filter(newImage,imgbuff,WIDTH, HEIGHT);
     t_gaussian= stopwatch_stop (timer);
    

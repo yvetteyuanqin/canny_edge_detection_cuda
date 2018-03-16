@@ -46,22 +46,22 @@ void gaussian_filter(gray8_pixel_t **newImage,gray8_pixel_t **in_pixels,int widt
 
 
 	
-
-
-    int i,j,h,w;
-    /*allocate newimage*/
+#pragma omp parallel 
+	{
+		int i, j, h, w;
+		/*allocate newimage*/
 #pragma omp parallel for shared (newImage, in_pixels, filter ) private(i)
-        for (i=0 ; i<newImageHeight ; i++) {
+		for (i = 0; i < newImageHeight; i++) {
 #pragma omp parallel for shared (newImage, in_pixels, filter ) private(j,h,w)
-            for (j=0 ; j<newImageWidth ; j++) {
-                for (h=i ; h<i+filterHeight ; h++) {
-                    for (w=j ; w<j+filterWidth ; w++) {
-                        newImage[i][j] = newImage[i][j] +filter[h-i][w-j]*in_pixels[h][w];
-                    }
-                }
-            }
-        }
-
+			for (j = 0; j < newImageWidth; j++) {
+				for (h = i; h < i + filterHeight; h++) {
+					for (w = j; w < j + filterWidth; w++) {
+						newImage[i][j] = newImage[i][j] + filter[h - i][w - j] * in_pixels[h][w];
+					}
+				}
+			}
+		}
+	}
 }
 void gradient(gray8_pixel_t **newImage, gray8_pixel_t **in_pixels, int width, int height,
 	gray8_pixel_t **deltaX, gray8_pixel_t **deltaY)
