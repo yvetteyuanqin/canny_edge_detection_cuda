@@ -17,7 +17,7 @@ Matrix createKernel(int height, int width, double sigma)
     Matrix kernel(height, Array(width));
     double sum=0.0;
     int i,j;
-#pragma omp parallel for private(i)
+#pragma omp parallel for reduction(+:sum)
     for (i=0 ; i<height ; i++) {
         for (j=0 ; j<width ; j++) {
             kernel[i][j] = exp(-(i*i+j*j)/(2*sigma*sigma))/(2*M_PI*sigma*sigma);
