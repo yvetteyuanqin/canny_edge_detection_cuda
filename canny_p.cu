@@ -42,21 +42,13 @@ using namespace std;
 
 /*Step 1 blur the image to reduce noice*/
 __global__
-void gaussian_filter(unsigned char newImagetmp[512][512], unsigned char in_pixelstmp[512][512], const int width, const int height, double filter_[25])
+void gaussian_filter(unsigned char **newImagetmp, unsigned char **in_pixelstmp, const int width, const int height, double filter[25])
 {
 	// create kernel
 
 	//int hi = 5;
 	//int wd = 5;
 	/*allocate newimage*/
-
-	_shared__ double filter[25];
-    for (int i = 0; i < 25; ++i) {
-            filter[i] = filter_[i];
-        
-    }
-    
-    __syncthreads();
 	
 	int blockId = blockIdx.x + blockIdx.y * gridDim.x; 
 	int threadID = blockId * (blockDim.x * blockDim.y) + ( threadIdx.y * blockDim.x) + threadIdx.x;
@@ -64,14 +56,20 @@ void gaussian_filter(unsigned char newImagetmp[512][512], unsigned char in_pixel
 	int i = threadID /512;
 	int j = threadID % 512;
 
-	//printf("TS [%d][%d] \n",i ,j );
+	printf("TS [%d][%d] \n",i ,j );
+
+
+
+
+
+
+
 
 	unsigned char in_pixels = 0;
 	if(in_pixelstmp[i][j] == NULL)
 		printf("Error in [%d][%d]", i, j);
-	else {in_pixels = in_pixelstmp[i][j];
-		printf("w\n");
-	}
+	else in_pixels = in_pixelstmp[i][j];
+
 
 	__syncthreads();
 	//        filter[0][0] = 1 / 273, filter[0][1] = 4 / 273, filter[0][2] = 7 / 273, filter[0][3] = 4 / 273, filter[0][4] = 1 / 273,
