@@ -419,7 +419,7 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, const in
 
 	for(int i = 0; i < HEIGHT; i++){
 		for(int j = 0; j < WIDTH;j++){
-			cout<<(int)h_imgbuff[i]<<" ";
+			cout<<(int)h_imgbuff[i][j]<<" ";
 		}
 	
 		cout<<endl;
