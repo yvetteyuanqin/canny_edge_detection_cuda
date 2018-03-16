@@ -106,24 +106,24 @@ int main() {
     cout<< "Time to execute gradient:"<< t_gradient<<endl;
 	
 	cout << "finished." << endl;
- //   
- //   
- //   gray8_pixel_t **NMSImg = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*HEIGHT);
- //   for (int i = 0; i < WIDTH; i++)
- //   {
- //       *(NMSImg + i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*WIDTH);
- //       for (int j = 0; j<HEIGHT; j++) NMSImg[i][j] = 0;
- //   }
- //   
- //   /*non maximum suppression*/
- //   cout << "enter suppression filter" << endl;
- //   stopwatch_start (timer);
- //       suppress(NMSImg,gradientImg,WIDTH, HEIGHT,deltaX,deltaY);
- //   t_nms= stopwatch_stop (timer);
+    
+    
+    gray8_pixel_t **NMSImg = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*HEIGHT);
+    for (int i = 0; i < WIDTH; i++)
+    {
+        *(NMSImg + i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*WIDTH);
+        for (int j = 0; j<HEIGHT; j++) NMSImg[i][j] = 0;
+    }
+    
+    /*non maximum suppression*/
+    cout << "enter suppression filter" << endl;
+    stopwatch_start (timer);
+        suppress(NMSImg,gradientImg,WIDTH, HEIGHT,deltaX,deltaY);
+    t_nms= stopwatch_stop (timer);
 
- //   cout<< "Time to execute nms:"<< t_nms<<endl;
- //   
- //   cout << "finished." << endl;
+    cout<< "Time to execute nms:"<< t_nms<<endl;
+    
+    cout << "finished." << endl;
 
  //   
  //   gray8_pixel_t **thresImg = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*HEIGHT);
