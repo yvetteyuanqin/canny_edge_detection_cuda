@@ -66,7 +66,6 @@ void gaussian_filter(unsigned char **newImagetmp, unsigned char **in_pixelstmp, 
 
 
 	unsigned char in_pixels = 0;
-	__syncthreads();
 	if(in_pixelstmp[i][j] == NULL)
 		printf("Error in [%d][%d]", i, j);
 	else in_pixels = in_pixelstmp[i][j];
@@ -112,11 +111,6 @@ void gaussian_filter(unsigned char **newImagetmp, unsigned char **in_pixelstmp, 
 
 	//start filtering
 	//double** filter = createKernel(5, 5, 10.0);
-	int filterHeight = 5;
-	int filterWidth = 5;
-	int newImageHeight = height - filterHeight;
-	int newImageWidth = width - filterWidth;
-
 
 
 	
@@ -130,10 +124,9 @@ void gaussian_filter(unsigned char **newImagetmp, unsigned char **in_pixelstmp, 
 		//unsigned char* row = (unsigned char*)((unsigned char*)in_pixelstmp + i * width);
 		
 
-		__syncthreads();
 		//newImagetmp[i*width+j] = 0;
 		
-		unsigned char pvalue;
+		unsigned char pvalue = 0;
 		for (int h = 0; h < 25; h++) {
 				//newImagetmp[i*width+j] = newImagetmp[i*width+j] + filter[h - i][w - j] * in_pixels;
 				pvalue = pvalue + filter[h] * in_pixels;
@@ -424,7 +417,13 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, const in
 
 	cout << "cudaMalloc finished" << endl;
 
+	for(int i = 0; i < HEIGHT; i++){
+		for(int j = 0; j < WIDTH;j++){
+			cout<<(int)h_imgbuff[i]<<" ";
+		}
 	
+		cout<<endl;
+	}
 
 	
 	/*apply gaussian filter*/
@@ -441,7 +440,7 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, const in
 	if (err != cudaSuccess) cout << "Error cudaDeviceSynchronize :" << err << endl;
 
 	
-	gaussian_filter << <numBlocks, threadsPerBlock >> >(d_newImage, d_imgtemp, WIDTH, HEIGHT, d_filter);
+	gaussian_filter << <numBlocks, threadsPerBlock >> >(d_newImage, d_imgbuff, WIDTH, HEIGHT, d_filter);
 	
 	err = cudaThreadSynchronize();
 	if (err != cudaSuccess) cout << "Error cudaThreadSynchronize :" << err << endl;
@@ -456,7 +455,7 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, const in
 	for (int i = 0; i < HEIGHT; i++)
 	{
 
-		err = cudaMemcpy(h_newImg[i], d_imgtemp[i], sizeof(unsigned char)*WIDTH, cudaMemcpyDeviceToHost);
+		err = cudaMemcpy(h_newImg[i], d_imgbuff[i], sizeof(unsigned char)*WIDTH, cudaMemcpyDeviceToHost);
 		if (err != cudaSuccess) cout << "Error h_newimgtemp :" << err << " i = " << i << endl;
 	}
 
