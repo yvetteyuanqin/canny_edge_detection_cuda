@@ -125,26 +125,26 @@ int main() {
     
     cout << "finished." << endl;
 
- //   
- //   gray8_pixel_t **thresImg = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*HEIGHT);
- //   for (int i = 0; i < WIDTH; i++)
- //   {
- //       *(thresImg + i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*WIDTH);
- //       for (int j = 0; j<HEIGHT; j++) thresImg[i][j] = 0;
- //   }
- //   
- //   /*non hysterious thresholding*/
- //   cout << "enter hysterious" << endl;
-	//unsigned char hi = 0xFC;
-	//unsigned char lo = 0xC0;
- //   stopwatch_start (timer);
- //   apply_hysteresis(thresImg,NMSImg, hi, lo, WIDTH,HEIGHT);
- //   t_thres= stopwatch_stop (timer);
+    
+    gray8_pixel_t **thresImg = (gray8_pixel_t**)malloc(sizeof(gray8_pixel_t*)*HEIGHT);
+    for (int i = 0; i < WIDTH; i++)
+    {
+        *(thresImg + i) = (gray8_pixel_t*)malloc(sizeof(gray8_pixel_t)*WIDTH);
+        for (int j = 0; j<HEIGHT; j++) thresImg[i][j] = 0;
+    }
+    
+    /*non hysterious thresholding*/
+    cout << "enter hysterious" << endl;
+	unsigned char hi = 0xFC;
+	unsigned char lo = 0xC0;
+    stopwatch_start (timer);
+    apply_hysteresis(thresImg,NMSImg, hi, lo, WIDTH,HEIGHT);
+    t_thres= stopwatch_stop (timer);
 
- //   cout<< "Time to execute thresholded:"<< t_thres<<endl;
+    cout<< "Time to execute thresholded:"<< t_thres<<endl;
 
- //   
- //   cout << "finished." << endl;
+    
+    cout << "finished." << endl;
     
     
     /*revert image to check*/
@@ -154,7 +154,7 @@ int main() {
 	cout << "create image view" << endl;
 	for (int i = 0; i < HEIGHT; ++i) {
         for (int j = 0; j < WIDTH; ++j) {
-            img_view(j, i) = NMSImg[i][j];
+            img_view(j, i) = thresImg[i][j];
         }
     }
 	cout << "finished." << endl;

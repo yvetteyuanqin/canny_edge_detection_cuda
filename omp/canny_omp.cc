@@ -217,7 +217,8 @@ void apply_hysteresis(gray8_pixel_t **out_pixels, gray8_pixel_t **in_pixels, uns
 {
     /* skip first and last rows and columns, since we'll check them as surrounding neighbors of
      * the adjacent rows and columns */
-    
+#pragma omp parallel for private(i, j ) shared(out_pixels, in_pixels)  collapse(2)
+
     for(unsigned i = 1; i < height-1; i++) {
         for(unsigned j = 1; j < width-1; j++) {
             /* if our input is above the high threshold and the output hasn't already marked it as an edge */
