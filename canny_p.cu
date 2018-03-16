@@ -42,7 +42,7 @@ using namespace std;
 
 /*Step 1 blur the image to reduce noice*/
 __global__
-void gaussian_filter(unsigned char **newImagetmp, unsigned char **in_pixelstmp, const int width, const int height)
+void gaussian_filter(unsigned char **newImagetmp, unsigned char **in_pixelstmp, const int width, const int height, double filte[25])
 {
 	// create kernel
 
@@ -59,17 +59,8 @@ void gaussian_filter(unsigned char **newImagetmp, unsigned char **in_pixelstmp, 
 	printf("TS [%d][%d] \n",i ,j );
 
 
-	const double filter[5][5] = { { 1 / 273,4 / 273,7 / 273,4 / 273,1 / 273 },
-	{ 4 / 273,16 / 273,26 / 273,16 / 273,4 / 273 },
-	{ 7 / 273,26 / 273,41 / 273,26 / 273,7 / 273 },
-	{ 4 / 273,16 / 273,26 / 273,16 / 273,4 / 273 },
-	{ 1 / 273,4 / 273,7 / 273,4 / 273,1 / 273 } };
 
-	for(int k = 0;  k< 5; k++){
-		for(int l = 0; l < 5 ; l ++)
-			printf("%.4f ", filter[k][l]);
-		
-	}
+
 
 
 
@@ -143,11 +134,10 @@ void gaussian_filter(unsigned char **newImagetmp, unsigned char **in_pixelstmp, 
 		//newImagetmp[i*width+j] = 0;
 		
 		unsigned char pvalue;
-		for (int h = 0; h < 5; h++) {
-			for (int w =0; w < 5; w++) {
+		for (int h = 0; h < 25; h++) {
 				//newImagetmp[i*width+j] = newImagetmp[i*width+j] + filter[h - i][w - j] * in_pixels;
-				pvalue = pvalue + filter[h][j] * in_pixels;
-			}
+				pvalue = pvalue + filter[h] * in_pixels;
+			
 			if(in_pixelstmp[i][j] == NULL)
 				printf("Error out [%d][%d]", i, j);
 			else in_pixelstmp[i][j] = pvalue;
@@ -369,10 +359,17 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, const in
 	//stopwatch_init();
 	//timer = stopwatch_create();
 
+	double filter[25] = { 1 / 273,4 / 273,7 / 273,4 / 273,1 / 273 ,
+	 4 / 273,16 / 273,26 / 273,16 / 273,4 / 273 ,
+	 7 / 273,26 / 273,41 / 273,26 / 273,7 / 273 ,
+	 4 / 273,16 / 273,26 / 273,16 / 273,4 / 273 ,
+	 1 / 273,4 / 273,7 / 273,4 / 273,1 / 273  };
+
 	unsigned char **	d_imgbuff;
 	unsigned char *		d_imgtemp[WIDTH];
 	unsigned char **	d_newImage;
 	unsigned char *		d_newimgtemp[WIDTH];
+	double d_filter[25];
 	cout << "cudaMalloc" << endl;
 
 	cudaError_t err = cudaMalloc((void**)&d_imgbuff, sizeof(unsigned char*)*HEIGHT);
@@ -394,8 +391,18 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, const in
 		if (err != cudaSuccess) cout << "Error :" << err << " i = " << i << endl;
 	}
 
+	//Malloc filter
+	err = cudaMalloc((void**)&d_filter, sizeof(double)*25);
+	if (err == 0)	cout << "cuda1D filter finish" << endl;
+	else cout << "Error :" << err << endl;
+
 
 	//memcopy
+	err = cudaMemcpy(d_filter, filter,sizeof(unsigned char*)*WIDTH, cudaMemcpyHostToDevice);
+	if (err != cudaSuccess) cout << "Error :" << err << endl;
+
+
+
 	err = cudaMemcpy(d_imgbuff, d_imgtemp,sizeof(unsigned char*)*WIDTH, cudaMemcpyHostToDevice);
 	if (err != cudaSuccess) cout << "Error :" << err << endl;
 
@@ -417,13 +424,15 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, const in
 
 	cout << "cudaMalloc finished" << endl;
 
+	
 
+	
 	/*apply gaussian filter*/
 	cout << "enter gaussian filter" << endl;
 	dim3 threadsPerBlock(4,4);
 	dim3 numBlocks (HEIGHT/threadsPerBlock.x, WIDTH/threadsPerBlock.y);
 	//stopwatch_start(timer);
-	gaussian_filter << <numBlocks, threadsPerBlock >> >(d_newimgtemp, d_imgtemp, WIDTH, HEIGHT);
+	//gaussian_filter << <numBlocks, threadsPerBlock >> >(d_newImage, d_imgbuff, WIDTH, HEIGHT, filter);
 	
 	err = cudaThreadSynchronize();
 	if (err != cudaSuccess) cout << "Error cudaThreadSynchronize :" << err << endl;
@@ -432,7 +441,7 @@ void edge_detector(unsigned char** h_newImg, unsigned char** h_imgbuff, const in
 	if (err != cudaSuccess) cout << "Error cudaDeviceSynchronize :" << err << endl;
 
 	
-	gaussian_filter << <numBlocks, threadsPerBlock >> >(d_newImage, d_imgtemp, WIDTH, HEIGHT);
+	gaussian_filter << <numBlocks, threadsPerBlock >> >(d_newImage, d_imgtemp, WIDTH, HEIGHT, d_filter);
 	
 	err = cudaThreadSynchronize();
 	if (err != cudaSuccess) cout << "Error cudaThreadSynchronize :" << err << endl;
