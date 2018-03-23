@@ -28,7 +28,7 @@
 #
 
 # Module load Cuda Compilers and GCC
-module load  cuda/8.0
+module load  cuda/5.0
 module load  gcc/4.4.3
 
 # Runs a bunch of standard command-line
@@ -40,10 +40,8 @@ echo "Current directory: ${PWD}"
 
 echo ""
 echo "=== Running 5 trials of naive ... ==="
-for trial in 1 2 3 4 5; do
-  echo "*** Trial ${trial} ***"
-  ./canny_par
-done
+./canny_par
+
 
 echo ""
 echo "=== Done! ==="

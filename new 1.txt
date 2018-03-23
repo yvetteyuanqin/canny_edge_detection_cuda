@@ -26,6 +26,6 @@ __device__ void trace_immed_neighbors(unsigned char **out_pixels, unsigned char 
 
 #endif
 
-
+qrsh -q gpu nvidia-smi
 module load  gcc/4.4.3
 module load  cuda/5.0
